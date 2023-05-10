@@ -1,4 +1,4 @@
-# 1 "main.c"
+# 1 "timer.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main.c" 2
-# 12 "main.c"
+# 1 "timer.c" 2
+
 # 1 "./common.h" 1
 
 
@@ -2846,78 +2846,65 @@ extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupport
 extern int sprintf(char *, const char *, ...);
 extern int printf(const char *, ...);
 # 9 "./common.h" 2
-# 12 "main.c" 2
-
-# 1 "./port.h" 1
+# 2 "timer.c" 2
 
 
 
-
+char Fincompt1=0;
 
 
 
 
-void PORT_Init(void);
-void PORT_Blink_LED(void);
-# 13 "main.c" 2
-
-# 1 "./timer.h" 1
-
-
-
-
-
-
-
-void TIMER_init_timer1(void);
-# 14 "main.c" 2
-
-
-void main(void) {
+void TIMER_init_timer1(void)
+{
+    TMRA = 65535-5000;
+# 26 "timer.c"
+    T1OSCEN=0;
+# 38 "timer.c"
+    TMRCS1=0;
+    TMRCS0=0;
+# 48 "timer.c"
+    T1CKPS0=1;
+    T1CKPS1=1;
+# 58 "timer.c"
+    T1SYNC=1;
 
 
 
-    PORT_Init();
-    TIMER_init_timer1();
 
-    while(1) {
-        PORT_Blink_LED();
 
-    }
+    TMR1ON=1;
+# 73 "timer.c"
+    TMR1GE=0;
 
-    return;
+
+
+    TMR1IE=1;
 }
 
-
-
-
-
-void puts_float(float Valeur) {
-
-    unsigned int affiche;
-    ValueMetrics valueMetrics;
-
-    Valeur = Valeur * 1000;
-    affiche = (int) Valeur ;
+void __attribute__((picinterrupt(("")))) isr()
+{
 
 
 
 
 
-    valueMetrics.cent = ((char)(affiche/10000))+0x30;
-    putch(valueMetrics.cent);
-    affiche = affiche % 10000 ;
-    valueMetrics.diz = ((char)(affiche/1000))+0x30;
-    putch(valueMetrics.diz);
-    affiche = affiche % 1000 ;
-    valueMetrics.unit = ((char)(affiche/100))+0x30;
-    putch('.');
-    putch(valueMetrics.unit);
+if (TMR1IF)
+     {
 
-    affiche = affiche % 100 ;
-    valueMetrics.dizi = ((char)(affiche/10))+0x30;
-    putch(valueMetrics.dizi);
-    affiche = affiche % 10 ;
-    valueMetrics.centi = ((char)(affiche))+0x30;
-    putch(valueMetrics.centi);
+     Fincompt1 = 1;
+
+
+     TMR1IF=0;
+     }
+
+if (TMRAIF)
+     {
+
+
+
+
+     TMRAIF=0;
+     }
+
 }

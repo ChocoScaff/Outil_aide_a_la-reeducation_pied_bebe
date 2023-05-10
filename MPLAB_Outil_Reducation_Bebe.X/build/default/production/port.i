@@ -1,4 +1,4 @@
-# 1 "main.c"
+# 1 "port.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,15 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main.c" 2
-# 12 "main.c"
+# 1 "port.c" 2
+
+
+
+
+
+
+
+
 # 1 "./common.h" 1
 
 
@@ -2846,78 +2853,81 @@ extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupport
 extern int sprintf(char *, const char *, ...);
 extern int printf(const char *, ...);
 # 9 "./common.h" 2
-# 12 "main.c" 2
-
-# 1 "./port.h" 1
+# 9 "port.c" 2
 
 
 
 
 
 
+void PORT_Init(void) {
 
 
-void PORT_Init(void);
-void PORT_Blink_LED(void);
-# 13 "main.c" 2
-
-# 1 "./timer.h" 1
+    WPUB=0;
+    ANSELB = 0;
 
 
+    TRISB = 0xFE;
 
 
-
-
-
-void TIMER_init_timer1(void);
-# 14 "main.c" 2
-
-
-void main(void) {
+    OSCCON = 0x30;
+    for( ; (OSCCON & 0xC) != 0xC ; );
 
 
 
-    PORT_Init();
-    TIMER_init_timer1();
+    ANSELD = 0x00;
 
-    while(1) {
-        PORT_Blink_LED();
 
-    }
+    TRISA = 0xFF;
+    TRISC = 0xFF;
+    TRISD = 0xF0;
 
-    return;
+
+
+
+
+
+    SPBRG = 16;
+
+    TXSTA = TXSTA & 0xDF;
+    TXSTA = TXSTA | 1;
+
+    TXSTA = TXSTA | 0x04;
+
+    RCSTA = RCSTA | 0x20;
+    RCSTA = RCSTA & 0xDF;
+    RCSTA = RCSTA | 0x04;
+    RCSTA = RCSTA | 0x02;
+
+    TXSTA = TXSTA & 0xEF;
+    TXSTA = TXSTA | 0x20;
+    RCSTA = RCSTA | 0x80;
+
+
+    ANSELA = 0x01;
+
+    ADCON0=0x01;
+    ADCON1=0x62;
+
+    FVRCON=0;
+    DACCON0=0x0;
+    DACCON0=0x60;
+    DACCON0|=0x80;
+
+    DACCON1=0x18;
+}
+
+
+
+
+void PORT_Blink_LED(void) {
+    PORTBbits.RB0 = !PORTBbits.RB0;
 }
 
 
 
 
 
-void puts_float(float Valeur) {
-
-    unsigned int affiche;
-    ValueMetrics valueMetrics;
-
-    Valeur = Valeur * 1000;
-    affiche = (int) Valeur ;
-
-
-
-
-
-    valueMetrics.cent = ((char)(affiche/10000))+0x30;
-    putch(valueMetrics.cent);
-    affiche = affiche % 10000 ;
-    valueMetrics.diz = ((char)(affiche/1000))+0x30;
-    putch(valueMetrics.diz);
-    affiche = affiche % 1000 ;
-    valueMetrics.unit = ((char)(affiche/100))+0x30;
-    putch('.');
-    putch(valueMetrics.unit);
-
-    affiche = affiche % 100 ;
-    valueMetrics.dizi = ((char)(affiche/10))+0x30;
-    putch(valueMetrics.dizi);
-    affiche = affiche % 10 ;
-    valueMetrics.centi = ((char)(affiche))+0x30;
-    putch(valueMetrics.centi);
+void PORT_Config_Mux(int _value) {
+    PORTD=_value;
 }

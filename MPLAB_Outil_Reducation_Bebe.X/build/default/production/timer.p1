@@ -1,21 +1,42 @@
 Version 4.0 HI-TECH Software Intermediate Code
-[p mainexit ]
-"9 ./port.h
-[; ;./port.h: 9: void PORT_Init(void);
-[v _PORT_Init `(v ~T0 @X0 0 ef ]
-"8 ./timer.h
-[; ;./timer.h: 8: void TIMER_init_timer1(void);
-[v _TIMER_init_timer1 `(v ~T0 @X0 0 ef ]
-"10 ./port.h
-[; ;./port.h: 10: void PORT_Blink_LED(void);
-[v _PORT_Blink_LED `(v ~T0 @X0 0 ef ]
-"7 ./struct.h
-[; ;./struct.h: 7: typedef struct {
-[s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
-[n S1 . mil cent diz unit dizi centi ]
-"16 C:\Program Files\Microchip\xc8\v2.20\pic\include\c90\conio.h
-[; ;C:\Program Files\Microchip\xc8\v2.20\pic\include\c90\conio.h: 16: extern void putch(char);
-[v _putch `(v ~T0 @X0 0 ef1`uc ]
+"3316 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 3316: extern volatile unsigned char TMRA __attribute__((address(0x110)));
+[v _TMRA `Vuc ~T0 @X0 0 e@272 ]
+"4681
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4681: extern volatile __bit T1OSCEN __attribute__((address(0x83)));
+[v _T1OSCEN `Vb ~T0 @X0 0 e@131 ]
+"4909
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4909: extern volatile __bit TMRCS1 __attribute__((address(0x87)));
+[v _TMRCS1 `Vb ~T0 @X0 0 e@135 ]
+"4906
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4906: extern volatile __bit TMRCS0 __attribute__((address(0x86)));
+[v _TMRCS0 `Vb ~T0 @X0 0 e@134 ]
+"4651
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4651: extern volatile __bit T1CKPS0 __attribute__((address(0x84)));
+[v _T1CKPS0 `Vb ~T0 @X0 0 e@132 ]
+"4654
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4654: extern volatile __bit T1CKPS1 __attribute__((address(0x85)));
+[v _T1CKPS1 `Vb ~T0 @X0 0 e@133 ]
+"4690
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4690: extern volatile __bit T1SYNC __attribute__((address(0x82)));
+[v _T1SYNC `Vb ~T0 @X0 0 e@130 ]
+"4816
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4816: extern volatile __bit TMR1ON __attribute__((address(0x80)));
+[v _TMR1ON `Vb ~T0 @X0 0 e@128 ]
+"4801
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4801: extern volatile __bit TMR1GE __attribute__((address(0x47F)));
+[v _TMR1GE `Vb ~T0 @X0 0 e@1151 ]
+"4810
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4810: extern volatile __bit TMR1IE __attribute__((address(0x460)));
+[v _TMR1IE `Vb ~T0 @X0 0 e@1120 ]
+[t ~ __interrupt . k ]
+[t T1 __interrupt ]
+"4813
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4813: extern volatile __bit TMR1IF __attribute__((address(0x60)));
+[v _TMR1IF `Vb ~T0 @X0 0 e@96 ]
+"4858
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4858: extern volatile __bit TMRAIF __attribute__((address(0x6C)));
+[v _TMRAIF `Vb ~T0 @X0 0 e@108 ]
 "7 ./defs.h
 [p x FOSC = INTOSC ]
 "8
@@ -283,104 +304,93 @@ Version 4.0 HI-TECH Software Intermediate Code
 "3859
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 3859: __asm("PMCON1 equ 018Ch");
 [; <" PMCON1 equ 018Ch ;# ">
-[v $root$_main `(v ~T0 @X0 0 e ]
-"16 main.c
-[; ;main.c: 16: void main(void) {
-[v _main `(v ~T0 @X0 1 ef ]
+"5 timer.c
+[; ;timer.c: 5: char Fincompt1=0;
+[v _Fincompt1 `uc ~T0 @X0 1 e ]
+[i _Fincompt1
+-> -> 0 `i `uc
+]
+"10
+[; ;timer.c: 10: void TIMER_init_timer1(void)
+[v _TIMER_init_timer1 `(v ~T0 @X0 1 ef ]
+"11
+[; ;timer.c: 11: {
 {
-[e :U _main ]
+[e :U _TIMER_init_timer1 ]
 [f ]
-"20
-[; ;main.c: 20:     PORT_Init();
-[e ( _PORT_Init ..  ]
-"21
-[; ;main.c: 21:     TIMER_init_timer1();
-[e ( _TIMER_init_timer1 ..  ]
-"23
-[; ;main.c: 23:     while(1) {
-[e :U 162 ]
-{
-"24
-[; ;main.c: 24:         PORT_Blink_LED();
-[e ( _PORT_Blink_LED ..  ]
+"12
+[; ;timer.c: 12:     TMRA = 65535-5000;
+[e = _TMRA -> - -> 65535 `l -> -> 5000 `i `l `uc ]
 "26
-[; ;main.c: 26:     }
-}
-[e :U 161 ]
-[e $U 162  ]
-[e :U 163 ]
-"28
-[; ;main.c: 28:     return;
-[e $UE 160  ]
-"29
-[; ;main.c: 29: }
+[; ;timer.c: 26:     T1OSCEN=0;
+[e = _T1OSCEN -> -> 0 `i `b ]
+"38
+[; ;timer.c: 38:     TMRCS1=0;
+[e = _TMRCS1 -> -> 0 `i `b ]
+"39
+[; ;timer.c: 39:     TMRCS0=0;
+[e = _TMRCS0 -> -> 0 `i `b ]
+"48
+[; ;timer.c: 48:     T1CKPS0=1;
+[e = _T1CKPS0 -> -> 1 `i `b ]
+"49
+[; ;timer.c: 49:     T1CKPS1=1;
+[e = _T1CKPS1 -> -> 1 `i `b ]
+"58
+[; ;timer.c: 58:     T1SYNC=1;
+[e = _T1SYNC -> -> 1 `i `b ]
+"64
+[; ;timer.c: 64:     TMR1ON=1;
+[e = _TMR1ON -> -> 1 `i `b ]
+"73
+[; ;timer.c: 73:     TMR1GE=0;
+[e = _TMR1GE -> -> 0 `i `b ]
+"77
+[; ;timer.c: 77:     TMR1IE=1;
+[e = _TMR1IE -> -> 1 `i `b ]
+"78
+[; ;timer.c: 78: }
 [e :UE 160 ]
 }
-"35
-[; ;main.c: 35: void puts_float(float Valeur) {
-[v _puts_float `(v ~T0 @X0 1 ef1`f ]
+[v $root$_isr `(v ~T0 @X0 0 e ]
+"80
+[; ;timer.c: 80: void __attribute__((picinterrupt(("")))) isr()
+[v _isr `(v ~T1 @X0 1 ef ]
+"81
+[; ;timer.c: 81: {
 {
-[e :U _puts_float ]
-[v _Valeur `f ~T0 @X0 1 r1 ]
+[e :U _isr ]
 [f ]
-"37
-[; ;main.c: 37:     unsigned int affiche;
-[v _affiche `ui ~T0 @X0 1 a ]
-"38
-[; ;main.c: 38:     ValueMetrics valueMetrics;
-[v _valueMetrics `S1 ~T0 @X0 1 a ]
-"40
-[; ;main.c: 40:     Valeur = Valeur * 1000;
-[e = _Valeur * _Valeur -> -> 1000 `i `f ]
-"41
-[; ;main.c: 41:     affiche = (int) Valeur ;
-[e = _affiche -> -> _Valeur `i `ui ]
-"47
-[; ;main.c: 47:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
-[e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
-"48
-[; ;main.c: 48:     putch(valueMetrics.cent);
-[e ( _putch (1 . _valueMetrics 1 ]
-"49
-[; ;main.c: 49:     affiche = affiche % 10000 ;
-[e = _affiche % _affiche -> -> 10000 `i `ui ]
-"50
-[; ;main.c: 50:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
-[e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
-"51
-[; ;main.c: 51:     putch(valueMetrics.diz);
-[e ( _putch (1 . _valueMetrics 2 ]
-"52
-[; ;main.c: 52:     affiche = affiche % 1000 ;
-[e = _affiche % _affiche -> -> 1000 `i `ui ]
-"53
-[; ;main.c: 53:     valueMetrics.unit = ((char)(affiche/100))+0x30;
-[e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
-"54
-[; ;main.c: 54:     putch('.');
-[e ( _putch (1 -> -> 46 `ui `uc ]
-"55
-[; ;main.c: 55:     putch(valueMetrics.unit);
-[e ( _putch (1 . _valueMetrics 3 ]
-"57
-[; ;main.c: 57:     affiche = affiche % 100 ;
-[e = _affiche % _affiche -> -> 100 `i `ui ]
-"58
-[; ;main.c: 58:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
-[e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
-"59
-[; ;main.c: 59:     putch(valueMetrics.dizi);
-[e ( _putch (1 . _valueMetrics 4 ]
-"60
-[; ;main.c: 60:     affiche = affiche % 10 ;
-[e = _affiche % _affiche -> -> 10 `i `ui ]
-"61
-[; ;main.c: 61:     valueMetrics.centi = ((char)(affiche))+0x30;
-[e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
-"62
-[; ;main.c: 62:     putch(valueMetrics.centi);
-[e ( _putch (1 . _valueMetrics 5 ]
-"63
-[; ;main.c: 63: }
-[e :UE 164 ]
+"87
+[; ;timer.c: 87: if (TMR1IF)
+[e $ ! _TMR1IF 162  ]
+"88
+[; ;timer.c: 88:      {
+{
+"90
+[; ;timer.c: 90:      Fincompt1 = 1;
+[e = _Fincompt1 -> -> 1 `i `uc ]
+"93
+[; ;timer.c: 93:      TMR1IF=0;
+[e = _TMR1IF -> -> 0 `i `b ]
+"94
+[; ;timer.c: 94:      }
+}
+[e :U 162 ]
+"96
+[; ;timer.c: 96: if (TMRAIF)
+[e $ ! _TMRAIF 163  ]
+"97
+[; ;timer.c: 97:      {
+{
+"102
+[; ;timer.c: 102:      TMRAIF=0;
+[e = _TMRAIF -> -> 0 `i `b ]
+"103
+[; ;timer.c: 103:      }
+}
+[e :U 163 ]
+"105
+[; ;timer.c: 105: }
+[e :UE 161 ]
 }

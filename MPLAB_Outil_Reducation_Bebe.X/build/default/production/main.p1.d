@@ -1,2 +1,7 @@
 build/default/production/main.p1:  \
-main.c 
+main.c  \
+common.h  \
+defs.h  \
+struct.h  \
+port.h  \
+timer.h 
