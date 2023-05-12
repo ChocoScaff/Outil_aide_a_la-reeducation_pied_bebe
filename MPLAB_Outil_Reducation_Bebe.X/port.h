@@ -10,3 +10,6 @@ void PORT_Init(void);
 void PORT_Blink_LED(void);
 void PORT_putchar(char c);
 void PORT_putString(char chaine[]);
+void PORT_Config_Mux(int _value);
+void PORT_Start_ADC(void);
+unsigned char PORT_Get_Value_Adc(void);
