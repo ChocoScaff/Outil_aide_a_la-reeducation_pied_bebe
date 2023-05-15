@@ -9,7 +9,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "11 ./port.h
 [; ;./port.h: 11: void PORT_Blink_LED(void);
 [v _PORT_Blink_LED `(v ~T0 @X0 0 ef ]
-"13
+"8 ./adc.h
+[; ;./adc.h: 8: unsigned char ADC_GetValue(int channel);
+[v _ADC_GetValue `(uc ~T0 @X0 0 ef1`i ]
+"194 C:\Program Files\Microchip\xc8\v2.20\pic\include\c90\stdio.h
+[v _sprintf `(i ~T0 @X0 0 e1v`*uc`*Cuc ]
+"13 ./port.h
 [; ;./port.h: 13: void PORT_putString(char chaine[]);
 [v _PORT_putString `(v ~T0 @X0 0 ef1`*uc ]
 "9 ./struct.h
@@ -37,6 +42,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x PLLEN = ON ]
 "19
 [p x VCAPEN = OFF ]
+"28
+[v _Fincompt1 `uc ~T0 @X0 1 e ]
+[i _Fincompt1
+-> -> 0 `i `uc
+]
 "54 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 54: __asm("INDF equ 00h");
 [; <" INDF equ 00h ;# ">
@@ -287,107 +297,145 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 3859: __asm("PMCON1 equ 018Ch");
 [; <" PMCON1 equ 018Ch ;# ">
 [v $root$_main `(v ~T0 @X0 0 e ]
-"16 main.c
-[; ;main.c: 16: void main(void) {
+"17 main.c
+[; ;main.c: 17: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
+"19
+[; ;main.c: 19:     int i;
+[v _i `i ~T0 @X0 1 a ]
 "20
-[; ;main.c: 20:     PORT_Init();
-[e ( _PORT_Init ..  ]
+[; ;main.c: 20:     unsigned char capt1, capt2, capt3, capt4;
+[v _capt1 `uc ~T0 @X0 1 a ]
+[v _capt2 `uc ~T0 @X0 1 a ]
+[v _capt3 `uc ~T0 @X0 1 a ]
+[v _capt4 `uc ~T0 @X0 1 a ]
 "21
-[; ;main.c: 21:     TIMER_init_timer1();
-[e ( _TIMER_init_timer1 ..  ]
+[; ;main.c: 21:     char tab[40];
+[v _tab `uc ~T0 @X0 -> 40 `i a ]
 "23
-[; ;main.c: 23:     while(1) {
-[e :U 161 ]
-{
+[; ;main.c: 23:     PORT_Init();
+[e ( _PORT_Init ..  ]
 "24
-[; ;main.c: 24:         PORT_Blink_LED();
-[e ( _PORT_Blink_LED ..  ]
-"25
-[; ;main.c: 25:         PORT_putString("Hello World\n");
-[e ( _PORT_putString (1 :s 1C ]
+[; ;main.c: 24:     TIMER_init_timer1();
+[e ( _TIMER_init_timer1 ..  ]
 "27
-[; ;main.c: 27:     }
-}
-[e :U 160 ]
-[e $U 161  ]
+[; ;main.c: 27:     while(1) {
 [e :U 162 ]
+{
+"28
+[; ;main.c: 28:          while (Fincompt1 != 0);
+[e $U 164  ]
+[e :U 165 ]
+[e :U 164 ]
+[e $ != -> _Fincompt1 `i -> 0 `i 165  ]
+[e :U 166 ]
 "29
-[; ;main.c: 29:     return;
-[e $UE 159  ]
+[; ;main.c: 29:         Fincompt1 = 0;
+[e = _Fincompt1 -> -> 0 `i `uc ]
 "30
-[; ;main.c: 30: }
-[e :UE 159 ]
+[; ;main.c: 30:         PORT_Blink_LED();
+[e ( _PORT_Blink_LED ..  ]
+"32
+[; ;main.c: 32:         capt1 = ADC_GetValue(0);
+[e = _capt1 ( _ADC_GetValue (1 -> 0 `i ]
+"33
+[; ;main.c: 33:         capt2 = ADC_GetValue(1);
+[e = _capt2 ( _ADC_GetValue (1 -> 1 `i ]
+"34
+[; ;main.c: 34:         capt3 = ADC_GetValue(2);
+[e = _capt3 ( _ADC_GetValue (1 -> 2 `i ]
+"35
+[; ;main.c: 35:         capt4 = ADC_GetValue(3);
+[e = _capt4 ( _ADC_GetValue (1 -> 3 `i ]
+"37
+[; ;main.c: 37:         sprintf(tab,"valeur Capteur %d %d %d %d \n", capt1, capt2, capt3, capt4);
+[e ( _sprintf (1 , , , , (. , &U _tab :s 1C -> _capt1 `i -> _capt2 `i -> _capt3 `i -> _capt4 `i ]
+"38
+[; ;main.c: 38:         PORT_putString(tab);
+[e ( _PORT_putString (1 &U _tab ]
+"42
+[; ;main.c: 42:     }
 }
-"36
-[; ;main.c: 36: void puts_float(float Valeur) {
+[e :U 161 ]
+[e $U 162  ]
+[e :U 163 ]
+"44
+[; ;main.c: 44:     return;
+[e $UE 160  ]
+"45
+[; ;main.c: 45: }
+[e :UE 160 ]
+}
+"51
+[; ;main.c: 51: void puts_float(float Valeur) {
 [v _puts_float `(v ~T0 @X0 1 ef1`f ]
 {
 [e :U _puts_float ]
 [v _Valeur `f ~T0 @X0 1 r1 ]
 [f ]
-"38
-[; ;main.c: 38:     unsigned int affiche;
-[v _affiche `ui ~T0 @X0 1 a ]
-"39
-[; ;main.c: 39:     ValueMetrics valueMetrics;
-[v _valueMetrics `S1 ~T0 @X0 1 a ]
-"41
-[; ;main.c: 41:     Valeur = Valeur * 1000;
-[e = _Valeur * _Valeur -> -> 1000 `i `f ]
-"42
-[; ;main.c: 42:     affiche = (int) Valeur ;
-[e = _affiche -> -> _Valeur `i `ui ]
-"48
-[; ;main.c: 48:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
-[e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
-"49
-[; ;main.c: 49:     PORT_putchar(valueMetrics.cent);
-[e ( _PORT_putchar (1 . _valueMetrics 1 ]
-"50
-[; ;main.c: 50:     affiche = affiche % 10000 ;
-[e = _affiche % _affiche -> -> 10000 `i `ui ]
-"51
-[; ;main.c: 51:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
-[e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
-"52
-[; ;main.c: 52:     PORT_putchar(valueMetrics.diz);
-[e ( _PORT_putchar (1 . _valueMetrics 2 ]
 "53
-[; ;main.c: 53:     affiche = affiche % 1000 ;
-[e = _affiche % _affiche -> -> 1000 `i `ui ]
+[; ;main.c: 53:     unsigned int affiche;
+[v _affiche `ui ~T0 @X0 1 a ]
 "54
-[; ;main.c: 54:     valueMetrics.unit = ((char)(affiche/100))+0x30;
-[e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
-"55
-[; ;main.c: 55:     PORT_putchar('.');
-[e ( _PORT_putchar (1 -> -> 46 `ui `uc ]
+[; ;main.c: 54:     ValueMetrics valueMetrics;
+[v _valueMetrics `S1 ~T0 @X0 1 a ]
 "56
-[; ;main.c: 56:     PORT_putchar(valueMetrics.unit);
-[e ( _PORT_putchar (1 . _valueMetrics 3 ]
-"58
-[; ;main.c: 58:     affiche = affiche % 100 ;
-[e = _affiche % _affiche -> -> 100 `i `ui ]
-"59
-[; ;main.c: 59:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
-[e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
-"60
-[; ;main.c: 60:     PORT_putchar(valueMetrics.dizi);
-[e ( _PORT_putchar (1 . _valueMetrics 4 ]
-"61
-[; ;main.c: 61:     affiche = affiche % 10 ;
-[e = _affiche % _affiche -> -> 10 `i `ui ]
-"62
-[; ;main.c: 62:     valueMetrics.centi = ((char)(affiche))+0x30;
-[e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+[; ;main.c: 56:     Valeur = Valeur * 1000;
+[e = _Valeur * _Valeur -> -> 1000 `i `f ]
+"57
+[; ;main.c: 57:     affiche = (int) Valeur ;
+[e = _affiche -> -> _Valeur `i `ui ]
 "63
-[; ;main.c: 63:     PORT_putchar(valueMetrics.centi);
-[e ( _PORT_putchar (1 . _valueMetrics 5 ]
+[; ;main.c: 63:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
+[e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
 "64
-[; ;main.c: 64: }
-[e :UE 163 ]
+[; ;main.c: 64:     PORT_putchar(valueMetrics.cent);
+[e ( _PORT_putchar (1 . _valueMetrics 1 ]
+"65
+[; ;main.c: 65:     affiche = affiche % 10000 ;
+[e = _affiche % _affiche -> -> 10000 `i `ui ]
+"66
+[; ;main.c: 66:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
+[e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
+"67
+[; ;main.c: 67:     PORT_putchar(valueMetrics.diz);
+[e ( _PORT_putchar (1 . _valueMetrics 2 ]
+"68
+[; ;main.c: 68:     affiche = affiche % 1000 ;
+[e = _affiche % _affiche -> -> 1000 `i `ui ]
+"69
+[; ;main.c: 69:     valueMetrics.unit = ((char)(affiche/100))+0x30;
+[e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
+"70
+[; ;main.c: 70:     PORT_putchar('.');
+[e ( _PORT_putchar (1 -> -> 46 `ui `uc ]
+"71
+[; ;main.c: 71:     PORT_putchar(valueMetrics.unit);
+[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+"73
+[; ;main.c: 73:     affiche = affiche % 100 ;
+[e = _affiche % _affiche -> -> 100 `i `ui ]
+"74
+[; ;main.c: 74:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
+[e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
+"75
+[; ;main.c: 75:     PORT_putchar(valueMetrics.dizi);
+[e ( _PORT_putchar (1 . _valueMetrics 4 ]
+"76
+[; ;main.c: 76:     affiche = affiche % 10 ;
+[e = _affiche % _affiche -> -> 10 `i `ui ]
+"77
+[; ;main.c: 77:     valueMetrics.centi = ((char)(affiche))+0x30;
+[e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+"78
+[; ;main.c: 78:     PORT_putchar(valueMetrics.centi);
+[e ( _PORT_putchar (1 . _valueMetrics 5 ]
+"79
+[; ;main.c: 79: }
+[e :UE 167 ]
 }
-[a 1C 72 101 108 108 111 32 87 111 114 108 100 10 0 ]
+[p f _sprintf 8388736 ]
+[a 1C 118 97 108 101 117 114 32 67 97 112 116 101 117 114 32 37 100 32 37 100 32 37 100 32 37 100 32 10 0 ]

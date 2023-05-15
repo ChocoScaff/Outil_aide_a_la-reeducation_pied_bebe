@@ -12,18 +12,30 @@
 #include "common.h"
 #include "port.h"
 #include "timer.h"
+#include "adc.h"
 
 void main(void) {
     
-//    int i;
+    int i;
+    unsigned char capt1, capt2, capt3, capt4;
+    char tab[40];
     
     PORT_Init();
     TIMER_init_timer1();
     
+    
     while(1) {
+         while (Fincompt1 != 0);
+        Fincompt1 = 0;
         PORT_Blink_LED();
-        PORT_putString("Hello World\n");
-//        for(i=0;i<10000;i++);
+        
+        capt1 = ADC_GetValue(0);
+        capt2 = ADC_GetValue(1);
+        capt3 = ADC_GetValue(2);
+        capt4 = ADC_GetValue(3);
+                
+        sprintf(tab,"valeur Capteur %d %d %d %d \n", capt1, capt2, capt3, capt4);
+        PORT_putString(tab);
     }
         
     return;

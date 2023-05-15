@@ -4,4 +4,5 @@ common.h  \
 defs.h  \
 struct.h  \
 port.h  \
-timer.h 
+timer.h  \
+adc.h 

@@ -55,6 +55,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x PLLEN = ON ]
 "19
 [p x VCAPEN = OFF ]
+"28
+[v _Fincompt1 `uc ~T0 @X0 1 e ]
+[i _Fincompt1
+-> -> 0 `i `uc
+]
 "54 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 54: __asm("INDF equ 00h");
 [; <" INDF equ 00h ;# ">
@@ -304,93 +309,87 @@ Version 4.0 HI-TECH Software Intermediate Code
 "3859
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 3859: __asm("PMCON1 equ 018Ch");
 [; <" PMCON1 equ 018Ch ;# ">
-"5 timer.c
-[; ;timer.c: 5: char Fincompt1=0;
-[v _Fincompt1 `uc ~T0 @X0 1 e ]
-[i _Fincompt1
--> -> 0 `i `uc
-]
-"10
-[; ;timer.c: 10: void TIMER_init_timer1(void)
+"8 timer.c
+[; ;timer.c: 8: void TIMER_init_timer1(void)
 [v _TIMER_init_timer1 `(v ~T0 @X0 1 ef ]
-"11
-[; ;timer.c: 11: {
+"9
+[; ;timer.c: 9: {
 {
 [e :U _TIMER_init_timer1 ]
 [f ]
-"12
-[; ;timer.c: 12:     TMRA = 65535-5000;
+"10
+[; ;timer.c: 10:     TMRA = 65535-5000;
 [e = _TMRA -> - -> 65535 `l -> -> 5000 `i `l `uc ]
-"26
-[; ;timer.c: 26:     T1OSCEN=0;
+"24
+[; ;timer.c: 24:     T1OSCEN=0;
 [e = _T1OSCEN -> -> 0 `i `b ]
-"38
-[; ;timer.c: 38:     TMRCS1=0;
+"36
+[; ;timer.c: 36:     TMRCS1=0;
 [e = _TMRCS1 -> -> 0 `i `b ]
-"39
-[; ;timer.c: 39:     TMRCS0=0;
+"37
+[; ;timer.c: 37:     TMRCS0=0;
 [e = _TMRCS0 -> -> 0 `i `b ]
-"48
-[; ;timer.c: 48:     T1CKPS0=1;
+"46
+[; ;timer.c: 46:     T1CKPS0=1;
 [e = _T1CKPS0 -> -> 1 `i `b ]
-"49
-[; ;timer.c: 49:     T1CKPS1=1;
+"47
+[; ;timer.c: 47:     T1CKPS1=1;
 [e = _T1CKPS1 -> -> 1 `i `b ]
-"58
-[; ;timer.c: 58:     T1SYNC=1;
+"56
+[; ;timer.c: 56:     T1SYNC=1;
 [e = _T1SYNC -> -> 1 `i `b ]
-"64
-[; ;timer.c: 64:     TMR1ON=1;
+"62
+[; ;timer.c: 62:     TMR1ON=1;
 [e = _TMR1ON -> -> 1 `i `b ]
-"73
-[; ;timer.c: 73:     TMR1GE=0;
+"71
+[; ;timer.c: 71:     TMR1GE=0;
 [e = _TMR1GE -> -> 0 `i `b ]
-"77
-[; ;timer.c: 77:     TMR1IE=1;
+"75
+[; ;timer.c: 75:     TMR1IE=1;
 [e = _TMR1IE -> -> 1 `i `b ]
-"78
-[; ;timer.c: 78: }
-[e :UE 159 ]
+"76
+[; ;timer.c: 76: }
+[e :UE 160 ]
 }
 [v $root$_isr `(v ~T0 @X0 0 e ]
-"80
-[; ;timer.c: 80: void __attribute__((picinterrupt(("")))) isr()
+"78
+[; ;timer.c: 78: void __attribute__((picinterrupt(("")))) isr()
 [v _isr `(v ~T1 @X0 1 ef ]
-"81
-[; ;timer.c: 81: {
+"79
+[; ;timer.c: 79: {
 {
 [e :U _isr ]
 [f ]
-"87
-[; ;timer.c: 87: if (TMR1IF)
-[e $ ! _TMR1IF 161  ]
+"85
+[; ;timer.c: 85: if (TMR1IF)
+[e $ ! _TMR1IF 162  ]
+"86
+[; ;timer.c: 86:      {
+{
 "88
-[; ;timer.c: 88:      {
-{
-"90
-[; ;timer.c: 90:      Fincompt1 = 1;
+[; ;timer.c: 88:      Fincompt1 = 1;
 [e = _Fincompt1 -> -> 1 `i `uc ]
-"93
-[; ;timer.c: 93:      TMR1IF=0;
+"91
+[; ;timer.c: 91:      TMR1IF=0;
 [e = _TMR1IF -> -> 0 `i `b ]
-"94
-[; ;timer.c: 94:      }
-}
-[e :U 161 ]
-"96
-[; ;timer.c: 96: if (TMRAIF)
-[e $ ! _TMRAIF 162  ]
-"97
-[; ;timer.c: 97:      {
-{
-"102
-[; ;timer.c: 102:      TMRAIF=0;
-[e = _TMRAIF -> -> 0 `i `b ]
-"103
-[; ;timer.c: 103:      }
+"92
+[; ;timer.c: 92:      }
 }
 [e :U 162 ]
-"105
-[; ;timer.c: 105: }
-[e :UE 160 ]
+"94
+[; ;timer.c: 94: if (TMRAIF)
+[e $ ! _TMRAIF 163  ]
+"95
+[; ;timer.c: 95:      {
+{
+"100
+[; ;timer.c: 100:      TMRAIF=0;
+[e = _TMRAIF -> -> 0 `i `b ]
+"101
+[; ;timer.c: 101:      }
+}
+[e :U 163 ]
+"103
+[; ;timer.c: 103: }
+[e :UE 161 ]
 }

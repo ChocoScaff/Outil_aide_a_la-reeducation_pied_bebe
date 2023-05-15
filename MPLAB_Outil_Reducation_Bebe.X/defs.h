@@ -23,3 +23,6 @@
 
 #define RESISTANCE_VALUE 4700
 #define VOLTAGE_DEFAULT 5
+
+
+char Fincompt1=0;
