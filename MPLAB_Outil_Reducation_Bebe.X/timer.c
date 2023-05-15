@@ -2,8 +2,6 @@
 #include "common.h"
 
 
-char Fincompt1=0;
-
 /**
  * Init first Timer
  */

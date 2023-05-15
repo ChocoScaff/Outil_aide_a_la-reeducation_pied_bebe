@@ -18,14 +18,14 @@ void PORT_Init_Serial(void) {
     TRISC = 0xFF; // RC6 : écriture et RC7 : liaison série
  
     //SPBRG = 16; // 57600 bauds
-    SPBRG = 51; // 9600 bauds avec une horloge à 16 MHz SPBRG = 25
+    SPBRG = 25; // 9600 bauds avec une horloge à 16 MHz SPBRG = 25
     // Transmission 8 bits, pas de parite, 9600 bauds
     
     
     TXSTA = TXSTA & 0xDF; // TX9 = 1 on transmet 9 bits (donc la non)
     TXSTA = TXSTA | 1; // TX9D = 9eme bit a transmettre à 1 (=stop)
-    // TXSTA = TXSTA & 0xFB; // BRGH = 0 low speed pour 9600 bauds -> 25 dans SPBRG
-    TXSTA = TXSTA | 0x04; // BRGH = 1 high speed pour 57600 bauds -> 16 dans SPBRG
+    TXSTA = TXSTA & 0xFB; // BRGH = 0 low speed pour 9600 bauds -> 25 dans SPBRG
+    //TXSTA = TXSTA | 0x04; // BRGH = 1 high speed pour 57600 bauds -> 16 dans SPBRG
 
     RCSTA = RCSTA | 0x20; // SREN = 1 réception serie activee
     RCSTA = RCSTA & 0xDF; // RX9 = 0 on n'attend que 8 bits
