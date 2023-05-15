@@ -22,6 +22,7 @@ void main(void) {
     
     while(1) {
         PORT_Blink_LED();
+        PORT_putString("Hello World\n");
 //        for(i=0;i<10000;i++);
     }
         

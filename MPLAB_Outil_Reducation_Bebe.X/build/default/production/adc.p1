@@ -1,1 +1,31 @@
 Version 4.0 HI-TECH Software Intermediate Code
+"14 ./port.h
+[; ;./port.h: 14: void PORT_Config_Mux(int _value);
+[v _PORT_Config_Mux `(v ~T0 @X0 0 ef1`i ]
+"15
+[; ;./port.h: 15: void PORT_Start_ADC(void);
+[v _PORT_Start_ADC `(v ~T0 @X0 0 ef ]
+"16
+[; ;./port.h: 16: unsigned char PORT_Get_Value_Adc(void);
+[v _PORT_Get_Value_Adc `(uc ~T0 @X0 0 ef ]
+"16 adc.c
+[; ;adc.c: 16: unsigned char ADC_GetValue(int channel) {
+[v _ADC_GetValue `(uc ~T0 @X0 1 ef1`i ]
+{
+[e :U _ADC_GetValue ]
+[v _channel `i ~T0 @X0 1 r1 ]
+[f ]
+"18
+[; ;adc.c: 18:     PORT_Config_Mux(channel);
+[e ( _PORT_Config_Mux (1 _channel ]
+"19
+[; ;adc.c: 19:     PORT_Start_ADC();
+[e ( _PORT_Start_ADC ..  ]
+"20
+[; ;adc.c: 20:     return PORT_Get_Value_Adc();
+[e ) ( _PORT_Get_Value_Adc ..  ]
+[e $UE 1  ]
+"21
+[; ;adc.c: 21: }
+[e :UE 1 ]
+}

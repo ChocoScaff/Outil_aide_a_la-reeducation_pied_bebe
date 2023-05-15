@@ -37,23 +37,23 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4858
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 4858: extern volatile __bit TMRAIF __attribute__((address(0x6C)));
 [v _TMRAIF `Vb ~T0 @X0 0 e@108 ]
-"7 ./defs.h
+"9 ./defs.h
 [p x FOSC = INTOSC ]
-"8
-[p x WDTE = OFF ]
-"9
-[p x PWRTE = OFF ]
 "10
-[p x MCLRE = ON ]
+[p x WDTE = OFF ]
 "11
-[p x CP = OFF ]
+[p x PWRTE = OFF ]
 "12
-[p x BOREN = ON ]
+[p x MCLRE = ON ]
 "13
-[p x BORV = 19 ]
+[p x CP = OFF ]
 "14
+[p x BOREN = ON ]
+"15
+[p x BORV = 19 ]
+"16
 [p x PLLEN = ON ]
-"17
+"19
 [p x VCAPEN = OFF ]
 "54 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 54: __asm("INDF equ 00h");
@@ -350,7 +350,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _TMR1IE -> -> 1 `i `b ]
 "78
 [; ;timer.c: 78: }
-[e :UE 160 ]
+[e :UE 159 ]
 }
 [v $root$_isr `(v ~T0 @X0 0 e ]
 "80
@@ -363,7 +363,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "87
 [; ;timer.c: 87: if (TMR1IF)
-[e $ ! _TMR1IF 162  ]
+[e $ ! _TMR1IF 161  ]
 "88
 [; ;timer.c: 88:      {
 {
@@ -376,10 +376,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "94
 [; ;timer.c: 94:      }
 }
-[e :U 162 ]
+[e :U 161 ]
 "96
 [; ;timer.c: 96: if (TMRAIF)
-[e $ ! _TMRAIF 163  ]
+[e $ ! _TMRAIF 162  ]
 "97
 [; ;timer.c: 97:      {
 {
@@ -389,8 +389,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "103
 [; ;timer.c: 103:      }
 }
-[e :U 163 ]
+[e :U 162 ]
 "105
 [; ;timer.c: 105: }
-[e :UE 161 ]
+[e :UE 160 ]
 }

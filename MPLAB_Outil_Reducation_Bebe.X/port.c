@@ -10,6 +10,35 @@
 #include <pic16f707.h>
 
 /**
+ * 
+ */
+void PORT_Init_Serial(void) {
+    //liaison série
+   
+    TRISC = 0xFF; // RC6 : écriture et RC7 : liaison série
+ 
+    //SPBRG = 16; // 57600 bauds
+    SPBRG = 51; // 9600 bauds avec une horloge à 16 MHz SPBRG = 25
+    // Transmission 8 bits, pas de parite, 9600 bauds
+    
+    
+    TXSTA = TXSTA & 0xDF; // TX9 = 1 on transmet 9 bits (donc la non)
+    TXSTA = TXSTA | 1; // TX9D = 9eme bit a transmettre à 1 (=stop)
+    // TXSTA = TXSTA & 0xFB; // BRGH = 0 low speed pour 9600 bauds -> 25 dans SPBRG
+    TXSTA = TXSTA | 0x04; // BRGH = 1 high speed pour 57600 bauds -> 16 dans SPBRG
+
+    RCSTA = RCSTA | 0x20; // SREN = 1 réception serie activee
+    RCSTA = RCSTA & 0xDF; // RX9 = 0 on n'attend que 8 bits
+    RCSTA = RCSTA | 0x04; // FERR=1
+    RCSTA = RCSTA | 0x02; // OERR=1
+    //Monsieur Microchip dit que ces 3 la doivent etre dans cet etat pour avoir une liaison serie asynchrone
+    TXSTA = TXSTA & 0xEF; // SYNC = 0 mode asynchrone
+    TXSTA = TXSTA | 0x20; // TXEN = 1
+    RCSTA = RCSTA | 0x80; // SPEN = 1 liaison serie activee
+}
+
+
+/**
  * Init Port for 707
  */
 void PORT_Init(void) {
@@ -31,30 +60,10 @@ void PORT_Init(void) {
 
       // configuration des ports d'E/S
     TRISA = 0xFF; // configure le port A tout en entrees
-    TRISC = 0xFF; // RC6 : écriture et RC7 : liaison série
+    
     TRISD = 0xF0; // RD 0 à RD3 en sortie pour la commande du multiplexeur
-
-    //liaison série
-
-    // SPBRG = 25; // 9600 bauds avec une horloge à 16 MHz SPBRG = 25
-    // Transmission 8 bits, pas de parite, 9600 bauds
-
-    SPBRG = 16; // 57600 bauds
-
-    TXSTA = TXSTA & 0xDF; // TX9 = 1 on transmet 9 bits (donc la non)
-    TXSTA = TXSTA | 1; // TX9D = 9eme bit a transmettre à 1 (=stop)
-    // TXSTA = TXSTA & 0xFB; // BRGH = 0 low speed pour 9600 bauds -> 25 dans SPBRG
-    TXSTA = TXSTA | 0x04; // BRGH = 1 high speed pour 57600 bauds -> 16 dans SPBRG
-
-    RCSTA = RCSTA | 0x20; // SREN = 1 réception serie activee
-    RCSTA = RCSTA & 0xDF; // RX9 = 0 on n'attend que 8 bits
-    RCSTA = RCSTA | 0x04; // FERR=1
-    RCSTA = RCSTA | 0x02; // OERR=1
-    //Monsieur Microchip dit que ces 3 la doivent etre dans cet etat pour avoir une liaison serie asynchrone
-    TXSTA = TXSTA & 0xEF; // SYNC = 0 mode asynchrone
-    TXSTA = TXSTA | 0x20; // TXEN = 1
-    RCSTA = RCSTA | 0x80; // SPEN = 1 liaison serie activee
-
+    
+    PORT_Init_Serial();
     //configuration du DAC et de Vref
     ANSELA = 0x01; // RA0, RA1 et RA2 en analog input
 

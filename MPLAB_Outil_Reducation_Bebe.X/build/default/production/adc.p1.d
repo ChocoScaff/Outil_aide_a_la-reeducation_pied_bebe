@@ -1,2 +1,3 @@
 build/default/production/adc.p1:  \
-adc.c 
+adc.c  \
+port.h 

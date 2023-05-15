@@ -7,6 +7,7 @@
 
 
 void PORT_Init(void);
+void PORT_Init_Serial(void);
 void PORT_Blink_LED(void);
 void PORT_putchar(char c);
 void PORT_putString(char chaine[]);
