@@ -13,9 +13,9 @@
  * 
  * @return adc value
  */
-unsigned char ADC_GetValue(int channel) {
+unsigned char ADC_GetValue(char channel) {
 
-    PORT_Config_Mux(channel);
+    PORT_Choose_Mux(channel);
     PORT_Start_ADC();
     return PORT_Get_Value_Adc();
 } 

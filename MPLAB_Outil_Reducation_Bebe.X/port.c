@@ -61,7 +61,7 @@ void PORT_Init(void) {
       // configuration des ports d'E/S
     TRISA = 0xFF; // configure le port A tout en entrees
     
-    TRISD = 0xF0; // RD 0 à RD3 en sortie pour la commande du multiplexeur
+    TRISD = 0xC0; // RD 0 à RD3 en sortie pour la commande du multiplexeur
     
     PORT_Init_Serial();
     //configuration du DAC et de Vref
@@ -91,8 +91,12 @@ void PORT_Blink_LED(void) {
  * 
  * @param _value
  */
-void PORT_Config_Mux(int _value) {
-    PORTD=_value;
+void PORT_Choose_Mux(char _value) {
+    if (_value <= 0x0F)
+        {
+        PORTD &= 0xF0;
+        PORTD |= _value;
+        }
 }
 
 /**
@@ -101,6 +105,9 @@ void PORT_Config_Mux(int _value) {
 void PORT_Start_ADC(void) {
     GO_nDONE=1; //ADC convertion start
     while(GO_nDONE); //Convertion
+    
+//    ADCON0 |= 0x02;
+//    while((ADCON0 & 0x02) == 1);
 }
 
 /**
@@ -136,3 +143,21 @@ void PORT_putString(char chaine[]) {
         PORT_putchar(chaine[i]);
     }
 }
+
+/**
+ * U3
+ */
+void PORT_Select_Mux0(void) {
+    PORTD = PORTD | 0x10; //Chip select mux 0 
+    PORTD = PORTD & 0xDF; //Chip disable mux 1
+    
+}
+
+/**
+ * U4
+ */
+void PORT_Select_Mux1(void) {
+    PORTD |= 0x20; //Chip select mux 1
+    PORTD &= 0xEF; //Chip disable mux 0
+}
+
