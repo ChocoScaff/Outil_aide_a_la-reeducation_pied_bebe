@@ -7,7 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 //import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 public class MainActivity extends AppCompatActivity {
 
     public DrawerLayout drawerLayout;
@@ -21,7 +27,26 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        Fragment1 fragment1;
+        setContentView(R.layout.activity_main);
+        fragment1 = new Fragment1();
+        setContentView(R.layout.activity_main);
+        Button start = findViewById(R.id.button1);
+        Button stop = findViewById(R.id.button2);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(ture);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+
+        });
     }
             @Override
             public boolean onOptionsItemSelected (@NonNull MenuItem item){
@@ -32,4 +57,17 @@ public class MainActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+    {
+
+    }
+        private void lanceFragment (Fragment1 fragment1){
+            FragmentManager fm =getSupportFragmentManager();
+        FragmentTransaction ft= fm.beginTransaction();
+        ft.replace(R.id.frameLayout,fragment1);
+        ft.addToBackStack(null);
+        ft.commit();
+        }
+
+
 }
