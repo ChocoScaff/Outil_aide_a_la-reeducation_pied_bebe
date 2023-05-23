@@ -17,36 +17,27 @@
 
 void main(void) {
     
-    int i;
     volatile unsigned char capt1, capt2, capt3, capt4;
     char tab[30];
     
     PORT_Init();
     TIMER_init_timer1();
     
-//    PORT_Select_Mux1();
-    PORTD |= 0x20; //Chip select mux 1
-    PORTD &= 0xEF; //Chip disable mux 0
+    PORT_Select_Mux0(); //Select U3
     
     while(1) {
-         while (Fincompt1 != 0);
+        
+        while (Fincompt1 != 0);
         Fincompt1 = 0;
         PORT_Blink_LED();
         
-//        capt1 = ADC_GetValue(0);
-//        capt2 = ADC_GetValue(1);
-//        capt3 = ADC_GetValue(2);
-//        capt4 = ADC_GetValue(3);
-        
-        
- 
-        PORTD |= 0;
-        GO_nDONE=1; //ADC convertion start
-        while(GO_nDONE); //Convertion
-        capt1 = ADRES;
+        capt1 = ADC_GetValue(0);
+        capt2 = ADC_GetValue(1);
+        capt3 = ADC_GetValue(2);
+        capt4 = ADC_GetValue(3);
                 
-//        sprintf(tab,"valeur Capteur %d %d %d %d \n", capt1, capt2, capt3, capt4);
-        sprintf(tab,"valeur Capteur %d \n", capt1);
+        sprintf(tab,"valeur Capteur %d %d %d %d \n", capt1, capt2, capt3, capt4);
+        //sprintf(tab,"valeur Capteur %d \n", capt1);
         
         PORT_putString(tab);
     }

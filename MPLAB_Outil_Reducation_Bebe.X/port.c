@@ -68,7 +68,7 @@ void PORT_Init(void) {
     ANSELA = 0x01; // RA0, RA1 et RA2 en analog input
 
     ADCON0=0x01; //ADC sur AN0 (RA0)
-    ADCON1=0x62; //ADC Clock Fosc/64, Vref connecté à RA3 (p. 79 doc)
+    ADCON1=0x60; //ADC Clock Fosc/64, Vref 5V
 
     FVRCON=0;
     DACCON0=0x0;    // on éteint le CNA
@@ -92,8 +92,7 @@ void PORT_Blink_LED(void) {
  * @param _value
  */
 void PORT_Choose_Mux(char _value) {
-    if (_value <= 0x0F)
-        {
+    if (_value <= 0x0F) {
         PORTD &= 0xF0;
         PORTD |= _value;
         }
@@ -148,8 +147,8 @@ void PORT_putString(char chaine[]) {
  * U3
  */
 void PORT_Select_Mux0(void) {
-    PORTD = PORTD | 0x10; //Chip select mux 0 
-    PORTD = PORTD & 0xDF; //Chip disable mux 1
+    PORTD |= 0x20; //Chip select mux 0 
+    PORTD &= 0xEF; //Chip disable mux 1
     
 }
 
@@ -157,7 +156,7 @@ void PORT_Select_Mux0(void) {
  * U4
  */
 void PORT_Select_Mux1(void) {
-    PORTD |= 0x20; //Chip select mux 1
-    PORTD &= 0xEF; //Chip disable mux 0
+    PORTD |= 0x10; //Chip select mux 1
+    PORTD &= 0xDF; //Chip disable mux 0
 }
 
