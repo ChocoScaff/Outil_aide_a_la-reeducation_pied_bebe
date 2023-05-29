@@ -14,7 +14,11 @@ Sensors :
 FSR04BE
 ![alt text](https://github.com/ChocoScaff/Outil_aide_a_la-reeducation_pied_bebe/blob/main/img/FSR04BE.png)
 https://github.com/ChocoScaff/Outil_aide_a_la-reeducation_pied_bebe/blob/main/Doc/FSR04BE.pdf
+https://github.com/ChocoScaff/Outil_aide_a_la-reeducation_pied_bebe/blob/main/Doc/Flex_Sensor.pdf
 
+PCB :
+![alt text](https://github.com/ChocoScaff/Outil_aide_a_la-reeducation_pied_bebe/blob/main/img/schema_pcb.png)
+https://github.com/ChocoScaff/Outil_aide_a_la-reeducation_pied_bebe/blob/main/Doc/Schema_pcb.pdf
 
 Software :
 Android Studio (Build Android App) https://developer.android.com/studio
