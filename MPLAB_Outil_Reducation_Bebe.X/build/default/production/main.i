@@ -34,14 +34,7 @@
 
 
 #pragma config VCAPEN = OFF
-
-
-
-
-
-
-
-
+# 30 "./defs.h"
 char Fincompt1=0;
 # 6 "./common.h" 2
 
@@ -2808,12 +2801,12 @@ unsigned char ADC_GetValue(char channel);
 
 
 float Voltage_Value(unsigned char sensor);
-
+float Resistance_Value(float Voltage);
 
 
 void main(void) {
 
-    volatile unsigned char sensor1, sensor2, sensor3, sensor4;
+    unsigned char sensor1, sensor2, sensor3, sensor4;
 
 
 
@@ -2834,9 +2827,13 @@ void main(void) {
         sensor2 = ADC_GetValue(1);
         sensor3 = ADC_GetValue(2);
         sensor4 = ADC_GetValue(3);
-# 53 "main.c"
+# 54 "main.c"
         Vs = Voltage_Value(sensor1);
 
+
+
+
+        Rc = Resistance_Value(Vs);
 
 
 
@@ -2888,5 +2885,22 @@ void puts_float(float Valeur) {
 
 
 float Voltage_Value(unsigned char sensor) {
-    return (sensor*(5/255));
+
+
+
+
+
+
+
+    return (float) sensor * 5/255;
+
+}
+
+
+
+
+
+
+float Resistance_Value(float Voltage) {
+    return (4700*5)/(5 -(2*Voltage));
 }

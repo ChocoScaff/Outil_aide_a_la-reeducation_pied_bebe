@@ -160,3 +160,10 @@ void PORT_Select_Mux1(void) {
     PORTD &= 0xDF; //Chip disable mux 0
 }
 
+/**
+ * Disable INTER0 R20C 3K ohm et enable INTER1 R20B 20K ohm for AOP
+ */
+void PORT_Init_Gain(void) {
+    PORTCbits.RC0 = 0;
+    PORTCbits.RC1 = 1;
+}

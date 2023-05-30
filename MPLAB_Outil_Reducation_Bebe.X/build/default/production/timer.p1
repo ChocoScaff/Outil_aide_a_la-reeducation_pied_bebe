@@ -55,7 +55,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x PLLEN = ON ]
 "19
 [p x VCAPEN = OFF ]
-"28
+"30
+[; ;./defs.h: 30: char Fincompt1=0;
 [v _Fincompt1 `uc ~T0 @X0 1 e ]
 [i _Fincompt1
 -> -> 0 `i `uc

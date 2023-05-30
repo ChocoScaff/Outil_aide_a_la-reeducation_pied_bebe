@@ -34,14 +34,7 @@
 
 
 #pragma config VCAPEN = OFF
-
-
-
-
-
-
-
-
+# 30 "./defs.h"
 char Fincompt1=0;
 # 6 "./common.h" 2
 

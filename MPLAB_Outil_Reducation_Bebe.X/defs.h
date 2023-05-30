@@ -23,6 +23,8 @@
 
 #define RESISTANCE_AOP_VALUE 4700   // RC
 #define VOLTAGE_ALIM 5              // VCC
+#define VALUE_MAX_ADC 255
+#define QUANTUM VOLTAGE_ALIM/VALUE_MAX_ADC 
 
 
 char Fincompt1=0;

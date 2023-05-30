@@ -16,14 +16,14 @@
 #include <pic16f707.h>
 
 float Voltage_Value(unsigned char sensor);
-//float Resistance_Value(float Voltage);
+float Resistance_Value(float Voltage);
 //float conversion_newton (float Rc);
 
 void main(void) {
     
-    volatile unsigned char sensor1, sensor2, sensor3, sensor4;
+    unsigned char sensor1, sensor2, sensor3, sensor4;
     #if defined (_DEBUG)
-    char tab[30];
+    char tab[20];
     #endif
     float Rc,Vs,F;
     
@@ -31,6 +31,7 @@ void main(void) {
     TIMER_init_timer1();
     
     PORT_Select_Mux0(); //Select U3
+    PORT_Init_Gain();
     
     while(1) {
         
@@ -47,15 +48,20 @@ void main(void) {
 //        sprintf(tab,"valeur Capteur %d %d %d %d \n", sensor1, sensor2, sensor3, sensor4);
 //        sprintf(tab,"valeur Capteur %d \n", sensor1);
         
-        PORT_putString(tab);
+//        PORT_putString(tab);
         #endif
         
+//        Vs = (sensor1*(VOLTAGE_ALIM/255));
         Vs = Voltage_Value(sensor1);
         #if defined (_DEBUG)
-        sprintf(tab,"tension Capteur %2.2lf V \n", Vs);
+//        sprintf(tab,"tension Capteur %2.2f V \n", Vs);
+//        PORT_putString(tab);
+        #endif
+        Rc = Resistance_Value(Vs);
+        #if defined (_DEBUG)
+        sprintf(tab,"Resistance %2.2f Ohm \n", Rc);
         PORT_putString(tab);
         #endif
-//        Rc = Resistance_Value(Vs);
 //        F = conversion_newton(Rc);
 
     }
@@ -99,21 +105,29 @@ void puts_float(float Valeur) {
 
 /**
  * 
- * @param capt
+ * @param sensor
  * @return 
  */
 float Voltage_Value(unsigned char sensor) {
-    return (sensor*(VOLTAGE_ALIM/255));
+    
+    #if defined (_DEBUG)
+    float result;
+    float fSensor = (float) sensor;
+    result = fSensor* QUANTUM;
+    return result;
+    #else
+    return (float) sensor * QUANTUM;
+    #endif
 } 
-//
-///**
-// * 
-// * @param Voltage
-// * @return 
-// */
-//float Resistance_Value(float Voltage) {
-//    return (RESISTANCE_AOP_VALUE*VOLTAGE_ALIM)/(VOLTAGE_ALIM-(2*Voltage));
-//}
+
+/**
+ * 
+ * @param Voltage
+ * @return 
+ */
+float Resistance_Value(float Voltage) {
+    return (4.7 * (VOLTAGE_ALIM)/(VOLTAGE_ALIM-(2*Voltage)));
+}
 //
 ///**
 // * 
