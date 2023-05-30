@@ -371,17 +371,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;port.c: 18:     TRISC = 0xFF;
 [e = _TRISC -> -> 255 `i `uc ]
 "21
-[; ;port.c: 21:     SPBRG = 51;
-[e = _SPBRG -> -> 51 `i `uc ]
+[; ;port.c: 21:     SPBRG = 25;
+[e = _SPBRG -> -> 25 `i `uc ]
 "25
 [; ;port.c: 25:     TXSTA = TXSTA & 0xDF;
 [e = _TXSTA -> & -> _TXSTA `i -> 223 `i `uc ]
 "26
 [; ;port.c: 26:     TXSTA = TXSTA | 1;
 [e = _TXSTA -> | -> _TXSTA `i -> 1 `i `uc ]
-"28
-[; ;port.c: 28:     TXSTA = TXSTA | 0x04;
-[e = _TXSTA -> | -> _TXSTA `i -> 4 `i `uc ]
+"27
+[; ;port.c: 27:     TXSTA = TXSTA & 0xFB;
+[e = _TXSTA -> & -> _TXSTA `i -> 251 `i `uc ]
 "30
 [; ;port.c: 30:     RCSTA = RCSTA | 0x20;
 [e = _RCSTA -> | -> _RCSTA `i -> 32 `i `uc ]
@@ -405,7 +405,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _RCSTA -> | -> _RCSTA `i -> 128 `i `uc ]
 "38
 [; ;port.c: 38: }
-[e :UE 160 ]
+[e :UE 159 ]
 }
 "44
 [; ;port.c: 44: void PORT_Init(void) {
@@ -428,11 +428,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "55
 [; ;port.c: 55:     for( ; (OSCCON & 0xC) != 0xC ; );
 {
-[e $U 165  ]
+[e $U 164  ]
+[e :U 161 ]
+[e :U 164 ]
+[e $ != & -> _OSCCON `i -> 12 `i -> 12 `i 161  ]
 [e :U 162 ]
-[e :U 165 ]
-[e $ != & -> _OSCCON `i -> 12 `i -> 12 `i 162  ]
-[e :U 163 ]
 }
 "59
 [; ;port.c: 59:     ANSELD = 0x00;
@@ -441,8 +441,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;port.c: 62:     TRISA = 0xFF;
 [e = _TRISA -> -> 255 `i `uc ]
 "64
-[; ;port.c: 64:     TRISD = 0xF0;
-[e = _TRISD -> -> 240 `i `uc ]
+[; ;port.c: 64:     TRISD = 0xC0;
+[e = _TRISD -> -> 192 `i `uc ]
 "66
 [; ;port.c: 66:     PORT_Init_Serial();
 [e ( _PORT_Init_Serial ..  ]
@@ -453,8 +453,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;port.c: 70:     ADCON0=0x01;
 [e = _ADCON0 -> -> 1 `i `uc ]
 "71
-[; ;port.c: 71:     ADCON1=0x62;
-[e = _ADCON1 -> -> 98 `i `uc ]
+[; ;port.c: 71:     ADCON1=0x60;
+[e = _ADCON1 -> -> 96 `i `uc ]
 "73
 [; ;port.c: 73:     FVRCON=0;
 [e = _FVRCON -> -> 0 `i `uc ]
@@ -472,7 +472,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _DACCON1 -> -> 24 `i `uc ]
 "79
 [; ;port.c: 79: }
-[e :UE 161 ]
+[e :UE 160 ]
 }
 "84
 [; ;port.c: 84: void PORT_Blink_LED(void) {
@@ -485,65 +485,76 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = . . _PORTBbits 0 0 -> -> ! != -> . . _PORTBbits 0 0 `i -> 0 `i `i `uc ]
 "86
 [; ;port.c: 86: }
-[e :UE 166 ]
+[e :UE 165 ]
 }
 "94
-[; ;port.c: 94: void PORT_Config_Mux(int _value) {
-[v _PORT_Config_Mux `(v ~T0 @X0 1 ef1`i ]
+[; ;port.c: 94: void PORT_Choose_Mux(char _value) {
+[v _PORT_Choose_Mux `(v ~T0 @X0 1 ef1`uc ]
 {
-[e :U _PORT_Config_Mux ]
-[v __value `i ~T0 @X0 1 r1 ]
+[e :U _PORT_Choose_Mux ]
+[v __value `uc ~T0 @X0 1 r1 ]
 [f ]
 "95
-[; ;port.c: 95:     PORTD=_value;
-[e = _PORTD -> __value `uc ]
+[; ;port.c: 95:     if (_value <= 0x0F) {
+[e $ ! <= -> __value `i -> 15 `i 167  ]
+{
 "96
-[; ;port.c: 96: }
-[e :UE 167 ]
+[; ;port.c: 96:         PORTD &= 0xF0;
+[e =& _PORTD -> -> 240 `i `Vuc ]
+"97
+[; ;port.c: 97:         PORTD |= _value;
+[e =| _PORTD -> __value `Vuc ]
+"98
+[; ;port.c: 98:         }
 }
-"101
-[; ;port.c: 101: void PORT_Start_ADC(void) {
+[e :U 167 ]
+"99
+[; ;port.c: 99: }
+[e :UE 166 ]
+}
+"104
+[; ;port.c: 104: void PORT_Start_ADC(void) {
 [v _PORT_Start_ADC `(v ~T0 @X0 1 ef ]
 {
 [e :U _PORT_Start_ADC ]
 [f ]
-"102
-[; ;port.c: 102:     GO_nDONE=1;
+"105
+[; ;port.c: 105:     GO_nDONE=1;
 [e = _GO_nDONE -> -> 1 `i `b ]
-"103
-[; ;port.c: 103:     while(GO_nDONE);
+"106
+[; ;port.c: 106:     while(GO_nDONE);
 [e $U 169  ]
 [e :U 170 ]
 [e :U 169 ]
 [e $ _GO_nDONE 170  ]
 [e :U 171 ]
-"104
-[; ;port.c: 104: }
+"110
+[; ;port.c: 110: }
 [e :UE 168 ]
 }
-"112
-[; ;port.c: 112: unsigned char PORT_Get_Value_Adc(void) {
+"118
+[; ;port.c: 118: unsigned char PORT_Get_Value_Adc(void) {
 [v _PORT_Get_Value_Adc `(uc ~T0 @X0 1 ef ]
 {
 [e :U _PORT_Get_Value_Adc ]
 [f ]
-"113
-[; ;port.c: 113:     return ADRES;
+"119
+[; ;port.c: 119:     return ADRES;
 [e ) _ADRES ]
 [e $UE 172  ]
-"114
-[; ;port.c: 114: }
+"120
+[; ;port.c: 120: }
 [e :UE 172 ]
 }
-"120
-[; ;port.c: 120: void PORT_putchar(char c) {
+"126
+[; ;port.c: 126: void PORT_putchar(char c) {
 [v _PORT_putchar `(v ~T0 @X0 1 ef1`uc ]
 {
 [e :U _PORT_putchar ]
 [v _c `uc ~T0 @X0 1 r1 ]
 [f ]
-"122
-[; ;port.c: 122:     for(;(TXSTA&0x02)!=0x02;);
+"128
+[; ;port.c: 128:     for(;(TXSTA&0x02)!=0x02;);
 {
 [e $U 177  ]
 [e :U 174 ]
@@ -551,44 +562,76 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ != & -> _TXSTA `i -> 2 `i -> 2 `i 174  ]
 [e :U 175 ]
 }
-"123
-[; ;port.c: 123:     TXREG = c;
+"129
+[; ;port.c: 129:     TXREG = c;
 [e = _TXREG -> _c `uc ]
-"124
-[; ;port.c: 124: }
+"130
+[; ;port.c: 130: }
 [e :UE 173 ]
 }
-"130
-[; ;port.c: 130: void PORT_putString(char chaine[]) {
+"136
+[; ;port.c: 136: void PORT_putString(char chaine[]) {
 [v _PORT_putString `(v ~T0 @X0 1 ef1`*uc ]
 {
 [e :U _PORT_putString ]
 [v _chaine `*uc ~T0 @X0 1 r1 ]
 [f ]
-"132
-[; ;port.c: 132:     int i;
+"138
+[; ;port.c: 138:     int i;
 [v _i `i ~T0 @X0 1 a ]
-"134
-[; ;port.c: 134:     for(i=0 ; chaine[i]!=0 ; i++)
+"140
+[; ;port.c: 140:     for(i=0 ; chaine[i]!=0 ; i++)
 {
 [e = _i -> 0 `i ]
 [e $U 182  ]
 [e :U 179 ]
-"135
-[; ;port.c: 135:     {
+"141
+[; ;port.c: 141:     {
 {
-"136
-[; ;port.c: 136:         PORT_putchar(chaine[i]);
+"142
+[; ;port.c: 142:         PORT_putchar(chaine[i]);
 [e ( _PORT_putchar (1 *U + _chaine * -> _i `x -> -> # *U _chaine `i `x ]
-"137
-[; ;port.c: 137:     }
+"143
+[; ;port.c: 143:     }
 }
 [e ++ _i -> 1 `i ]
 [e :U 182 ]
 [e $ != -> *U + _chaine * -> _i `x -> -> # *U _chaine `i `x `i -> 0 `i 179  ]
 [e :U 180 ]
 }
-"138
-[; ;port.c: 138: }
+"144
+[; ;port.c: 144: }
 [e :UE 178 ]
+}
+"149
+[; ;port.c: 149: void PORT_Select_Mux0(void) {
+[v _PORT_Select_Mux0 `(v ~T0 @X0 1 ef ]
+{
+[e :U _PORT_Select_Mux0 ]
+[f ]
+"150
+[; ;port.c: 150:     PORTD |= 0x20;
+[e =| _PORTD -> -> 32 `i `Vuc ]
+"151
+[; ;port.c: 151:     PORTD &= 0xEF;
+[e =& _PORTD -> -> 239 `i `Vuc ]
+"153
+[; ;port.c: 153: }
+[e :UE 183 ]
+}
+"158
+[; ;port.c: 158: void PORT_Select_Mux1(void) {
+[v _PORT_Select_Mux1 `(v ~T0 @X0 1 ef ]
+{
+[e :U _PORT_Select_Mux1 ]
+[f ]
+"159
+[; ;port.c: 159:     PORTD |= 0x10;
+[e =| _PORTD -> -> 16 `i `Vuc ]
+"160
+[; ;port.c: 160:     PORTD &= 0xDF;
+[e =& _PORTD -> -> 223 `i `Vuc ]
+"161
+[; ;port.c: 161: }
+[e :UE 184 ]
 }

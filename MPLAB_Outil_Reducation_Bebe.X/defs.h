@@ -21,8 +21,8 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-#define RESISTANCE_VALUE 4700
-#define VOLTAGE_DEFAULT 5
+#define RESISTANCE_AOP_VALUE 4700   // RC
+#define VOLTAGE_ALIM 5              // VCC
 
 
 char Fincompt1=0;

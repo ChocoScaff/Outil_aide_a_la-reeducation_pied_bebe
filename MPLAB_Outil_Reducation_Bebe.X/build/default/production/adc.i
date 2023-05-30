@@ -28,9 +28,11 @@ void PORT_Init_Serial(void);
 void PORT_Blink_LED(void);
 void PORT_putchar(char c);
 void PORT_putString(char chaine[]);
-void PORT_Config_Mux(int _value);
+void PORT_Choose_Mux(char _value);
 void PORT_Start_ADC(void);
 unsigned char PORT_Get_Value_Adc(void);
+void PORT_Select_Mux0(void);
+void PORT_Select_Mux1(void);
 # 8 "adc.c" 2
 
 
@@ -40,9 +42,9 @@ unsigned char PORT_Get_Value_Adc(void);
 
 
 
-unsigned char ADC_GetValue(int channel) {
+unsigned char ADC_GetValue(char channel) {
 
-    PORT_Config_Mux(channel);
+    PORT_Choose_Mux(channel);
     PORT_Start_ADC();
     return PORT_Get_Value_Adc();
 }

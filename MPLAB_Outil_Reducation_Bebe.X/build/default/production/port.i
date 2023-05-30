@@ -2767,105 +2767,6 @@ extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
 # 8 "./common.h" 2
-
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 1 3
-
-
-
-# 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\__size_t.h" 1 3
-
-
-
-typedef unsigned size_t;
-# 4 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
-
-# 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\__null.h" 1 3
-# 5 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
-
-
-
-
-
-
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdarg.h" 1 3
-
-
-
-
-
-
-typedef void * va_list[1];
-
-#pragma intrinsic(__va_start)
-extern void * __va_start(void);
-
-#pragma intrinsic(__va_arg)
-extern void * __va_arg(void *, ...);
-# 11 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
-# 43 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-struct __prbuf
-{
- char * ptr;
- void (* func)(char);
-};
-# 85 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\conio.h" 1 3
-
-
-
-
-
-
-
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\errno.h" 1 3
-# 29 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\errno.h" 3
-extern int errno;
-# 8 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\conio.h" 2 3
-
-
-
-
-extern void init_uart(void);
-
-extern char getch(void);
-extern char getche(void);
-extern void putch(char);
-extern void ungetch(char);
-
-extern __bit kbhit(void);
-
-
-
-extern char * cgets(char *);
-extern void cputs(const char *);
-# 85 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
-
-
-
-extern int cprintf(char *, ...);
-#pragma printf_check(cprintf)
-
-
-
-extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-# 180 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-#pragma printf_check(vprintf) const
-#pragma printf_check(vsprintf) const
-
-extern char * gets(char *);
-extern int puts(const char *);
-extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-
-#pragma printf_check(printf) const
-#pragma printf_check(sprintf) const
-extern int sprintf(char *, const char *, ...);
-extern int printf(const char *, ...);
-# 9 "./common.h" 2
 # 9 "port.c" 2
 
 
@@ -2879,14 +2780,14 @@ void PORT_Init_Serial(void) {
     TRISC = 0xFF;
 
 
-    SPBRG = 51;
+    SPBRG = 25;
 
 
 
     TXSTA = TXSTA & 0xDF;
     TXSTA = TXSTA | 1;
+    TXSTA = TXSTA & 0xFB;
 
-    TXSTA = TXSTA | 0x04;
 
     RCSTA = RCSTA | 0x20;
     RCSTA = RCSTA & 0xDF;
@@ -2922,14 +2823,14 @@ void PORT_Init(void) {
 
     TRISA = 0xFF;
 
-    TRISD = 0xF0;
+    TRISD = 0xC0;
 
     PORT_Init_Serial();
 
     ANSELA = 0x01;
 
     ADCON0=0x01;
-    ADCON1=0x62;
+    ADCON1=0x60;
 
     FVRCON=0;
     DACCON0=0x0;
@@ -2952,8 +2853,11 @@ void PORT_Blink_LED(void) {
 
 
 
-void PORT_Config_Mux(int _value) {
-    PORTD=_value;
+void PORT_Choose_Mux(char _value) {
+    if (_value <= 0x0F) {
+        PORTD &= 0xF0;
+        PORTD |= _value;
+        }
 }
 
 
@@ -2962,6 +2866,9 @@ void PORT_Config_Mux(int _value) {
 void PORT_Start_ADC(void) {
     GO_nDONE=1;
     while(GO_nDONE);
+
+
+
 }
 
 
@@ -2996,4 +2903,21 @@ void PORT_putString(char chaine[]) {
     {
         PORT_putchar(chaine[i]);
     }
+}
+
+
+
+
+void PORT_Select_Mux0(void) {
+    PORTD |= 0x20;
+    PORTD &= 0xEF;
+
+}
+
+
+
+
+void PORT_Select_Mux1(void) {
+    PORTD |= 0x10;
+    PORTD &= 0xDF;
 }
