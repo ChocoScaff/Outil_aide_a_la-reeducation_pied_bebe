@@ -18,10 +18,3 @@ CND_ARTIFACT_PATH_debug=dist/debug/production/MPLAB_Outil_Reducation_Bebe.X.prod
 CND_PACKAGE_DIR_debug=${CND_DISTDIR}/debug/package
 CND_PACKAGE_NAME_debug=mplaboutilreducationbebe.x.tar
 CND_PACKAGE_PATH_debug=${CND_DISTDIR}/debug/package/mplaboutilreducationbebe.x.tar
-# newton configuration
-CND_ARTIFACT_DIR_newton=dist/newton/production
-CND_ARTIFACT_NAME_newton=MPLAB_Outil_Reducation_Bebe.X.production.hex
-CND_ARTIFACT_PATH_newton=dist/newton/production/MPLAB_Outil_Reducation_Bebe.X.production.hex
-CND_PACKAGE_DIR_newton=${CND_DISTDIR}/newton/package
-CND_PACKAGE_NAME_newton=mplaboutilreducationbebe.x.tar
-CND_PACKAGE_PATH_newton=${CND_DISTDIR}/newton/package/mplaboutilreducationbebe.x.tar

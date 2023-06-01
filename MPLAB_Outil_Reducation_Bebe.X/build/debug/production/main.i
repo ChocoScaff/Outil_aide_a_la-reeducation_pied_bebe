@@ -2831,11 +2831,9 @@ void main(void) {
 
 
 
-
         PORT_putString("valeur Capteur ");
         Affichage_brut(sensor1);
         PORT_putString("\n");
-
 
 
         Vs = Voltage_Value(sensor1);
@@ -2843,7 +2841,26 @@ void main(void) {
         PORT_putString("valeur Tension ");
         puts_float(Vs);
         PORT_putString("\n");
-# 74 "main.c"
+
+
+
+        Rc = Resistance_Value(Vs);
+
+        PORT_putString("valeur Resistance ");
+        puts_float(Rc);
+        PORT_putString("\n");
+
+
+
+        F = conversion_newton(Rc);
+
+        PORT_putString("valeur Newton ");
+        puts_float(F);
+        PORT_putString("\n");
+
+
+
+
     }
 
     return;
@@ -2913,4 +2930,84 @@ float Voltage_Value(unsigned char sensor) {
 
     return (float) sensor * 5/255;
 
+}
+
+
+
+
+
+
+float Resistance_Value(float Voltage) {
+    return (4.7 * (5)/(5 -(2*Voltage)));
+}
+
+
+
+
+
+
+float conversion_newton (float Rc) {
+     float F;
+     int n;
+     const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
+     const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
+
+
+     if (Rc <= R_tab[1])
+         {
+         n = 0;
+         }
+     if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
+         {
+         n = 1;
+         }
+     else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
+         {
+         n = 2;
+         }
+     else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
+         {
+         n = 3;
+         }
+     else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
+         {
+         n = 4;
+         }
+     else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
+         {
+         n = 5;
+         }
+     else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
+         {
+         n = 6;
+         }
+     else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
+         {
+         n = 7;
+         }
+     else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
+         {
+         n = 8;
+         }
+     else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
+         {
+         n = 9;
+         }
+     else if (Rc > R_tab[10])
+         {
+         n = 10;
+         }
+     F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
+
+
+     if (Rc <= R_tab[10])
+         {
+         F = 70;
+         }
+     if (Rc > R_tab[10])
+         {
+         F = 0.12;
+         }
+
+     return F;
 }

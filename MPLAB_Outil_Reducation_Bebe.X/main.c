@@ -21,7 +21,7 @@ float Resistance_Value(float Voltage);
 float conversion_newton (float Rc);
 
 void main(void) {
-    
+ 
     unsigned char sensor1, sensor2, sensor3, sensor4;
  
     float Rc,Vs,F;
@@ -45,11 +45,9 @@ void main(void) {
                
         
         #if defined (_DEBUG)
-  
         PORT_putString("valeur Capteur ");
         Affichage_brut(sensor1);
-        PORT_putString("\n");
-        
+        PORT_putString("\n");  
         #endif
         
         Vs = Voltage_Value(sensor1);
@@ -57,19 +55,25 @@ void main(void) {
         PORT_putString("valeur Tension ");
         puts_float(Vs);
         PORT_putString("\n");
+        
         #endif
-
-        #if defined (_NEWTON)
+        
         Rc = Resistance_Value(Vs);
         #if defined (_DEBUG)
+        PORT_putString("valeur Resistance ");
+        puts_float(Rc);
+        PORT_putString("\n");
         
         #endif
 
         F = conversion_newton(Rc);
         #if defined (_DEBUG)
+        PORT_putString("valeur Newton ");
+        puts_float(F);
+        PORT_putString("\n");
         
         #endif
-        #endif
+
 
     }
         
@@ -142,7 +146,6 @@ float Voltage_Value(unsigned char sensor) {
 
 } 
 
-#if defined (_NEWTON)
 /**
  * 
  * @param Voltage
@@ -222,4 +225,3 @@ float conversion_newton (float Rc) {
 
      return F;
 }
-#endif

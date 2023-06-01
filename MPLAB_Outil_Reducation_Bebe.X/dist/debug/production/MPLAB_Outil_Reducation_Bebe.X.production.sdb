@@ -9,6 +9,8 @@
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
 "5 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
+"4 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\flge.c
+[v ___flge __flge `(b  1 e 0 0 ]
 "43 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\fltol.c
 [v ___fltol __fltol `(l  1 e 4 0 ]
 "5 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\lwdiv.c
@@ -17,6 +19,8 @@
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
 "10 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\sprcadd.c
 [v ___fladd __fladd `(d  1 e 4 0 ]
+"242
+[v ___flsub __flsub `(d  1 e 4 0 ]
 "8 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\sprcdiv.c
 [v ___fldiv __fldiv `(d  1 e 4 0 ]
 "8 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\sprcmul.c
@@ -27,12 +31,16 @@
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
 "23 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
 [v _main main `(v  1 e 1 0 ]
-"83
+"87
 [v _Affichage_brut Affichage_brut `(v  1 e 1 0 ]
-"104
+"108
 [v _puts_float puts_float `(v  1 e 1 0 ]
-"139
+"143
 [v _Voltage_Value Voltage_Value `(f  1 e 4 0 ]
+"154
+[v _Resistance_Value Resistance_Value `(f  1 e 4 0 ]
+"163
+[v _conversion_newton conversion_newton `(f  1 e 4 0 ]
 "15 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\port.c
 [v _PORT_Init_Serial PORT_Init_Serial `(v  1 e 1 0 ]
 "44
@@ -59,7 +67,7 @@
 [v _isr isr `II(v  1 e 1 0 ]
 "30 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X/defs.h
 [v _Fincompt1 Fincompt1 `uc  1 e 1 0 ]
-[s S150 . 1 `uc 1 RB0 1 0 :1:0 
+[s S172 . 1 `uc 1 RB0 1 0 :1:0 
 `uc 1 RB1 1 0 :1:1 
 `uc 1 RB2 1 0 :1:2 
 `uc 1 RB3 1 0 :1:3 
@@ -69,14 +77,14 @@
 `uc 1 RB7 1 0 :1:7 
 ]
 "401 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h
-[s S159 . 1 `uc 1 AN12 1 0 :1:0 
+[s S181 . 1 `uc 1 AN12 1 0 :1:0 
 `uc 1 AN10 1 0 :1:1 
 `uc 1 AN8 1 0 :1:2 
 `uc 1 AN9 1 0 :1:3 
 `uc 1 AN11 1 0 :1:4 
 `uc 1 AN13 1 0 :1:5 
 ]
-[s S166 . 1 `uc 1 CPSB8 1 0 :1:0 
+[s S188 . 1 `uc 1 CPSB8 1 0 :1:0 
 `uc 1 CPSB9 1 0 :1:1 
 `uc 1 CPSB10 1 0 :1:2 
 `uc 1 CPSB11 1 0 :1:3 
@@ -85,17 +93,17 @@
 `uc 1 CPSB14 1 0 :1:6 
 `uc 1 CPSB15 1 0 :1:7 
 ]
-[s S175 . 1 `uc 1 . 1 0 :3:0 
+[s S197 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 CCP2 1 0 :1:3 
 `uc 1 . 1 0 :1:4 
 `uc 1 T1G 1 0 :1:5 
 ]
-[s S180 . 1 `uc 1 . 1 0 :5:0 
+[s S202 . 1 `uc 1 . 1 0 :5:0 
 `uc 1 T3CKI 1 0 :1:5 
 ]
-[u S183 . 1 `S150 1 . 1 0 `S159 1 . 1 0 `S166 1 . 1 0 `S175 1 . 1 0 `S180 1 . 1 0 ]
-[v _PORTBbits PORTBbits `VES183  1 e 1 @6 ]
-[s S227 . 1 `uc 1 RC0 1 0 :1:0 
+[u S205 . 1 `S172 1 . 1 0 `S181 1 . 1 0 `S188 1 . 1 0 `S197 1 . 1 0 `S202 1 . 1 0 ]
+[v _PORTBbits PORTBbits `VES205  1 e 1 @6 ]
+[s S249 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -105,7 +113,7 @@
 `uc 1 RC7 1 0 :1:7 
 ]
 "577
-[s S236 . 1 `uc 1 CPSB2 1 0 :1:0 
+[s S258 . 1 `uc 1 CPSB2 1 0 :1:0 
 `uc 1 CPSB3 1 0 :1:1 
 `uc 1 CPSB4 1 0 :1:2 
 `uc 1 . 1 0 :2:3 
@@ -113,7 +121,7 @@
 `uc 1 CPSA10 1 0 :1:6 
 `uc 1 CPSA11 1 0 :1:7 
 ]
-[s S244 . 1 `uc 1 T1OSO 1 0 :1:0 
+[s S266 . 1 `uc 1 T1OSO 1 0 :1:0 
 `uc 1 T1OSI 1 0 :1:1 
 `uc 1 TBCKI 1 0 :1:2 
 `uc 1 SCK 1 0 :1:3 
@@ -122,7 +130,7 @@
 `uc 1 TX 1 0 :1:6 
 `uc 1 RX 1 0 :1:7 
 ]
-[s S253 . 1 `uc 1 T1CKI 1 0 :1:0 
+[s S275 . 1 `uc 1 T1CKI 1 0 :1:0 
 `uc 1 CCP2 1 0 :1:1 
 `uc 1 CCP1 1 0 :1:2 
 `uc 1 SCL 1 0 :1:3 
@@ -131,8 +139,8 @@
 `uc 1 CK 1 0 :1:6 
 `uc 1 DT 1 0 :1:7 
 ]
-[u S262 . 1 `S227 1 . 1 0 `S236 1 . 1 0 `S244 1 . 1 0 `S253 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES262  1 e 1 @7 ]
+[u S284 . 1 `S249 1 . 1 0 `S258 1 . 1 0 `S266 1 . 1 0 `S275 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES284  1 e 1 @7 ]
 "727
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
 "1491
@@ -203,22 +211,24 @@
 [v _main main `(v  1 e 1 0 ]
 {
 "27
-[v main@Vs Vs `f  1 a 4 71 ]
+[v main@Vs Vs `f  1 a 4 52 ]
+[v main@Rc Rc `f  1 a 4 48 ]
+[v main@F F `f  1 a 4 44 ]
 "25
-[v main@sensor1 sensor1 `uc  1 a 1 75 ]
-"77
+[v main@sensor1 sensor1 `uc  1 a 1 56 ]
+"81
 } 0
-"104
+"108
 [v _puts_float puts_float `(v  1 e 1 0 ]
 {
-[s S67 . 6 `uc 1 mil 1 0 `uc 1 cent 1 1 `uc 1 diz 1 2 `uc 1 unit 1 3 `uc 1 dizi 1 4 `uc 1 centi 1 5 ]
-"107
-[v puts_float@valueMetrics valueMetrics `S67  1 a 6 38 ]
-"106
-[v puts_float@affiche affiche `ui  1 a 2 36 ]
-"104
-[v puts_float@Valeur Valeur `f  1 p 4 32 ]
-"132
+[s S77 . 6 `uc 1 mil 1 0 `uc 1 cent 1 1 `uc 1 diz 1 2 `uc 1 unit 1 3 `uc 1 dizi 1 4 `uc 1 centi 1 5 ]
+"111
+[v puts_float@valueMetrics valueMetrics `S77  1 a 6 6 ]
+"110
+[v puts_float@affiche affiche `ui  1 a 2 4 ]
+"108
+[v puts_float@Valeur Valeur `f  1 p 4 0 ]
+"136
 } 0
 "5 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
@@ -252,14 +262,36 @@
 [v ___fltol@f1 f1 `d  1 p 4 2 ]
 "70
 } 0
-"139 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
+"163 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
+[v _conversion_newton conversion_newton `(f  1 e 4 0 ]
+{
+"164
+[v conversion_newton@F F `f  1 a 4 33 ]
+"165
+[v conversion_newton@n n `i  1 a 2 37 ]
+"163
+[v conversion_newton@Rc Rc `f  1 p 4 0 ]
+"166
+[v conversion_newton@F_tab F_tab `DC[20]f  1 s 80 F_tab ]
+"167
+[v conversion_newton@R_tab R_tab `DC[20]f  1 s 80 R_tab ]
+"227
+} 0
+"4 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\flge.c
+[v ___flge __flge `(b  1 e 0 0 ]
+{
+[v ___flge@ff1 ff1 `d  1 p 4 2 ]
+[v ___flge@ff2 ff2 `d  1 p 4 6 ]
+"19
+} 0
+"143 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
 [v _Voltage_Value Voltage_Value `(f  1 e 4 0 ]
 {
 [v Voltage_Value@sensor sensor `uc  1 a 1 wreg ]
 [v Voltage_Value@sensor sensor `uc  1 a 1 wreg ]
-"141
+"145
 [v Voltage_Value@sensor sensor `uc  1 a 1 11 ]
-"143
+"147
 } 0
 "10 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\xxtofl.c
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
@@ -276,29 +308,63 @@
 [v ___xxtofl@sign sign `uc  1 a 1 0 ]
 "44
 } 0
+"8 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\timer.c
+[v _TIMER_init_timer1 TIMER_init_timer1 `(v  1 e 1 0 ]
+{
+"76
+} 0
+"154 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
+[v _Resistance_Value Resistance_Value `(f  1 e 4 0 ]
+{
+[v Resistance_Value@Voltage Voltage `f  1 p 4 0 ]
+"156
+} 0
+"242 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\sprcadd.c
+[v ___flsub __flsub `(d  1 e 4 0 ]
+{
+[v ___flsub@a a `d  1 p 4 20 ]
+[v ___flsub@b b `d  1 p 4 24 ]
+"250
+} 0
+"10
+[v ___fladd __fladd `(d  1 e 4 0 ]
+{
+"17
+[v ___fladd@grs grs `uc  1 a 1 19 ]
+"15
+[v ___fladd@bexp bexp `uc  1 a 1 18 ]
+"16
+[v ___fladd@aexp aexp `uc  1 a 1 17 ]
+"13
+[v ___fladd@signs signs `uc  1 a 1 16 ]
+"10
+[v ___fladd@b b `d  1 p 4 0 ]
+[v ___fladd@a a `d  1 p 4 4 ]
+"237
+} 0
 "8 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S488 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S510 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S493 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
-[u S496 . 4 `l 1 i 4 0 `d 1 f 4 0 `S488 1 fAsBytes 4 0 `S493 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S496  1 a 4 26 ]
+[s S515 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
+[u S518 . 4 `l 1 i 4 0 `d 1 f 4 0 `S510 1 fAsBytes 4 0 `S515 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S518  1 a 4 74 ]
 "12
-[v ___flmul@grs grs `ul  1 a 4 20 ]
-[s S565 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[v ___flmul@grs grs `ul  1 a 4 68 ]
+[s S587 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S568 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S565 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S568  1 a 2 30 ]
+[u S590 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S587 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S590  1 a 2 78 ]
 "10
-[v ___flmul@bexp bexp `uc  1 a 1 25 ]
+[v ___flmul@bexp bexp `uc  1 a 1 73 ]
 "11
-[v ___flmul@aexp aexp `uc  1 a 1 24 ]
+[v ___flmul@aexp aexp `uc  1 a 1 72 ]
 "9
-[v ___flmul@sign sign `uc  1 a 1 19 ]
+[v ___flmul@sign sign `uc  1 a 1 67 ]
 "8
-[v ___flmul@b b `d  1 p 4 6 ]
-[v ___flmul@a a `d  1 p 4 10 ]
+[v ___flmul@b b `d  1 p 4 54 ]
+[v ___flmul@a a `d  1 p 4 58 ]
 "205
 } 0
 "4 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\Umul8_16.c
@@ -319,26 +385,21 @@
 [v ___fldiv __fldiv `(d  1 e 4 0 ]
 {
 "21
-[v ___fldiv@grs grs `ul  1 a 4 52 ]
+[v ___fldiv@grs grs `ul  1 a 4 48 ]
 "22
-[v ___fldiv@rem rem `ul  1 a 4 45 ]
+[v ___fldiv@rem rem `ul  1 a 4 41 ]
 "20
-[v ___fldiv@new_exp new_exp `i  1 a 2 50 ]
+[v ___fldiv@new_exp new_exp `i  1 a 2 46 ]
 "19
-[v ___fldiv@aexp aexp `uc  1 a 1 57 ]
+[v ___fldiv@aexp aexp `uc  1 a 1 53 ]
 "18
-[v ___fldiv@bexp bexp `uc  1 a 1 56 ]
+[v ___fldiv@bexp bexp `uc  1 a 1 52 ]
 "16
-[v ___fldiv@sign sign `uc  1 a 1 49 ]
+[v ___fldiv@sign sign `uc  1 a 1 45 ]
 "8
-[v ___fldiv@a a `d  1 p 4 32 ]
-[v ___fldiv@b b `d  1 p 4 36 ]
+[v ___fldiv@a a `d  1 p 4 28 ]
+[v ___fldiv@b b `d  1 p 4 32 ]
 "185
-} 0
-"8 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\timer.c
-[v _TIMER_init_timer1 TIMER_init_timer1 `(v  1 e 1 0 ]
-{
-"76
 } 0
 "136 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\port.c
 [v _PORT_putString PORT_putString `(v  1 e 1 0 ]
@@ -377,17 +438,17 @@
 {
 "86
 } 0
-"83 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
+"87 C:\Users\TEMP.GEII2.002\Documents\Outil_aide_a_la-reeducation_pied_bebe\MPLAB_Outil_Reducation_Bebe.X\main.c
 [v _Affichage_brut Affichage_brut `(v  1 e 1 0 ]
 {
-[s S67 . 6 `uc 1 mil 1 0 `uc 1 cent 1 1 `uc 1 diz 1 2 `uc 1 unit 1 3 `uc 1 dizi 1 4 `uc 1 centi 1 5 ]
-"87
-[v Affichage_brut@valueMetrics valueMetrics `S67  1 a 6 3 ]
-"85
+[s S77 . 6 `uc 1 mil 1 0 `uc 1 cent 1 1 `uc 1 diz 1 2 `uc 1 unit 1 3 `uc 1 dizi 1 4 `uc 1 centi 1 5 ]
+"91
+[v Affichage_brut@valueMetrics valueMetrics `S77  1 a 6 3 ]
+"89
 [v Affichage_brut@affiche affiche `uc  1 a 1 2 ]
-"83
+"87
 [v Affichage_brut@valeur_a_afficher valeur_a_afficher `i  1 p 2 10 ]
-"98
+"102
 } 0
 "5 C:\Program Files\Microchip\xc8\v2.20\pic\sources\c90\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]

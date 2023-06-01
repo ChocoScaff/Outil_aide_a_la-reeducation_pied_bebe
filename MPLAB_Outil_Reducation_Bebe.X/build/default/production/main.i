@@ -2800,16 +2800,19 @@ unsigned char ADC_GetValue(char channel);
 # 15 "main.c" 2
 
 
-
+void Affichage_brut(int valeur_a_afficher);
+void puts_float(float Valeur);
 float Voltage_Value(unsigned char sensor);
 float Resistance_Value(float Voltage);
 float conversion_newton (float Rc);
 
 void main(void) {
 
+
+
+
+
     unsigned char sensor1, sensor2, sensor3, sensor4;
-
-
 
     float Rc,Vs,F;
 
@@ -2822,12 +2825,19 @@ void main(void) {
     while(1) {
 
         while (Fincompt1 != 0);
+
+
+
         Fincompt1 = 0;
         PORT_Blink_LED();
 
         sensor1 = ADC_GetValue(0);
-# 54 "main.c"
+        sensor2 = ADC_GetValue(1);
+        sensor3 = ADC_GetValue(2);
+        sensor4 = ADC_GetValue(3);
+# 60 "main.c"
         Vs = Voltage_Value(sensor1);
+
 
 
 
@@ -2839,7 +2849,10 @@ void main(void) {
 
 
 
+
         F = conversion_newton(Rc);
+
+
 
 
 
@@ -2848,6 +2861,27 @@ void main(void) {
     }
 
     return;
+}
+
+
+
+
+
+void Affichage_brut(int valeur_a_afficher)
+{
+    unsigned char affiche;
+
+    ValueMetrics valueMetrics;
+
+    affiche = valeur_a_afficher ;
+    valueMetrics.cent = ((char)(affiche/100))+0x30;
+    PORT_putchar(valueMetrics.cent);
+    affiche = affiche % 100 ;
+    valueMetrics.diz = ((char)(affiche/10))+0x30;
+    PORT_putchar(valueMetrics.diz);
+    affiche = affiche % 10 ;
+    valueMetrics.unit = ((char)(affiche))+0x30;
+    PORT_putchar(valueMetrics.unit);
 }
 
 
@@ -2891,12 +2925,86 @@ void puts_float(float Valeur) {
 
 float Voltage_Value(unsigned char sensor) {
 
-
-
-
-
-
-
     return (float) sensor * 5/255;
 
+}
+
+
+
+
+
+
+float Resistance_Value(float Voltage) {
+    return (4.7 * (5)/(5 -(2*Voltage)));
+}
+
+
+
+
+
+
+float conversion_newton (float Rc) {
+     float F;
+     int n;
+     const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
+     const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
+
+
+     if (Rc <= R_tab[1])
+         {
+         n = 0;
+         }
+     if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
+         {
+         n = 1;
+         }
+     else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
+         {
+         n = 2;
+         }
+     else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
+         {
+         n = 3;
+         }
+     else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
+         {
+         n = 4;
+         }
+     else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
+         {
+         n = 5;
+         }
+     else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
+         {
+         n = 6;
+         }
+     else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
+         {
+         n = 7;
+         }
+     else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
+         {
+         n = 8;
+         }
+     else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
+         {
+         n = 9;
+         }
+     else if (Rc > R_tab[10])
+         {
+         n = 10;
+         }
+     F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
+
+
+     if (Rc <= R_tab[10])
+         {
+         F = 70;
+         }
+     if (Rc > R_tab[10])
+         {
+         F = 0.12;
+         }
+
+     return F;
 }
