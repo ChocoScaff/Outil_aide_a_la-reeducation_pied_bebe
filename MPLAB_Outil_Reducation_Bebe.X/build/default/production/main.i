@@ -2774,6 +2774,7 @@ void PORT_Start_ADC(void);
 unsigned char PORT_Get_Value_Adc(void);
 void PORT_Select_Mux0(void);
 void PORT_Select_Mux1(void);
+void PORT_Init_Gain(void);
 # 13 "main.c" 2
 
 # 1 "./timer.h" 1
@@ -2802,7 +2803,7 @@ unsigned char ADC_GetValue(char channel);
 
 float Voltage_Value(unsigned char sensor);
 float Resistance_Value(float Voltage);
-
+float conversion_newton (float Rc);
 
 void main(void) {
 
@@ -2815,7 +2816,8 @@ void main(void) {
     PORT_Init();
     TIMER_init_timer1();
 
-    PORT_Select_Mux0();
+    PORT_Select_Mux1();
+    PORT_Init_Gain();
 
     while(1) {
 
@@ -2824,17 +2826,20 @@ void main(void) {
         PORT_Blink_LED();
 
         sensor1 = ADC_GetValue(0);
-        sensor2 = ADC_GetValue(1);
-        sensor3 = ADC_GetValue(2);
-        sensor4 = ADC_GetValue(3);
 # 54 "main.c"
         Vs = Voltage_Value(sensor1);
 
 
 
 
+
         Rc = Resistance_Value(Vs);
 
+
+
+
+
+        F = conversion_newton(Rc);
 
 
 
@@ -2894,13 +2899,4 @@ float Voltage_Value(unsigned char sensor) {
 
     return (float) sensor * 5/255;
 
-}
-
-
-
-
-
-
-float Resistance_Value(float Voltage) {
-    return (4700*5)/(5 -(2*Voltage));
 }

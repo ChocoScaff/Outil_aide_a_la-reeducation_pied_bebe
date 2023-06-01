@@ -350,7 +350,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _TMR1IE -> -> 1 `i `b ]
 "76
 [; ;timer.c: 76: }
-[e :UE 160 ]
+[e :UE 159 ]
 }
 [v $root$_isr `(v ~T0 @X0 0 e ]
 "78
@@ -363,7 +363,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "85
 [; ;timer.c: 85: if (TMR1IF)
-[e $ ! _TMR1IF 162  ]
+[e $ ! _TMR1IF 161  ]
 "86
 [; ;timer.c: 86:      {
 {
@@ -376,10 +376,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "92
 [; ;timer.c: 92:      }
 }
-[e :U 162 ]
+[e :U 161 ]
 "94
 [; ;timer.c: 94: if (TMRAIF)
-[e $ ! _TMRAIF 163  ]
+[e $ ! _TMRAIF 162  ]
 "95
 [; ;timer.c: 95:      {
 {
@@ -389,8 +389,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "101
 [; ;timer.c: 101:      }
 }
-[e :U 163 ]
+[e :U 162 ]
 "103
 [; ;timer.c: 103: }
-[e :UE 161 ]
+[e :UE 160 ]
 }

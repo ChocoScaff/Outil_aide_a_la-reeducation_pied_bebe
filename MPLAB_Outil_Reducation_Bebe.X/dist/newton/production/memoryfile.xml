@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <executable name="dist/debug/debug\MPLAB_Outil_Reducation_Bebe.X.debug.hex">
+  <executable name="dist/newton/production\MPLAB_Outil_Reducation_Bebe.X.production.hex">
     <memory name="program">
       <units>words</units>
       <length>8192</length>
-      <used>7145</used>
-      <free>1047</free>
+      <used>5351</used>
+      <free>2841</free>
     </memory>
     <memory name="data">
       <units>bytes</units>
       <length>363</length>
-      <used>161</used>
-      <free>202</free>
+      <used>152</used>
+      <free>211</free>
     </memory>
   </executable>
 </project>

@@ -13,24 +13,23 @@
 #include "port.h"
 #include "timer.h"
 #include "adc.h"
-#include <pic16f707.h>
 
+void Affichage_brut(int valeur_a_afficher);
+void puts_float(float Valeur);
 float Voltage_Value(unsigned char sensor);
 float Resistance_Value(float Voltage);
-//float conversion_newton (float Rc);
+float conversion_newton (float Rc);
 
 void main(void) {
     
     unsigned char sensor1, sensor2, sensor3, sensor4;
-    #if defined (_DEBUG)
-    char tab[20];
-    #endif
+ 
     float Rc,Vs,F;
     
     PORT_Init();
     TIMER_init_timer1();
     
-    PORT_Select_Mux0(); //Select U3
+    PORT_Select_Mux1(); 
     PORT_Init_Gain();
     
     while(1) {
@@ -44,29 +43,58 @@ void main(void) {
         sensor3 = ADC_GetValue(2);
         sensor4 = ADC_GetValue(3);
                
-        #if defined (_DEBUG)
-//        sprintf(tab,"valeur Capteur %d %d %d %d \n", sensor1, sensor2, sensor3, sensor4);
-//        sprintf(tab,"valeur Capteur %d \n", sensor1);
         
-//        PORT_putString(tab);
+        #if defined (_DEBUG)
+  
+        PORT_putString("valeur Capteur ");
+        Affichage_brut(sensor1);
+        PORT_putString("\n");
+        
         #endif
         
-//        Vs = (sensor1*(VOLTAGE_ALIM/255));
         Vs = Voltage_Value(sensor1);
         #if defined (_DEBUG)
-//        sprintf(tab,"tension Capteur %2.2f V \n", Vs);
-//        PORT_putString(tab);
+        PORT_putString("valeur Tension ");
+        puts_float(Vs);
+        PORT_putString("\n");
         #endif
+
+        #if defined (_NEWTON)
         Rc = Resistance_Value(Vs);
         #if defined (_DEBUG)
-        sprintf(tab,"Resistance %2.2f Ohm \n", Rc);
-        PORT_putString(tab);
+        
         #endif
-//        F = conversion_newton(Rc);
+
+        F = conversion_newton(Rc);
+        #if defined (_DEBUG)
+        
+        #endif
+        #endif
 
     }
         
     return;
+}
+
+/**
+ * 
+ * @param valeur_a_afficher
+ */
+void Affichage_brut(int valeur_a_afficher)
+{
+    unsigned char affiche;
+
+    ValueMetrics valueMetrics;
+
+    affiche = valeur_a_afficher ;
+    valueMetrics.cent = ((char)(affiche/100))+0x30;
+    PORT_putchar(valueMetrics.cent);
+    affiche = affiche % 100 ;
+    valueMetrics.diz = ((char)(affiche/10))+0x30;
+    PORT_putchar(valueMetrics.diz);
+    affiche = affiche % 10 ;
+    valueMetrics.unit = ((char)(affiche))+0x30;
+    PORT_putchar(valueMetrics.unit);
 }
 
 /**
@@ -109,17 +137,12 @@ void puts_float(float Valeur) {
  * @return 
  */
 float Voltage_Value(unsigned char sensor) {
-    
-    #if defined (_DEBUG)
-    float result;
-    float fSensor = (float) sensor;
-    result = fSensor* QUANTUM;
-    return result;
-    #else
+      
     return (float) sensor * QUANTUM;
-    #endif
+
 } 
 
+#if defined (_NEWTON)
 /**
  * 
  * @param Voltage
@@ -128,74 +151,75 @@ float Voltage_Value(unsigned char sensor) {
 float Resistance_Value(float Voltage) {
     return (4.7 * (VOLTAGE_ALIM)/(VOLTAGE_ALIM-(2*Voltage)));
 }
-//
-///**
-// * 
-// * @param Rc
-// * @return 
-// */
-//float conversion_newton (float Rc) {
-//     float F;
-//     int n;
-//     const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
-//     const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
-//    
-//     
-//     if (Rc <= R_tab[1])
-//         {
-//         n = 0;
-//         }
-//     if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
-//         {
-//         n = 1;
-//         }
-//     else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
-//         {
-//         n = 2;
-//         }
-//     else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
-//         {
-//         n = 3;
-//         }
-//     else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
-//         {
-//         n = 4;
-//         }
-//     else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
-//         {
-//         n = 5;
-//         }
-//     else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
-//         {
-//         n = 6;
-//         }
-//     else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
-//         {
-//         n = 7;
-//         }
-//     else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
-//         {
-//         n = 8;
-//         }
-//     else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
-//         {
-//         n = 9;
-//         }
-//     else if (Rc > R_tab[10])
-//         {
-//         n = 10;
-//         }
-//     F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
-////calcul de la force F
-//     
-//     if (Rc <= R_tab[10])
-//         {
-//         F = 70;
-//         }
-//     if (Rc > R_tab[10])
-//         {
-//         F = 0.12;
-//         }
-//
-//     return F;
-//}
+
+/**
+ * 
+ * @param Rc
+ * @return 
+ */
+float conversion_newton (float Rc) {
+     float F;
+     int n;
+     const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
+     const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
+    
+     
+     if (Rc <= R_tab[1])
+         {
+         n = 0;
+         }
+     if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
+         {
+         n = 1;
+         }
+     else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
+         {
+         n = 2;
+         }
+     else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
+         {
+         n = 3;
+         }
+     else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
+         {
+         n = 4;
+         }
+     else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
+         {
+         n = 5;
+         }
+     else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
+         {
+         n = 6;
+         }
+     else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
+         {
+         n = 7;
+         }
+     else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
+         {
+         n = 8;
+         }
+     else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
+         {
+         n = 9;
+         }
+     else if (Rc > R_tab[10])
+         {
+         n = 10;
+         }
+     F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
+//calcul de la force F
+     
+     if (Rc <= R_tab[10])
+         {
+         F = 70;
+         }
+     if (Rc > R_tab[10])
+         {
+         F = 0.12;
+         }
+
+     return F;
+}
+#endif

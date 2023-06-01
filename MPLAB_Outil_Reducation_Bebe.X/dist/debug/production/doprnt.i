@@ -460,6 +460,10 @@ sprintf(char * sp, const char * f, ...)
   case 'f':
    flag |= 0x400;
    break;
+# 723 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
+  case 'd':
+  case 'i':
+   break;
 # 828 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
   default:
 # 839 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
@@ -609,9 +613,33 @@ sprintf(char * sp, const char * f, ...)
 
    continue;
   }
+
+
+
+
+
+
+  {
+
+
+
+
+
+    val = (unsigned long)(*(int *)__va_arg((*(int **)ap), (int)0));
+
+   if((long)val < 0) {
+    flag |= 0x03;
+    val = -val;
+   }
+
+  }
 # 1316 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
   if(prec == 0 && val == 0)
    prec++;
+# 1331 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
+   for(c = 1 ; c != sizeof dpowers/sizeof dpowers[0] ; c++)
+    if(val < dpowers[c])
+     break;
 # 1365 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
   if(c < prec)
    c = (char)prec;
@@ -654,7 +682,28 @@ sprintf(char * sp, const char * f, ...)
     ((*sp++ = ('-')));
 # 1495 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
   }
-# 1559 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
+
+
+
+
+  while(prec--) {
+
+
+
+   {
+# 1515 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
+    c = (val / dpowers[(unsigned int)prec]) % 10 + '0';
+# 1549 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\sources\\c90\\common\\doprnt.c"
+   }
+   ((*sp++ = (c)));
+  }
+
+
+
+
+
+
+
  }
 
 alldone:

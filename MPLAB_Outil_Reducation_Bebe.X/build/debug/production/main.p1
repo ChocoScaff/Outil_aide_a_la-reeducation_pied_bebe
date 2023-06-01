@@ -6,9 +6,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "8 ./timer.h
 [; ;./timer.h: 8: void TIMER_init_timer1(void);
 [v _TIMER_init_timer1 `(v ~T0 @X0 0 ef ]
-"17 ./port.h
-[; ;./port.h: 17: void PORT_Select_Mux0(void);
-[v _PORT_Select_Mux0 `(v ~T0 @X0 0 ef ]
+"18 ./port.h
+[; ;./port.h: 18: void PORT_Select_Mux1(void);
+[v _PORT_Select_Mux1 `(v ~T0 @X0 0 ef ]
 "19
 [; ;./port.h: 19: void PORT_Init_Gain(void);
 [v _PORT_Init_Gain `(v ~T0 @X0 0 ef ]
@@ -18,17 +18,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 "8 ./adc.h
 [; ;./adc.h: 8: unsigned char ADC_GetValue(char channel);
 [v _ADC_GetValue `(uc ~T0 @X0 0 ef1`uc ]
-"18 main.c
-[; ;main.c: 18: float Voltage_Value(unsigned char sensor);
-[v _Voltage_Value `(f ~T0 @X0 0 ef1`uc ]
-"19
-[; ;main.c: 19: float Resistance_Value(float Voltage);
-[v _Resistance_Value `(f ~T0 @X0 0 ef1`f ]
-"194 C:\Program Files\Microchip\xc8\v2.20\pic\include\c90\stdio.h
-[v _sprintf `(i ~T0 @X0 0 e1v`*uc`*Cuc ]
 "13 ./port.h
 [; ;./port.h: 13: void PORT_putString(char chaine[]);
 [v _PORT_putString `(v ~T0 @X0 0 ef1`*uc ]
+"17 main.c
+[; ;main.c: 17: void Affichage_brut(int valeur_a_afficher);
+[v _Affichage_brut `(v ~T0 @X0 0 ef1`i ]
+"19
+[; ;main.c: 19: float Voltage_Value(unsigned char sensor);
+[v _Voltage_Value `(f ~T0 @X0 0 ef1`uc ]
+"18
+[; ;main.c: 18: void puts_float(float Valeur);
+[v _puts_float `(v ~T0 @X0 0 ef1`f ]
 "9 ./struct.h
 [; ;./struct.h: 9: typedef struct {
 [s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
@@ -310,199 +311,232 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 3859: __asm("PMCON1 equ 018Ch");
 [; <" PMCON1 equ 018Ch ;# ">
 [v $root$_main `(v ~T0 @X0 0 e ]
-"22 main.c
-[; ;main.c: 22: void main(void) {
+"23 main.c
+[; ;main.c: 23: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"24
-[; ;main.c: 24:     unsigned char sensor1, sensor2, sensor3, sensor4;
+"25
+[; ;main.c: 25:     unsigned char sensor1, sensor2, sensor3, sensor4;
 [v _sensor1 `uc ~T0 @X0 1 a ]
 [v _sensor2 `uc ~T0 @X0 1 a ]
 [v _sensor3 `uc ~T0 @X0 1 a ]
 [v _sensor4 `uc ~T0 @X0 1 a ]
-"26
-[; ;main.c: 26:     char tab[20];
-[v _tab `uc ~T0 @X0 -> 20 `i a ]
-"28
-[; ;main.c: 28:     float Rc,Vs,F;
+"27
+[; ;main.c: 27:     float Rc,Vs,F;
 [v _Rc `f ~T0 @X0 1 a ]
 [v _Vs `f ~T0 @X0 1 a ]
 [v _F `f ~T0 @X0 1 a ]
-"30
-[; ;main.c: 30:     PORT_Init();
+"29
+[; ;main.c: 29:     PORT_Init();
 [e ( _PORT_Init ..  ]
-"31
-[; ;main.c: 31:     TIMER_init_timer1();
+"30
+[; ;main.c: 30:     TIMER_init_timer1();
 [e ( _TIMER_init_timer1 ..  ]
+"32
+[; ;main.c: 32:     PORT_Select_Mux1();
+[e ( _PORT_Select_Mux1 ..  ]
 "33
-[; ;main.c: 33:     PORT_Select_Mux0();
-[e ( _PORT_Select_Mux0 ..  ]
-"34
-[; ;main.c: 34:     PORT_Init_Gain();
+[; ;main.c: 33:     PORT_Init_Gain();
 [e ( _PORT_Init_Gain ..  ]
-"36
-[; ;main.c: 36:     while(1) {
-[e :U 162 ]
+"35
+[; ;main.c: 35:     while(1) {
+[e :U 161 ]
 {
-"38
-[; ;main.c: 38:         while (Fincompt1 != 0);
-[e $U 164  ]
-[e :U 165 ]
+"37
+[; ;main.c: 37:         while (Fincompt1 != 0);
+[e $U 163  ]
 [e :U 164 ]
-[e $ != -> _Fincompt1 `i -> 0 `i 165  ]
-[e :U 166 ]
-"39
-[; ;main.c: 39:         Fincompt1 = 0;
+[e :U 163 ]
+[e $ != -> _Fincompt1 `i -> 0 `i 164  ]
+[e :U 165 ]
+"38
+[; ;main.c: 38:         Fincompt1 = 0;
 [e = _Fincompt1 -> -> 0 `i `uc ]
-"40
-[; ;main.c: 40:         PORT_Blink_LED();
+"39
+[; ;main.c: 39:         PORT_Blink_LED();
 [e ( _PORT_Blink_LED ..  ]
-"42
-[; ;main.c: 42:         sensor1 = ADC_GetValue(0);
+"41
+[; ;main.c: 41:         sensor1 = ADC_GetValue(0);
 [e = _sensor1 ( _ADC_GetValue (1 -> -> 0 `i `uc ]
-"43
-[; ;main.c: 43:         sensor2 = ADC_GetValue(1);
+"42
+[; ;main.c: 42:         sensor2 = ADC_GetValue(1);
 [e = _sensor2 ( _ADC_GetValue (1 -> -> 1 `i `uc ]
-"44
-[; ;main.c: 44:         sensor3 = ADC_GetValue(2);
+"43
+[; ;main.c: 43:         sensor3 = ADC_GetValue(2);
 [e = _sensor3 ( _ADC_GetValue (1 -> -> 2 `i `uc ]
-"45
-[; ;main.c: 45:         sensor4 = ADC_GetValue(3);
+"44
+[; ;main.c: 44:         sensor4 = ADC_GetValue(3);
 [e = _sensor4 ( _ADC_GetValue (1 -> -> 3 `i `uc ]
+"49
+[; ;main.c: 49:         PORT_putString("valeur Capteur ");
+[e ( _PORT_putString (1 :s 1C ]
+"50
+[; ;main.c: 50:         Affichage_brut(sensor1);
+[e ( _Affichage_brut (1 -> _sensor1 `i ]
+"51
+[; ;main.c: 51:         PORT_putString("\n");
+[e ( _PORT_putString (1 :s 2C ]
 "55
 [; ;main.c: 55:         Vs = Voltage_Value(sensor1);
 [e = _Vs ( _Voltage_Value (1 _sensor1 ]
-"60
-[; ;main.c: 60:         Rc = Resistance_Value(Vs);
-[e = _Rc ( _Resistance_Value (1 _Vs ]
-"62
-[; ;main.c: 62:         sprintf(tab,"Resistance %2.2f Ohm \n", Rc);
-[e ( _sprintf (1 , (. , &U _tab :s 1C -> _Rc `d ]
-"63
-[; ;main.c: 63:         PORT_putString(tab);
-[e ( _PORT_putString (1 &U _tab ]
-"67
-[; ;main.c: 67:     }
+"57
+[; ;main.c: 57:         PORT_putString("valeur Tension ");
+[e ( _PORT_putString (1 :s 3C ]
+"58
+[; ;main.c: 58:         puts_float(Vs);
+[e ( _puts_float (1 _Vs ]
+"59
+[; ;main.c: 59:         PORT_putString("\n");
+[e ( _PORT_putString (1 :s 4C ]
+"74
+[; ;main.c: 74:     }
 }
-[e :U 161 ]
-[e $U 162  ]
-[e :U 163 ]
-"69
-[; ;main.c: 69:     return;
-[e $UE 160  ]
-"70
-[; ;main.c: 70: }
-[e :UE 160 ]
-}
+[e :U 160 ]
+[e $U 161  ]
+[e :U 162 ]
 "76
-[; ;main.c: 76: void puts_float(float Valeur) {
+[; ;main.c: 76:     return;
+[e $UE 159  ]
+"77
+[; ;main.c: 77: }
+[e :UE 159 ]
+}
+"83
+[; ;main.c: 83: void Affichage_brut(int valeur_a_afficher)
+[v _Affichage_brut `(v ~T0 @X0 1 ef1`i ]
+"84
+[; ;main.c: 84: {
+{
+[e :U _Affichage_brut ]
+"83
+[; ;main.c: 83: void Affichage_brut(int valeur_a_afficher)
+[v _valeur_a_afficher `i ~T0 @X0 1 r1 ]
+"84
+[; ;main.c: 84: {
+[f ]
+"85
+[; ;main.c: 85:     unsigned char affiche;
+[v _affiche `uc ~T0 @X0 1 a ]
+"87
+[; ;main.c: 87:     ValueMetrics valueMetrics;
+[v _valueMetrics `S1 ~T0 @X0 1 a ]
+"89
+[; ;main.c: 89:     affiche = valeur_a_afficher ;
+[e = _affiche -> _valeur_a_afficher `uc ]
+"90
+[; ;main.c: 90:     valueMetrics.cent = ((char)(affiche/100))+0x30;
+[e = . _valueMetrics 1 -> + -> -> / -> _affiche `i -> 100 `i `uc `i -> 48 `i `uc ]
+"91
+[; ;main.c: 91:     PORT_putchar(valueMetrics.cent);
+[e ( _PORT_putchar (1 . _valueMetrics 1 ]
+"92
+[; ;main.c: 92:     affiche = affiche % 100 ;
+[e = _affiche -> % -> _affiche `i -> 100 `i `uc ]
+"93
+[; ;main.c: 93:     valueMetrics.diz = ((char)(affiche/10))+0x30;
+[e = . _valueMetrics 2 -> + -> -> / -> _affiche `i -> 10 `i `uc `i -> 48 `i `uc ]
+"94
+[; ;main.c: 94:     PORT_putchar(valueMetrics.diz);
+[e ( _PORT_putchar (1 . _valueMetrics 2 ]
+"95
+[; ;main.c: 95:     affiche = affiche % 10 ;
+[e = _affiche -> % -> _affiche `i -> 10 `i `uc ]
+"96
+[; ;main.c: 96:     valueMetrics.unit = ((char)(affiche))+0x30;
+[e = . _valueMetrics 3 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+"97
+[; ;main.c: 97:     PORT_putchar(valueMetrics.unit);
+[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+"98
+[; ;main.c: 98: }
+[e :UE 166 ]
+}
+"104
+[; ;main.c: 104: void puts_float(float Valeur) {
 [v _puts_float `(v ~T0 @X0 1 ef1`f ]
 {
 [e :U _puts_float ]
 [v _Valeur `f ~T0 @X0 1 r1 ]
 [f ]
-"78
-[; ;main.c: 78:     unsigned int affiche;
+"106
+[; ;main.c: 106:     unsigned int affiche;
 [v _affiche `ui ~T0 @X0 1 a ]
-"79
-[; ;main.c: 79:     ValueMetrics valueMetrics;
+"107
+[; ;main.c: 107:     ValueMetrics valueMetrics;
 [v _valueMetrics `S1 ~T0 @X0 1 a ]
-"81
-[; ;main.c: 81:     Valeur = Valeur * 1000;
+"109
+[; ;main.c: 109:     Valeur = Valeur * 1000;
 [e = _Valeur * _Valeur -> -> 1000 `i `f ]
-"82
-[; ;main.c: 82:     affiche = (int) Valeur ;
+"110
+[; ;main.c: 110:     affiche = (int) Valeur ;
 [e = _affiche -> -> _Valeur `i `ui ]
-"88
-[; ;main.c: 88:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
+"116
+[; ;main.c: 116:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
 [e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
-"89
-[; ;main.c: 89:     PORT_putchar(valueMetrics.cent);
+"117
+[; ;main.c: 117:     PORT_putchar(valueMetrics.cent);
 [e ( _PORT_putchar (1 . _valueMetrics 1 ]
-"90
-[; ;main.c: 90:     affiche = affiche % 10000 ;
+"118
+[; ;main.c: 118:     affiche = affiche % 10000 ;
 [e = _affiche % _affiche -> -> 10000 `i `ui ]
-"91
-[; ;main.c: 91:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
+"119
+[; ;main.c: 119:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
 [e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
-"92
-[; ;main.c: 92:     PORT_putchar(valueMetrics.diz);
+"120
+[; ;main.c: 120:     PORT_putchar(valueMetrics.diz);
 [e ( _PORT_putchar (1 . _valueMetrics 2 ]
-"93
-[; ;main.c: 93:     affiche = affiche % 1000 ;
+"121
+[; ;main.c: 121:     affiche = affiche % 1000 ;
 [e = _affiche % _affiche -> -> 1000 `i `ui ]
-"94
-[; ;main.c: 94:     valueMetrics.unit = ((char)(affiche/100))+0x30;
+"122
+[; ;main.c: 122:     valueMetrics.unit = ((char)(affiche/100))+0x30;
 [e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
-"95
-[; ;main.c: 95:     PORT_putchar('.');
+"123
+[; ;main.c: 123:     PORT_putchar('.');
 [e ( _PORT_putchar (1 -> -> 46 `ui `uc ]
-"96
-[; ;main.c: 96:     PORT_putchar(valueMetrics.unit);
+"124
+[; ;main.c: 124:     PORT_putchar(valueMetrics.unit);
 [e ( _PORT_putchar (1 . _valueMetrics 3 ]
-"98
-[; ;main.c: 98:     affiche = affiche % 100 ;
+"126
+[; ;main.c: 126:     affiche = affiche % 100 ;
 [e = _affiche % _affiche -> -> 100 `i `ui ]
-"99
-[; ;main.c: 99:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
+"127
+[; ;main.c: 127:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
 [e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
-"100
-[; ;main.c: 100:     PORT_putchar(valueMetrics.dizi);
+"128
+[; ;main.c: 128:     PORT_putchar(valueMetrics.dizi);
 [e ( _PORT_putchar (1 . _valueMetrics 4 ]
-"101
-[; ;main.c: 101:     affiche = affiche % 10 ;
+"129
+[; ;main.c: 129:     affiche = affiche % 10 ;
 [e = _affiche % _affiche -> -> 10 `i `ui ]
-"102
-[; ;main.c: 102:     valueMetrics.centi = ((char)(affiche))+0x30;
+"130
+[; ;main.c: 130:     valueMetrics.centi = ((char)(affiche))+0x30;
 [e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
-"103
-[; ;main.c: 103:     PORT_putchar(valueMetrics.centi);
+"131
+[; ;main.c: 131:     PORT_putchar(valueMetrics.centi);
 [e ( _PORT_putchar (1 . _valueMetrics 5 ]
-"104
-[; ;main.c: 104: }
+"132
+[; ;main.c: 132: }
 [e :UE 167 ]
 }
-"111
-[; ;main.c: 111: float Voltage_Value(unsigned char sensor) {
+"139
+[; ;main.c: 139: float Voltage_Value(unsigned char sensor) {
 [v _Voltage_Value `(f ~T0 @X0 1 ef1`uc ]
 {
 [e :U _Voltage_Value ]
 [v _sensor `uc ~T0 @X0 1 r1 ]
 [f ]
-"114
-[; ;main.c: 114:     float result;
-[v _result `f ~T0 @X0 1 a ]
-"115
-[; ;main.c: 115:     float fSensor = (float) sensor;
-[v _fSensor `f ~T0 @X0 1 a ]
-[e = _fSensor -> _sensor `f ]
-"116
-[; ;main.c: 116:     result = fSensor* 5/255;
-[e = _result / * _fSensor -> -> 5 `i `f -> -> 255 `i `f ]
-"117
-[; ;main.c: 117:     return result;
-[e ) _result ]
+"141
+[; ;main.c: 141:     return (float) sensor * 5/255;
+[e ) / * -> _sensor `f -> -> 5 `i `f -> -> 255 `i `f ]
 [e $UE 168  ]
-"121
-[; ;main.c: 121: }
+"143
+[; ;main.c: 143: }
 [e :UE 168 ]
 }
-"128
-[; ;main.c: 128: float Resistance_Value(float Voltage) {
-[v _Resistance_Value `(f ~T0 @X0 1 ef1`f ]
-{
-[e :U _Resistance_Value ]
-[v _Voltage `f ~T0 @X0 1 r1 ]
-[f ]
-"129
-[; ;main.c: 129:     return (4.7 * (5)/(5 -(2*Voltage)));
-[e ) -> / * .4.7 -> -> 5 `i `d -> - -> -> 5 `i `f * -> -> 2 `i `f _Voltage `d `f ]
-[e $UE 169  ]
-"130
-[; ;main.c: 130: }
-[e :UE 169 ]
-}
-[p f _sprintf 8495104 ]
-[a 1C 82 101 115 105 115 116 97 110 99 101 32 37 50 46 50 102 32 79 104 109 32 10 0 ]
+[a 1C 118 97 108 101 117 114 32 67 97 112 116 101 117 114 32 0 ]
+[a 3C 118 97 108 101 117 114 32 84 101 110 115 105 111 110 32 0 ]
+[a 2C 10 0 ]
+[a 4C 10 0 ]

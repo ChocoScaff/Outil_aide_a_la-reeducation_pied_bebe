@@ -89,6 +89,29 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1553
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 1553: extern volatile unsigned char TXREG __attribute__((address(0x019)));
 [v _TXREG `Vuc ~T0 @X0 0 e@25 ]
+"537
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 537:     struct {
+[s S19 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S19 . RC0 RC1 RC2 RC3 RC4 RC5 RC6 RC7 ]
+"547
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 547:     struct {
+[s S20 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S20 . CPSB2 CPSB3 CPSB4 . CPSA9 CPSA10 CPSA11 ]
+"556
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 556:     struct {
+[s S21 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S21 . T1OSO T1OSI TBCKI SCK SDI SDO TX RX ]
+"566
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 566:     struct {
+[s S22 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S22 . T1CKI CCP2 CCP1 SCL SDA . CK DT ]
+"536
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 536: typedef union {
+[u S18 `S19 1 `S20 1 `S21 1 `S22 1 ]
+[n S18 . . . . . ]
+"577
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f707.h: 577: extern volatile PORTCbits_t PORTCbits __attribute__((address(0x007)));
+[v _PORTCbits `VS18 ~T0 @X0 0 e@7 ]
 "9 ./defs.h
 [p x FOSC = INTOSC ]
 "10
@@ -635,4 +658,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 "161
 [; ;port.c: 161: }
 [e :UE 184 ]
+}
+"166
+[; ;port.c: 166: void PORT_Init_Gain(void) {
+[v _PORT_Init_Gain `(v ~T0 @X0 1 ef ]
+{
+[e :U _PORT_Init_Gain ]
+[f ]
+"167
+[; ;port.c: 167:     PORTCbits.RC0 = 0;
+[e = . . _PORTCbits 0 0 -> -> 0 `i `uc ]
+"168
+[; ;port.c: 168:     PORTCbits.RC1 = 1;
+[e = . . _PORTCbits 0 1 -> -> 1 `i `uc ]
+"169
+[; ;port.c: 169: }
+[e :UE 185 ]
 }

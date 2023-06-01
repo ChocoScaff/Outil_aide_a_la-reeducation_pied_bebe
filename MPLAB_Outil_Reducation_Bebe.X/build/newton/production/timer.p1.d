@@ -1,4 +1,4 @@
-build/debug/debug/timer.p1:  \
+build/newton/production/timer.p1:  \
 timer.c  \
 common.h  \
 defs.h  \

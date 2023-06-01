@@ -1,4 +1,4 @@
-# 1 "port.c"
+# 1 "main.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,15 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "port.c" 2
-
-
-
-
-
-
-
-
+# 1 "main.c" 2
+# 12 "main.c"
 # 1 "./common.h" 1
 
 
@@ -41,14 +34,7 @@
 
 
 #pragma config VCAPEN = OFF
-
-
-
-
-
-
-
-
+# 30 "./defs.h"
 char Fincompt1=0;
 # 6 "./common.h" 2
 
@@ -2767,257 +2753,261 @@ extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
 # 8 "./common.h" 2
+# 12 "main.c" 2
 
+# 1 "./port.h" 1
 
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 1 3
 
 
 
-# 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\__size_t.h" 1 3
 
 
 
-typedef unsigned size_t;
-# 4 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
 
-# 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\__null.h" 1 3
-# 5 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
+void PORT_Init(void);
+void PORT_Init_Serial(void);
+void PORT_Blink_LED(void);
+void PORT_putchar(char c);
+void PORT_putString(char chaine[]);
+void PORT_Choose_Mux(char _value);
+void PORT_Start_ADC(void);
+unsigned char PORT_Get_Value_Adc(void);
+void PORT_Select_Mux0(void);
+void PORT_Select_Mux1(void);
+void PORT_Init_Gain(void);
+# 13 "main.c" 2
 
+# 1 "./timer.h" 1
 
 
 
 
 
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdarg.h" 1 3
 
 
+void TIMER_init_timer1(void);
+# 14 "main.c" 2
 
+# 1 "./adc.h" 1
 
 
 
-typedef void * va_list[1];
 
-#pragma intrinsic(__va_start)
-extern void * __va_start(void);
 
-#pragma intrinsic(__va_arg)
-extern void * __va_arg(void *, ...);
-# 11 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
-# 43 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-struct __prbuf
-{
- char * ptr;
- void (* func)(char);
-};
-# 85 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\conio.h" 1 3
 
 
+unsigned char ADC_GetValue(char channel);
+# 15 "main.c" 2
 
 
+void Affichage_brut(int valeur_a_afficher);
+float Voltage_Value(unsigned char sensor);
+float Resistance_Value(float Voltage);
+float conversion_newton (float Rc);
 
+void main(void) {
 
+    unsigned char sensor1, sensor2, sensor3, sensor4;
 
-# 1 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\errno.h" 1 3
-# 29 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\errno.h" 3
-extern int errno;
-# 8 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\conio.h" 2 3
 
 
+    float Rc,Vs,F;
 
+    PORT_Init();
+    TIMER_init_timer1();
 
-extern void init_uart(void);
+    PORT_Select_Mux1();
+    PORT_Init_Gain();
 
-extern char getch(void);
-extern char getche(void);
-extern void putch(char);
-extern void ungetch(char);
+    while(1) {
 
-extern __bit kbhit(void);
+        while (Fincompt1 != 0);
+        Fincompt1 = 0;
+        PORT_Blink_LED();
 
+        sensor1 = ADC_GetValue(0);
+        sensor2 = ADC_GetValue(1);
+        sensor3 = ADC_GetValue(2);
+        sensor4 = ADC_GetValue(3);
 
+        PORT_putString("valeur Capteur ");
+        Affichage_brut(sensor1);
+        PORT_putString("\n");
 
-extern char * cgets(char *);
-extern void cputs(const char *);
-# 85 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 2 3
 
 
 
-extern int cprintf(char *, ...);
-#pragma printf_check(cprintf)
 
 
 
-extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-# 180 "C:\\Program Files\\Microchip\\xc8\\v2.20\\pic\\include\\c90\\stdio.h" 3
-#pragma printf_check(vprintf) const
-#pragma printf_check(vsprintf) const
+        Vs = Voltage_Value(sensor1);
 
-extern char * gets(char *);
-extern int puts(const char *);
-extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
 
-#pragma printf_check(printf) const
-#pragma printf_check(sprintf) const
-extern int sprintf(char *, const char *, ...);
-extern int printf(const char *, ...);
-# 10 "./common.h" 2
-# 9 "port.c" 2
 
 
 
 
+        Rc = Resistance_Value(Vs);
 
 
-void PORT_Init_Serial(void) {
 
 
-    TRISC = 0xFF;
 
+        F = conversion_newton(Rc);
 
-    SPBRG = 25;
 
 
 
-    TXSTA = TXSTA & 0xDF;
-    TXSTA = TXSTA | 1;
-    TXSTA = TXSTA & 0xFB;
 
 
-    RCSTA = RCSTA | 0x20;
-    RCSTA = RCSTA & 0xDF;
-    RCSTA = RCSTA | 0x04;
-    RCSTA = RCSTA | 0x02;
-
-    TXSTA = TXSTA & 0xEF;
-    TXSTA = TXSTA | 0x20;
-    RCSTA = RCSTA | 0x80;
-}
-
-
-
-
-
-void PORT_Init(void) {
-
-
-    WPUB=0;
-    ANSELB = 0;
-
-
-    TRISB = 0xFE;
-
-
-    OSCCON = 0x30;
-    for( ; (OSCCON & 0xC) != 0xC ; );
-
-
-
-    ANSELD = 0x00;
-
-
-    TRISA = 0xFF;
-
-    TRISD = 0xC0;
-
-    PORT_Init_Serial();
-
-    ANSELA = 0x01;
-
-    ADCON0=0x01;
-    ADCON1=0x60;
-
-    FVRCON=0;
-    DACCON0=0x0;
-    DACCON0=0x60;
-    DACCON0|=0x80;
-
-    DACCON1=0x18;
-}
-
-
-
-
-void PORT_Blink_LED(void) {
-    PORTBbits.RB0 = !PORTBbits.RB0;
-}
-
-
-
-
-
-
-
-void PORT_Choose_Mux(char _value) {
-    if (_value <= 0x0F) {
-        PORTD &= 0xF0;
-        PORTD |= _value;
-        }
-}
-
-
-
-
-void PORT_Start_ADC(void) {
-    GO_nDONE=1;
-    while(GO_nDONE);
-
-
-
-}
-
-
-
-
-
-
-
-unsigned char PORT_Get_Value_Adc(void) {
-    return ADRES;
-}
-
-
-
-
-
-void PORT_putchar(char c) {
-
-    for(;(TXSTA&0x02)!=0x02;);
-    TXREG = c;
-}
-
-
-
-
-
-void PORT_putString(char chaine[]) {
-
-    int i;
-
-    for(i=0 ; chaine[i]!=0 ; i++)
-    {
-        PORT_putchar(chaine[i]);
     }
+
+    return;
 }
 
 
 
 
-void PORT_Select_Mux0(void) {
-    PORTD |= 0x20;
-    PORTD &= 0xEF;
+
+void Affichage_brut(int valeur_a_afficher)
+{
+    unsigned char affiche;
+
+    ValueMetrics valueMetrics;
+
+    affiche = valeur_a_afficher ;
+    valueMetrics.cent = ((char)(affiche/100))+0x30;
+    PORT_putchar(valueMetrics.cent);
+    affiche = affiche % 100 ;
+    valueMetrics.diz = ((char)(affiche/10))+0x30;
+    PORT_putchar(valueMetrics.diz);
+    affiche = affiche % 10 ;
+    valueMetrics.unit = ((char)(affiche))+0x30;
+    PORT_putchar(valueMetrics.unit);
+}
+
+
+
+
+
+void puts_float(float Valeur) {
+
+    unsigned int affiche;
+    ValueMetrics valueMetrics;
+
+    Valeur = Valeur * 1000;
+    affiche = (int) Valeur ;
+
+
+
+
+
+    valueMetrics.cent = ((char)(affiche/10000))+0x30;
+    PORT_putchar(valueMetrics.cent);
+    affiche = affiche % 10000 ;
+    valueMetrics.diz = ((char)(affiche/1000))+0x30;
+    PORT_putchar(valueMetrics.diz);
+    affiche = affiche % 1000 ;
+    valueMetrics.unit = ((char)(affiche/100))+0x30;
+    PORT_putchar('.');
+    PORT_putchar(valueMetrics.unit);
+
+    affiche = affiche % 100 ;
+    valueMetrics.dizi = ((char)(affiche/10))+0x30;
+    PORT_putchar(valueMetrics.dizi);
+    affiche = affiche % 10 ;
+    valueMetrics.centi = ((char)(affiche))+0x30;
+    PORT_putchar(valueMetrics.centi);
+}
+
+
+
+
+
+
+float Voltage_Value(unsigned char sensor) {
+
+    return (float) sensor * 5/255;
 
 }
 
 
 
 
-void PORT_Select_Mux1(void) {
-    PORTD |= 0x10;
-    PORTD &= 0xDF;
+
+
+
+float Resistance_Value(float Voltage) {
+    return (4.7 * (5)/(5 -(2*Voltage)));
+}
+
+
+
+
+
+
+float conversion_newton (float Rc) {
+     float F;
+     int n;
+     const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
+     const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
+
+
+     if (Rc <= R_tab[1])
+         {
+         n = 0;
+         }
+     if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
+         {
+         n = 1;
+         }
+     else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
+         {
+         n = 2;
+         }
+     else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
+         {
+         n = 3;
+         }
+     else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
+         {
+         n = 4;
+         }
+     else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
+         {
+         n = 5;
+         }
+     else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
+         {
+         n = 6;
+         }
+     else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
+         {
+         n = 7;
+         }
+     else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
+         {
+         n = 8;
+         }
+     else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
+         {
+         n = 9;
+         }
+     else if (Rc > R_tab[10])
+         {
+         n = 10;
+         }
+     F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
+
+
+     if (Rc <= R_tab[10])
+         {
+         F = 70;
+         }
+     if (Rc > R_tab[10])
+         {
+         F = 0.12;
+         }
+
+     return F;
 }

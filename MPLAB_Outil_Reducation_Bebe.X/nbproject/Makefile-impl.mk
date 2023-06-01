@@ -31,7 +31,7 @@ DEFAULTCONF=debug
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=default debug 
+ALLCONFS=default debug newton 
 
 
 # build
@@ -47,6 +47,7 @@ ALLCONFS=default debug
 .clobber-impl: .clobber-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default clean
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=newton clean
 
 
 
@@ -54,6 +55,7 @@ ALLCONFS=default debug
 .all-impl: .all-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default build
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=newton build
 
 
 

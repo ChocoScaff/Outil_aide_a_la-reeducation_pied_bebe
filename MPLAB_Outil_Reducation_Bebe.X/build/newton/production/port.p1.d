@@ -1,4 +1,4 @@
-build/debug/debug/port.p1:  \
+build/newton/production/port.p1:  \
 port.c  \
 common.h  \
 defs.h  \

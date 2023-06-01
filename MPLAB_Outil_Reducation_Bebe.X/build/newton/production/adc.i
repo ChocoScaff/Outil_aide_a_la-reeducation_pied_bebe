@@ -33,6 +33,7 @@ void PORT_Start_ADC(void);
 unsigned char PORT_Get_Value_Adc(void);
 void PORT_Select_Mux0(void);
 void PORT_Select_Mux1(void);
+void PORT_Init_Gain(void);
 # 8 "adc.c" 2
 
 

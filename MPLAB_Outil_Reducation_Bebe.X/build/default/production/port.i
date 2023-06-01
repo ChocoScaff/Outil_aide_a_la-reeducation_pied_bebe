@@ -2914,3 +2914,11 @@ void PORT_Select_Mux1(void) {
     PORTD |= 0x10;
     PORTD &= 0xDF;
 }
+
+
+
+
+void PORT_Init_Gain(void) {
+    PORTCbits.RC0 = 0;
+    PORTCbits.RC1 = 1;
+}
