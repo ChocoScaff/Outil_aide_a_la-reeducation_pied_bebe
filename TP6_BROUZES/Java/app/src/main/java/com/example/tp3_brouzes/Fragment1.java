@@ -4,6 +4,8 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,8 +64,10 @@ public class Fragment1 extends Fragment {
     private Integer interfaceOK = 0;
     private Integer appareilConnecte = 0;
     private Integer autorisationConnexion = 1;
-
-    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothSocket mmServerSocket;
+    private BluetoothDevice mmthisDevice;
+    String deviceName;
+    String deviceHardwareAddress;
 
     public Fragment1() {
         // Required empty public constructor
@@ -110,8 +116,8 @@ public class Fragment1 extends Fragment {
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
                 }
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
+                deviceName = device.getName();
+                deviceHardwareAddress = device.getAddress(); // MAC address
             }
         }
     };
@@ -148,6 +154,7 @@ public class Fragment1 extends Fragment {
                 getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.getBondedDevices();
 
         if (mBluetoothAdapter == null) {
             // Device doesn't support Bluetooth
@@ -164,6 +171,7 @@ public class Fragment1 extends Fragment {
             @Override
             public void onClick(View view) {
 
+                Log.i("BTT", "Liste des appareils");
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -187,11 +195,14 @@ public class Fragment1 extends Fragment {
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
                         }
-                        String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
+                        deviceName = device.getName();
+                        deviceHardwareAddress = device.getAddress(); // MAC address
                         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                         //        android.R.layout.simple_list_item_1, new list<String>());
-
+                        Log.i("BTT", device.getAddress());
+                        Log.i("BTT", device.getName());
+                        mmthisDevice = device;
+                        //liste_appareils.
                     }
                 }
             }
@@ -226,38 +237,56 @@ public class Fragment1 extends Fragment {
                     }
                 }
             }
+            /*
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                super.onActivityResult(requestCode, resultCode,data);
+                Log.i("BT", "onActivityResult, requestCode: " + requestCode + ", resultCode: "
+                        + resultCode);
+                if (resultCode !=0) {
+
+                    interfaceON =1;
+                    // Ici on pourrait ajouter de code
+                }
+                else interfaceON=0;
+            }
+
+             */
+
         });
+
         Connect_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+
                 Log.i("BTT", "Connect BT");
-                final BroadcastReceiver receiver = new BroadcastReceiver() {
-                    public void onReceive(Context context, Intent intent) {
-                        String action = intent.getAction();
-                        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                            // Discovery has found a device. Get the BluetoothDevice
-                            // object and its info from the Intent.
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                                // TODO: Consider calling
-                                //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions, and then overriding
-                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                //                                          int[] grantResults)
-                                // to handle the case where the user grants the permission. See the documentation
-                                // for ActivityCompat#requestPermissions for more details.
-                            }
-                            String deviceName = device.getName();
-                            String deviceHardwareAddress = device.getAddress(); // MAC address
-                            Log.i("BTT", "device");
-                            Log.i("BTT", device.getName());
-                        }
+                BluetoothSocket tmp = null;
+
+                try {
+                    // MY_UUID is the app's UUID string, also used by the client code.
+
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        //return;
                     }
-                };
-
-
+                    tmp = mmthisDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    Log.i("BTT", "bluetoothAdapter");
+                } catch (IOException e) {
+                    Log.e("BTT", "Socket's listen() method failed", e);
+                }
+                mmServerSocket = tmp;
             }
+
+
+
 
         });
         return vue;
