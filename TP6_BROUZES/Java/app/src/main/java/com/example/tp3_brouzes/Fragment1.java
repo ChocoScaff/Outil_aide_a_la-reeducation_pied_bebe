@@ -141,6 +141,7 @@ public class Fragment1 extends Fragment {
 
         vue = inflater.inflate(R.layout.fragment_1, container, false);
         vue.findViewById(R.id.Id_text_page1);
+        Log.i("BTT", "toto");
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -212,13 +213,7 @@ public class Fragment1 extends Fragment {
 
                         liste_appareils.setAdapter(myArrayAadapter);    // lv_devlist est l'identificateur java de la ListView
 
-                        liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String selectedItem = (String) parent.getItemAtPosition(position);
-                                Toast.makeText(getContext(), selectedItem, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+
 
                         //deviceName = device.getName();
                         //deviceHardwareAddress = device.getAddress(); // MAC address
@@ -241,7 +236,9 @@ public class Fragment1 extends Fragment {
             }
         });
 
+
         liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object listItem = liste_appareils.getItemAtPosition(position);
@@ -252,7 +249,7 @@ public class Fragment1 extends Fragment {
                 deviceName = lines[0];
                 deviceHardwareAddress = lines[1];
 
-                Log.i("BTT", deviceName);
+                Log.i("BTT", deviceHardwareAddress);
 
 
             }
