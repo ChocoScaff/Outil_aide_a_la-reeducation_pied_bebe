@@ -13,6 +13,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -22,12 +24,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,6 +72,8 @@ public class Fragment1 extends Fragment {
     private BluetoothDevice mmthisDevice;
     String deviceName;
     String deviceHardwareAddress;
+
+    ArrayList pairedlist = new ArrayList();
 
     public Fragment1() {
         // Required empty public constructor
@@ -195,6 +201,22 @@ public class Fragment1 extends Fragment {
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
                         }
+                        for (BluetoothDevice   bt : pairedDevices) {
+                            pairedlist.add(bt.getName() + "\n" + bt.getAddress());
+                           
+                        }
+
+                        ArrayAdapter myArrayAadapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, pairedlist);
+                        liste_appareils.setAdapter(myArrayAadapter);    // lv_devlist est l'identificateur java de la ListView
+
+                        liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String selectedItem = (String) parent.getItemAtPosition(position);
+                                Toast.makeText(getContext(), selectedItem, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                         deviceName = device.getName();
                         deviceHardwareAddress = device.getAddress(); // MAC address
                         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
