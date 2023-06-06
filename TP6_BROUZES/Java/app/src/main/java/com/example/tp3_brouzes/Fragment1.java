@@ -250,8 +250,6 @@ public class Fragment1 extends Fragment {
                 deviceHardwareAddress = lines[1];
 
                 Log.i("BTT", deviceHardwareAddress);
-
-
             }
         });
 
@@ -307,11 +305,14 @@ public class Fragment1 extends Fragment {
             @Override
             public void onClick(View v) {
 
-
-
                 Log.i("BTT", "Connect BT");
                 BluetoothSocket tmp = null;
-
+                if (deviceHardwareAddress == null) {
+                    Toast.makeText(getActivity(), "Selectionner un appareil",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mmthisDevice = mBluetoothAdapter.getRemoteDevice(deviceHardwareAddress);
                 try {
                     // MY_UUID is the app's UUID string, also used by the client code.
 
@@ -325,8 +326,16 @@ public class Fragment1 extends Fragment {
                         // for ActivityCompat#requestPermissions for more details.
                         //return;
                     }
-                    tmp = mmthisDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    UUID uuid =  UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+                    Log.i("BTT", "Server socket");
+                    tmp = mmthisDevice.createRfcommSocketToServiceRecord(uuid);
+                    tmp.connect();
                     Log.i("BTT", "bluetoothAdapter");
+
+                    Toast.makeText(getActivity(), "Connecte",
+                            Toast.LENGTH_SHORT).show();
+
                 } catch (IOException e) {
                     Log.e("BTT", "Socket's listen() method failed", e);
                 }
