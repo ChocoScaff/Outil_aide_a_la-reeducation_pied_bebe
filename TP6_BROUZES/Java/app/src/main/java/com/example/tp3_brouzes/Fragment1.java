@@ -56,6 +56,7 @@ public class Fragment1 extends Fragment {
     private Button Active_BT;
     private Button Connect_BT;
     private Button appareils;
+    private Button efface_Liste;
     private ListView liste_appareils;
 
 
@@ -73,6 +74,7 @@ public class Fragment1 extends Fragment {
     String deviceName;
     String deviceHardwareAddress;
 
+    String selectedItem;
     ArrayList pairedlist = new ArrayList();
 
     public Fragment1() {
@@ -155,6 +157,7 @@ public class Fragment1 extends Fragment {
         appareils = (Button) vue.findViewById(R.id.ID_liste_des_appareils);
         affichagePage1 = (TextView) vue.findViewById((R.id.Id_text_page1));
         liste_appareils = (ListView) vue.findViewById(R.id.ID_list_view);
+        efface_Liste = (Button) vue.findViewById(R.id.Id_Effacer_la_liste);
 
         mBluetoothManager = (BluetoothManager)
                 getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
@@ -201,12 +204,12 @@ public class Fragment1 extends Fragment {
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
                         }
-                        for (BluetoothDevice   bt : pairedDevices) {
-                            pairedlist.add(bt.getName() + "\n" + bt.getAddress());
-                           
-                        }
+
+                        //pairedlist.add(device.getName() + "\n" + device.getAddress());
+                        pairedlist.add(0,device.getName() + "\n" + device.getAddress());
 
                         ArrayAdapter myArrayAadapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, pairedlist);
+
                         liste_appareils.setAdapter(myArrayAadapter);    // lv_devlist est l'identificateur java de la ListView
 
                         liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -217,18 +220,44 @@ public class Fragment1 extends Fragment {
                             }
                         });
 
-                        deviceName = device.getName();
-                        deviceHardwareAddress = device.getAddress(); // MAC address
+                        //deviceName = device.getName();
+                        //deviceHardwareAddress = device.getAddress(); // MAC address
                         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                         //        android.R.layout.simple_list_item_1, new list<String>());
-                        Log.i("BTT", device.getAddress());
-                        Log.i("BTT", device.getName());
-                        mmthisDevice = device;
+                        //Log.i("BTT", device.getAddress());
+                        //Log.i("BTT", device.getName());
+                        //mmthisDevice = device;
                         //liste_appareils.
+
                     }
                 }
             }
         });
+        efface_Liste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                liste_appareils.setAdapter(null);
+
+            }
+        });
+
+        liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object listItem = liste_appareils.getItemAtPosition(position);
+                selectedItem = liste_appareils.getItemAtPosition(position).toString();
+
+                String[] lines = selectedItem.split("\n");
+
+                deviceName = lines[0];
+                deviceHardwareAddress = lines[1];
+
+                Log.i("BTT", deviceName);
+
+
+            }
+        });
+
 
         Active_BT.setOnClickListener(new View.OnClickListener() {
             @Override
