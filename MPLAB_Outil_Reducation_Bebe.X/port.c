@@ -15,7 +15,7 @@
 void PORT_Init_Serial(void) {
     //liaison série
    
-    TRISC = 0xFF; // RC6 : écriture et RC7 : liaison série
+    TRISC = 0xFC; // RC6 : écriture et RC7 : liaison série
  
     //SPBRG = 16; // 57600 bauds
     SPBRG = 25; // 9600 bauds avec une horloge à 16 MHz SPBRG = 25
@@ -166,4 +166,11 @@ void PORT_Select_Mux1(void) {
 void PORT_Init_Gain(void) {
     PORTCbits.RC0 = 0;
     PORTCbits.RC1 = 1;
+}
+
+/**
+ */
+void PORT_Change_Gain(char INTER0, char INTER1) {
+    PORTCbits.RC0 = INTER0;
+    PORTCbits.RC1 = INTER1;
 }

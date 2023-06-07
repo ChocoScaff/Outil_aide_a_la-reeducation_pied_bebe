@@ -19,6 +19,9 @@ void puts_float(float Valeur);
 float Voltage_Value(unsigned char sensor);
 float Resistance_Value(float Voltage);
 float conversion_newton (float Rc);
+#if defined (_DEBUG_GAIN)
+void Test_Gain(char INTER0, char INTER1);
+#endif
 
 void main(void) {
  
@@ -38,6 +41,13 @@ void main(void) {
         Fincompt1 = 0;
         PORT_Blink_LED();
         
+        #if defined (_DEBUG_GAIN)
+        Test_Gain(0,0); //1.45v       
+        Test_Gain(0,1); //2.5v        
+        Test_Gain(1,0); //2.5v        
+        Test_Gain(1,1); //1.9v       
+        #endif
+        
         sensor1 = ADC_GetValue(0);
         sensor2 = ADC_GetValue(1);
         sensor3 = ADC_GetValue(2);
@@ -47,15 +57,14 @@ void main(void) {
         #if defined (_DEBUG)
         PORT_putString("valeur Capteur ");
         Affichage_brut(sensor1);
-        PORT_putString("\n");  
+        PORT_putString(" ");  
         #endif
         
         Vs = Voltage_Value(sensor1);
         #if defined (_DEBUG)
         PORT_putString("valeur Tension ");
         puts_float(Vs);
-        PORT_putString("\n");
-        
+        PORT_putString("\n");    
         #endif
         
         Rc = Resistance_Value(Vs);
@@ -225,3 +234,31 @@ float conversion_newton (float Rc) {
 
      return F;
 }
+
+#if defined (_DEBUG_GAIN)
+/**
+ * 
+ */
+void Test_Gain(char INTER0, char INTER1) {
+    
+    unsigned char sensor1;
+    float Vs;
+    
+    PORT_Change_Gain(INTER0,INTER1);
+    
+    sensor1 = ADC_GetValue(0);
+    Vs = Voltage_Value(sensor1);
+       
+    PORT_putString("valeur Tension ");
+    PORT_putchar(' ');
+    Affichage_brut(sensor1);
+    PORT_putchar(' ');
+    puts_float(Vs);
+    PORT_putchar(' ');
+    Affichage_brut(INTER0);
+    PORT_putchar(' ');
+    Affichage_brut(INTER1);
+    PORT_putString("\n");
+    
+}
+#endif

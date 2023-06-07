@@ -21,10 +21,12 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-#define RESISTANCE_AOP_VALUE 4700   // RC
-#define VOLTAGE_ALIM 5              // VCC
-#define VALUE_MAX_ADC 255
-#define QUANTUM VOLTAGE_ALIM/VALUE_MAX_ADC 
 
+#define VOLTAGE_ALIM 5              // VCC
+#define VALUE_MAX_ADC 256
+#define QUANTUM VOLTAGE_ALIM/VALUE_MAX_ADC 
+#define R20C             3000
+#define R20B            10000
+#define R20A            51000
 
 char Fincompt1=0;
