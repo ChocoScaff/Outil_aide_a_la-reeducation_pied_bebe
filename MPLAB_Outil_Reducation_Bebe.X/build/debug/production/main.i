@@ -34,7 +34,7 @@
 
 
 #pragma config VCAPEN = OFF
-# 30 "./defs.h"
+# 32 "./defs.h"
 char Fincompt1=0;
 # 6 "./common.h" 2
 
@@ -2774,7 +2774,8 @@ void PORT_Start_ADC(void);
 unsigned char PORT_Get_Value_Adc(void);
 void PORT_Select_Mux0(void);
 void PORT_Select_Mux1(void);
-void PORT_Init_Gain(void);
+
+unsigned int PORT_Change_Gain(char INTER0, char INTER1);
 # 13 "main.c" 2
 
 # 1 "./timer.h" 1
@@ -2803,62 +2804,27 @@ unsigned char ADC_GetValue(char channel);
 void Affichage_brut(int valeur_a_afficher);
 void puts_float(float Valeur);
 float Voltage_Value(unsigned char sensor);
-float Resistance_Value(float Voltage);
+float Resistance_Value(float Voltage,unsigned int R);
 float conversion_newton (float Rc);
+float Get_Newton(char INTER0, char INTER1, char sensor_Channel);
 
 void main(void) {
-
-    unsigned char sensor1, sensor2, sensor3, sensor4;
-
-    float Rc,Vs,F;
 
     PORT_Init();
     TIMER_init_timer1();
 
-    PORT_Select_Mux1();
-    PORT_Init_Gain();
-
+    PORT_Select_Mux0();
+    float F;
     while(1) {
 
         while (Fincompt1 != 0);
         Fincompt1 = 0;
         PORT_Blink_LED();
 
-        sensor1 = ADC_GetValue(0);
-        sensor2 = ADC_GetValue(1);
-        sensor3 = ADC_GetValue(2);
-        sensor4 = ADC_GetValue(3);
 
 
 
-        PORT_putString("valeur Capteur ");
-        Affichage_brut(sensor1);
-        PORT_putString("\n");
-
-
-        Vs = Voltage_Value(sensor1);
-
-        PORT_putString("valeur Tension ");
-        puts_float(Vs);
-        PORT_putString("\n");
-
-
-
-        Rc = Resistance_Value(Vs);
-
-        PORT_putString("valeur Resistance ");
-        puts_float(Rc);
-        PORT_putString("\n");
-
-
-
-        F = conversion_newton(Rc);
-
-        PORT_putString("valeur Newton ");
-        puts_float(F);
-        PORT_putString("\n");
-
-
+        F = Get_Newton(0,1,0);
 
 
     }
@@ -2896,13 +2862,12 @@ void puts_float(float Valeur) {
     unsigned int affiche;
     ValueMetrics valueMetrics;
 
-    Valeur = Valeur * 1000;
+    Valeur = Valeur * 100;
     affiche = (int) Valeur ;
 
-
-
-
-
+    valueMetrics.mil = ((char)(affiche/100000))+0x30;
+    PORT_putchar(valueMetrics.mil);
+    affiche = affiche % 100000 ;
     valueMetrics.cent = ((char)(affiche/10000))+0x30;
     PORT_putchar(valueMetrics.cent);
     affiche = affiche % 10000 ;
@@ -2925,10 +2890,36 @@ void puts_float(float Valeur) {
 
 
 
+void puts_Newton(float Valeur) {
+
+    unsigned int affiche;
+    ValueMetrics valueMetrics;
+
+    Valeur = Valeur * 100;
+    affiche = (int) Valeur ;
+    affiche = affiche % 10000 ;
+    valueMetrics.diz = ((char)(affiche/1000))+0x30;
+    PORT_putchar(valueMetrics.diz);
+    affiche = affiche % 1000 ;
+    valueMetrics.unit = ((char)(affiche/100))+0x30;
+    PORT_putchar(valueMetrics.unit);
+    PORT_putchar('.');
+    affiche = affiche % 100 ;
+    valueMetrics.dizi = ((char)(affiche/10))+0x30;
+    PORT_putchar(valueMetrics.dizi);
+    affiche = affiche % 10 ;
+    valueMetrics.centi = ((char)(affiche))+0x30;
+    PORT_putchar(valueMetrics.centi);
+}
+
+
+
+
+
 
 float Voltage_Value(unsigned char sensor) {
 
-    return (float) sensor * 5/255;
+    return (float) sensor * 5.0/256;
 
 }
 
@@ -2937,8 +2928,9 @@ float Voltage_Value(unsigned char sensor) {
 
 
 
-float Resistance_Value(float Voltage) {
-    return (4.7 * (5)/(5 -(2*Voltage)));
+float Resistance_Value(float Voltage, unsigned int R) {
+    float fR = R;
+    return (float) (fR * 5.0)/(5.0 -(2*Voltage));
 }
 
 
@@ -3010,4 +3002,39 @@ float conversion_newton (float Rc) {
          }
 
      return F;
+}
+
+
+
+
+float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
+
+    unsigned char sensor_value;
+    unsigned int R;
+    float Vs,F,Rc;
+
+    R = PORT_Change_Gain(INTER0,INTER1);
+
+    sensor_value = ADC_GetValue(sensor_Channel);
+    Vs = Voltage_Value(sensor_value);
+    Rc = Resistance_Value(Vs, R);
+
+    F = conversion_newton(Rc);
+
+
+
+
+
+
+
+    puts_Newton(F);
+    PORT_putString(" N ");
+
+
+
+
+    PORT_putString("\n");
+
+
+    return F;
 }

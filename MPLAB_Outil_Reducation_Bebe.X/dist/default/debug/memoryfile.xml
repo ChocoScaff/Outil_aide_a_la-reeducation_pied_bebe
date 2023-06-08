@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/default/debug\MPLAB_Outil_Reducation_Bebe.X.debug.hex">
+    <memory name="program">
+      <units>words</units>
+      <length>8192</length>
+      <used>5079</used>
+      <free>3113</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>363</length>
+      <used>148</used>
+      <free>215</free>
+    </memory>
+  </executable>
+</project>

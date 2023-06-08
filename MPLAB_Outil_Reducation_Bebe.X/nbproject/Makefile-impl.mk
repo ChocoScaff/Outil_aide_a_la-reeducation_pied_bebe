@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=MPLAB_Outil_Reducation_Bebe.X
 
 # Active Configuration
-DEFAULTCONF=debug
+DEFAULTCONF=debug_gain
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=default debug 
+ALLCONFS=default debug debug_gain 
 
 
 # build
@@ -47,6 +47,7 @@ ALLCONFS=default debug
 .clobber-impl: .clobber-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default clean
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug_gain clean
 
 
 
@@ -54,6 +55,7 @@ ALLCONFS=default debug
 .all-impl: .all-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default build
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=debug_gain build
 
 
 

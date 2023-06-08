@@ -18,3 +18,10 @@ CND_ARTIFACT_PATH_debug=dist/debug/production/MPLAB_Outil_Reducation_Bebe.X.prod
 CND_PACKAGE_DIR_debug=${CND_DISTDIR}/debug/package
 CND_PACKAGE_NAME_debug=mplaboutilreducationbebe.x.tar
 CND_PACKAGE_PATH_debug=${CND_DISTDIR}/debug/package/mplaboutilreducationbebe.x.tar
+# debug_gain configuration
+CND_ARTIFACT_DIR_debug_gain=dist/debug_gain/production
+CND_ARTIFACT_NAME_debug_gain=MPLAB_Outil_Reducation_Bebe.X.production.hex
+CND_ARTIFACT_PATH_debug_gain=dist/debug_gain/production/MPLAB_Outil_Reducation_Bebe.X.production.hex
+CND_PACKAGE_DIR_debug_gain=${CND_DISTDIR}/debug_gain/package
+CND_PACKAGE_NAME_debug_gain=mplaboutilreducationbebe.x.tar
+CND_PACKAGE_PATH_debug_gain=${CND_DISTDIR}/debug_gain/package/mplaboutilreducationbebe.x.tar

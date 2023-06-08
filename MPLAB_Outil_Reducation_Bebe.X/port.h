@@ -16,5 +16,5 @@ void PORT_Start_ADC(void);
 unsigned char PORT_Get_Value_Adc(void);
 void PORT_Select_Mux0(void);
 void PORT_Select_Mux1(void);
-void PORT_Init_Gain(void);
-void PORT_Change_Gain(char INTER0, char INTER1);
+//void PORT_Init_Gain(void);
+unsigned int PORT_Change_Gain(char INTER0, char INTER1);

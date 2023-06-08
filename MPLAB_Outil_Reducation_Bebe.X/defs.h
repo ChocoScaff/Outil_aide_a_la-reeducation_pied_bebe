@@ -22,7 +22,7 @@
 // Use project enums instead of #define for ON and OFF.
 
 
-#define VOLTAGE_ALIM 5              // VCC
+#define VOLTAGE_ALIM 5.0              // VCC
 #define VALUE_MAX_ADC 256
 #define QUANTUM VOLTAGE_ALIM/VALUE_MAX_ADC 
 #define R20C             3000

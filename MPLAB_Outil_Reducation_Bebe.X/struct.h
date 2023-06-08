@@ -7,7 +7,7 @@
 
 
 typedef struct {
-    
+ 
     char mil;
     char cent; 
     char diz; 
