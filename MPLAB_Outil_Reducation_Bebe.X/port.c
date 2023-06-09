@@ -179,4 +179,6 @@ unsigned int PORT_Change_Gain(char INTER0, char INTER1) {
         return 2800;
     else if (INTER0 == 1 && INTER1 == 0)
         return 8300;
+    else 
+        return 3000;
 }

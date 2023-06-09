@@ -15,7 +15,11 @@
  */
 unsigned char ADC_GetValue(char channel) {
 
+    unsigned char sensor_value;
     PORT_Choose_Mux(channel);
     PORT_Start_ADC();
-    return PORT_Get_Value_Adc();
+    sensor_value = PORT_Get_Value_Adc();
+    if (sensor_value > 128)
+        sensor_value = 128;
+    return sensor_value;
 } 
