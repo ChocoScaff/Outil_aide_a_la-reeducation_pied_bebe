@@ -26,7 +26,7 @@ void main(void) {
     PORT_Init();
     TIMER_init_timer1();
     
-    PORT_Select_Mux0(); 
+    PORT_Select_Mux1(); 
     float F;
     while(1) {
         
@@ -207,18 +207,11 @@ float conversion_newton (float Rc) {
      F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
 //calcul de la force F
      
-     if (F > 70)
-        F = 70;
-     else if (F < 0.12)
-        F=0.12;
-//     if (Rc <= R_tab[10])
-//         {
-//         F = 70;
-//         }
-//     if (Rc > R_tab[10])
-//         {
-//         F = 0.12;
-//         }
+//     if (F > 70)
+//        F = 70;
+//     else if (F < 0.12)
+//        F=0.12;
+
 
      return F;
 }
@@ -237,7 +230,8 @@ float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
     sensor_value = ADC_GetValue(sensor_Channel);
     Vs = Voltage_Value(sensor_value);
     Rc = Resistance_Value(Vs, R);
-    F = conversion_newton(Rc);   
+//    Rc = 2650;
+    F = conversion_newton(Rc);
     
     #if defined (_DEBUG)
     Affichage_brut(sensor_value);
