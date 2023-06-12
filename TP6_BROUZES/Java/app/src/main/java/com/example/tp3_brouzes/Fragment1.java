@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -56,7 +58,8 @@ public class Fragment1 extends Fragment {
     private Button appareils;
     private Button efface_Liste;
     private ListView liste_appareils;
-
+    String readMessage;
+Integer lectureOK;
 
     TextView affichagePage1;
 
@@ -72,11 +75,31 @@ public class Fragment1 extends Fragment {
     private InputStream inputStream;
     private BluetoothSocket mmSocket = null;
 
+    private byte[] buffer;
+    private int bytes;
+
+    private boolean connected = false;
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what == 1) {
+                String readMessage = new String(buffer, 0, bytes);
+                Log.i("BTT", "Received message: " + readMessage);
+                // Handle the received message as needed
+            }
+            return true;
+        }
+    });
+
     String deviceName;
     String deviceHardwareAddress;
 
     String selectedItem;
     ArrayList pairedlist = new ArrayList();
+
+    Integer tailleMessage = 0;
+    Integer i;
 
     public Fragment1() {
         // Required empty public constructor
@@ -98,6 +121,19 @@ public class Fragment1 extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mmSocket != null)
+            try {
+                connected = false;
+                inputStream.close();
+                mmSocket.close();
+                Log.i("BTT", "Close Bluetooth");
+            } catch (IOException e) {
+                Log.i("BTT", "Error closing Bluetooth socket: " + e.getMessage());
+            }
     }
 
     @Override
@@ -332,75 +368,41 @@ public class Fragment1 extends Fragment {
                     Log.i("BTT", "Server socket");
                     tmp = mmthisDevice.createRfcommSocketToServiceRecord(uuid);
                     tmp.connect();
+                    connected = true;
                     Log.i("BTT", "bluetoothAdapter");
                     mmSocket = tmp;
+                    inputStream = mmSocket.getInputStream();
+
                     Toast.makeText(getActivity(), "Connecte",
                             Toast.LENGTH_SHORT).show();
+                    Thread readThread = new Thread(new Runnable() {
+                        public void run() {
+                            while(connected) {
+                                try {
+                                    buffer = new byte[1024];
+                                    bytes = inputStream.read(buffer);
+
+                                    handler.sendEmptyMessage(1);
+
+                                } catch (IOException e) {
+                                    Log.i("BTT", "Error reading from input");
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    readThread.start();
 
                 } catch (IOException e) {
                     Log.e("BTT", "Socket's listen() method failed", e);
                 }
-                LireCode();
-              }
 
-
+            }
 
         });
         return vue;
     }
-    public void LireCode(){
-        InputStream tmpIn = null;
-        InputStream receiveStream = null;
-        byte[] buffer = new byte[100]; // pour la lecture des données
-        String resultat="";
-        String tailleMessage;
-        String nomMessage;
-        TextView afficheReceptionBT; // pour afficher le code barre dans l'UI
-        String finalResultat; // La chaine de caracteres dans laquelle est mémorisée le code barre lu
-// La chaine de caracteres dans laquelle est mémorisée le code barre lu
-// code tache LireCode()
-        int i;
-        tmpIn = null;
-// OutputStream tmpOut = null; // non utilisé ici pour le flux dans l'autre sens
-// Get the BluetoothSocket input and output streams
-        int lectureOK = 0;
-        try {
-            Process mmSocket = null;
-            tmpIn = mmSocket.getInputStream();
-// tmpOut = mmSocket.getOutputStream();
-            receiveStream = tmpIn;
-// sendStream = tmpOut; // pour un flux émis non fait ici
-            Log.i("BT", "attente code-barre");
-            tailleMessage = String.valueOf(0);
-// les deux derniers sont LF et CR
-            do {
-// Read from the InputStream
-                receiveStream.read(buffer);
-                int numBytes = buffer.length;
-                tailleMessage = tailleMessage + numBytes;
-                for (i = 0; i < numBytes; i++) {
-                    if ((buffer[i] != 10) && (buffer[i] != 13)) {
-                        resultat = resultat + buffer[i];
-                        Log.i("BT", "partiel " + resultat);
-                        Log.i("BT", "partiel " + numBytes);
-                    }
-                    if ((buffer[i] == 10) || (buffer[i] == 13)) {
-                        lectureOK = 1;
-                    }
-                }
-            }
-            while (lectureOK!=1) ;
-            if (lectureOK == 1) {
-//lireCode.setText(resultat);
-                Log.i("BT", "resultat final " + resultat);
-            }
-        }
-// fin 2ème try
-        catch(Exception e){
-            Log.e("BT", "fin de message", e);
-            return;
-        }
-    }
+
 
 }
 
