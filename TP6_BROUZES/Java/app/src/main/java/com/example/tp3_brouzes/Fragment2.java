@@ -1,12 +1,20 @@
 package com.example.tp3_brouzes;
 
+import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,4 +69,6 @@ public class Fragment2 extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_2, container, false);
     }
+
+
 }

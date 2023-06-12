@@ -4,12 +4,10 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,20 +22,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment1#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class Fragment1 extends Fragment {
@@ -71,6 +69,9 @@ public class Fragment1 extends Fragment {
     private Integer autorisationConnexion = 1;
     private BluetoothSocket mmServerSocket;
     private BluetoothDevice mmthisDevice;
+    private InputStream inputStream;
+    private BluetoothSocket mmSocket = null;
+
     String deviceName;
     String deviceHardwareAddress;
 
@@ -332,21 +333,74 @@ public class Fragment1 extends Fragment {
                     tmp = mmthisDevice.createRfcommSocketToServiceRecord(uuid);
                     tmp.connect();
                     Log.i("BTT", "bluetoothAdapter");
-
+                    mmSocket = tmp;
                     Toast.makeText(getActivity(), "Connecte",
                             Toast.LENGTH_SHORT).show();
 
                 } catch (IOException e) {
                     Log.e("BTT", "Socket's listen() method failed", e);
                 }
-                mmServerSocket = tmp;
-            }
-
+                LireCode();
+              }
 
 
 
         });
         return vue;
     }
+    public void LireCode(){
+        InputStream tmpIn = null;
+        InputStream receiveStream = null;
+        byte[] buffer = new byte[100]; // pour la lecture des données
+        String resultat="";
+        String tailleMessage;
+        String nomMessage;
+        TextView afficheReceptionBT; // pour afficher le code barre dans l'UI
+        String finalResultat; // La chaine de caracteres dans laquelle est mémorisée le code barre lu
+// La chaine de caracteres dans laquelle est mémorisée le code barre lu
+// code tache LireCode()
+        int i;
+        tmpIn = null;
+// OutputStream tmpOut = null; // non utilisé ici pour le flux dans l'autre sens
+// Get the BluetoothSocket input and output streams
+        int lectureOK = 0;
+        try {
+            Process mmSocket = null;
+            tmpIn = mmSocket.getInputStream();
+// tmpOut = mmSocket.getOutputStream();
+            receiveStream = tmpIn;
+// sendStream = tmpOut; // pour un flux émis non fait ici
+            Log.i("BT", "attente code-barre");
+            tailleMessage = String.valueOf(0);
+// les deux derniers sont LF et CR
+            do {
+// Read from the InputStream
+                receiveStream.read(buffer);
+                int numBytes = buffer.length;
+                tailleMessage = tailleMessage + numBytes;
+                for (i = 0; i < numBytes; i++) {
+                    if ((buffer[i] != 10) && (buffer[i] != 13)) {
+                        resultat = resultat + buffer[i];
+                        Log.i("BT", "partiel " + resultat);
+                        Log.i("BT", "partiel " + numBytes);
+                    }
+                    if ((buffer[i] == 10) || (buffer[i] == 13)) {
+                        lectureOK = 1;
+                    }
+                }
+            }
+            while (lectureOK!=1) ;
+            if (lectureOK == 1) {
+//lireCode.setText(resultat);
+                Log.i("BT", "resultat final " + resultat);
+            }
+        }
+// fin 2ème try
+        catch(Exception e){
+            Log.e("BT", "fin de message", e);
+            return;
+        }
+    }
 
 }
+
