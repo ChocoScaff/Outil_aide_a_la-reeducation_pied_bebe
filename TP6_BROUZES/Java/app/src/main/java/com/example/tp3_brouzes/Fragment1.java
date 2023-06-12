@@ -31,6 +31,9 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -57,8 +60,10 @@ public class Fragment1 extends Fragment {
     private Button Connect_BT;
     private Button appareils;
     private Button efface_Liste;
+
+    private Integer debut=0;
     private ListView liste_appareils;
-    String readMessage;
+
 Integer lectureOK;
 
     TextView affichagePage1;
@@ -75,6 +80,8 @@ Integer lectureOK;
     private InputStream inputStream;
     private BluetoothSocket mmSocket = null;
 
+    private String readMessage;
+
     private byte[] buffer;
     private int bytes;
 
@@ -84,7 +91,7 @@ Integer lectureOK;
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {
-                String readMessage = new String(buffer, 0, bytes);
+                String readMessage = new String(buffer, 0, bytes, StandardCharsets.UTF_8);
                 Log.i("BTT", "Received message: " + readMessage);
                 // Handle the received message as needed
             }
@@ -97,9 +104,6 @@ Integer lectureOK;
 
     String selectedItem;
     ArrayList pairedlist = new ArrayList();
-
-    Integer tailleMessage = 0;
-    Integer i;
 
     public Fragment1() {
         // Required empty public constructor
@@ -203,6 +207,7 @@ Integer lectureOK;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mBluetoothAdapter.getBondedDevices();
 
+
         if (mBluetoothAdapter == null) {
             // Device doesn't support Bluetooth
             Toast.makeText(getActivity(), "La machine ne possède pas le Bluetooth",
@@ -213,6 +218,7 @@ Integer lectureOK;
             Toast.makeText(getActivity(), "interface BT existe",
                     Toast.LENGTH_SHORT).show();
         }
+
 
         appareils.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,14 +381,52 @@ Integer lectureOK;
 
                     Toast.makeText(getActivity(), "Connecte",
                             Toast.LENGTH_SHORT).show();
+                    /*
+                    try {
+                        // Set the desired baud rate (e.g., 9600) using reflection
+                        Method setBaudRateMethod = mmSocket.getClass().getMethod("setBaudRate", int.class);
+                        setBaudRateMethod.invoke(mmSocket, 9600);
+
+                        // Verify the new baud rate
+                        int newBaudRate = (int) mmSocket.getClass().getMethod("getBaudRate").invoke(mmSocket);
+                        Log.d("BTT", "New Baud Rate: " + newBaudRate);
+
+                    } catch (NoSuchMethodException e) {
+                        Log.e("BTT", "Unable to find setBaudRate method: " + e.getMessage());
+                        e.printStackTrace();
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        Log.e("BTT", "Error invoking setBaudRate method: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    */
+
                     Thread readThread = new Thread(new Runnable() {
                         public void run() {
+
                             while(connected) {
                                 try {
+                                    int i=0;
                                     buffer = new byte[1024];
                                     bytes = inputStream.read(buffer);
 
-                                    handler.sendEmptyMessage(1);
+                                    for(i=0;buffer[i] != '\n'; i++) {
+
+                                        if (buffer[i] == '\r')
+                                            debut = 1;
+
+                                        if (debut == 1) {
+                                            Log.i("BTT", "Received  " + buffer[i]);
+                                            if (buffer[i] != '\r')
+                                                readMessage = readMessage + buffer[i];
+                                        }
+
+                                    }
+                                    readMessage =  readMessage + '\0';
+                                    //String readMessage = new String(buffer, 0, bytes, StandardCharsets.UTF_8);
+                                    Log.i("BTT", "ReadMessage " + readMessage);
+                                    readMessage = "";
+                                    debut = 0;
+                                    //handler.sendEmptyMessage(1);
 
                                 } catch (IOException e) {
                                     Log.i("BTT", "Error reading from input");
