@@ -80,8 +80,6 @@ Integer lectureOK;
     private InputStream inputStream;
     private BluetoothSocket mmSocket = null;
 
-    private String readMessage;
-
     private byte[] buffer;
     private int bytes;
 
@@ -90,9 +88,23 @@ Integer lectureOK;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            int i;
             if (msg.what == 1) {
-                String readMessage = new String(buffer, 0, bytes, StandardCharsets.UTF_8);
-                Log.i("BTT", "Received message: " + readMessage);
+                if (bytes != -1 && buffer [0] == '\r') {
+                    for (i = 0; i < bytes; i++) {
+
+                        if (buffer[i] == 10)
+                            break;
+
+                        if (buffer[i] != 0)
+                            Log.i("BTT", "Received  " + buffer[i]);
+
+
+                    }
+                }
+                //Log.i("BTT", "Message End  " + buffer[i]);
+                //String readMessage = new String(buffer, 0, bytes);
+                //Log.i("BTT", "Received message: " + readMessage);
                 // Handle the received message as needed
             }
             return true;
@@ -381,24 +393,7 @@ Integer lectureOK;
 
                     Toast.makeText(getActivity(), "Connecte",
                             Toast.LENGTH_SHORT).show();
-                    /*
-                    try {
-                        // Set the desired baud rate (e.g., 9600) using reflection
-                        Method setBaudRateMethod = mmSocket.getClass().getMethod("setBaudRate", int.class);
-                        setBaudRateMethod.invoke(mmSocket, 9600);
 
-                        // Verify the new baud rate
-                        int newBaudRate = (int) mmSocket.getClass().getMethod("getBaudRate").invoke(mmSocket);
-                        Log.d("BTT", "New Baud Rate: " + newBaudRate);
-
-                    } catch (NoSuchMethodException e) {
-                        Log.e("BTT", "Unable to find setBaudRate method: " + e.getMessage());
-                        e.printStackTrace();
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        Log.e("BTT", "Error invoking setBaudRate method: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                    */
 
                     Thread readThread = new Thread(new Runnable() {
                         public void run() {
@@ -409,24 +404,7 @@ Integer lectureOK;
                                     buffer = new byte[1024];
                                     bytes = inputStream.read(buffer);
 
-                                    for(i=0;buffer[i] != '\n'; i++) {
-
-                                        if (buffer[i] == '\r')
-                                            debut = 1;
-
-                                        if (debut == 1) {
-                                            Log.i("BTT", "Received  " + buffer[i]);
-                                            if (buffer[i] != '\r')
-                                                readMessage = readMessage + buffer[i];
-                                        }
-
-                                    }
-                                    readMessage =  readMessage + '\0';
-                                    //String readMessage = new String(buffer, 0, bytes, StandardCharsets.UTF_8);
-                                    Log.i("BTT", "ReadMessage " + readMessage);
-                                    readMessage = "";
-                                    debut = 0;
-                                    //handler.sendEmptyMessage(1);
+                                    handler.sendEmptyMessage(1);
 
                                 } catch (IOException e) {
                                     Log.i("BTT", "Error reading from input");
