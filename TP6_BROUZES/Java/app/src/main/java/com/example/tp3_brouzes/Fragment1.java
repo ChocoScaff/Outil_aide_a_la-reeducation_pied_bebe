@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -339,21 +340,7 @@ Integer lectureOK;
                     }
                 }
             }
-            /*
-            @Override
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                super.onActivityResult(requestCode, resultCode,data);
-                Log.i("BT", "onActivityResult, requestCode: " + requestCode + ", resultCode: "
-                        + resultCode);
-                if (resultCode !=0) {
 
-                    interfaceON =1;
-                    // Ici on pourrait ajouter de code
-                }
-                else interfaceON=0;
-            }
-
-             */
 
         });
 
@@ -398,11 +385,11 @@ Integer lectureOK;
 
                     Thread readThread = new Thread(new Runnable() {
                         public void run() {
-
+                            buffer = new byte[1024];
                             while(connected) {
+                                SystemClock.sleep(500);
                                 try {
-                                    int i=0;
-                                    buffer = new byte[1024];
+
                                     bytes = inputStream.read(buffer);
 
                                     handler.sendEmptyMessage(1);
