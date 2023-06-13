@@ -85,27 +85,28 @@ Integer lectureOK;
 
     private boolean connected = false;
 
+    float capteur1,capteur2,capteur3,capteur4;
+
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             int i;
             if (msg.what == 1) {
-                if (bytes != -1 && buffer [0] == '\r') {
+
+                if (buffer [0] == '\r') {
                     for (i = 0; i < bytes; i++) {
 
                         if (buffer[i] == 10)
                             break;
 
-                        if (buffer[i] != 0)
-                            Log.i("BTT", "Received  " + buffer[i]);
-
-
+                        Log.i("BTT", "Received  " + buffer[i]);
                     }
+                    //Log.i("BTT", "Message End  " + buffer[i]);
+                    String readMessage = new String(buffer, 0, bytes);
+                    Log.i("BTT", "Received message: " + readMessage);
+                    // Handle the received message as needed
                 }
-                //Log.i("BTT", "Message End  " + buffer[i]);
-                //String readMessage = new String(buffer, 0, bytes);
-                //Log.i("BTT", "Received message: " + readMessage);
-                // Handle the received message as needed
+
             }
             return true;
         }
