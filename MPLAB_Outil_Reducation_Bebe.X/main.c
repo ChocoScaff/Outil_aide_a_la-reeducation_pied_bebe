@@ -21,6 +21,7 @@ float Resistance_Value(float Voltage, unsigned int R);
 float conversion_newton (float Rc);
 float Get_Newton(char INTER0, char INTER1, char sensor_Channel);
 
+
 void main(void) {
     
     PORT_Init();
@@ -34,16 +35,55 @@ void main(void) {
         Fincompt1 = 0;
         PORT_Blink_LED();
         
-       
+        F = Get_Better_Newton_Value(0);
+        
+        #if defined (_DEBUG)
+        PORT_putchar('\r');
+        puts_Newton(F);     
+        PORT_putchar('\n');
+        #endif
         //see PCB R20 R20B R20C
 //        F = Get_Newton(0,0,0); //52k ohm       
 //        F = Get_Newton(0,1,0); //2.8k ohm      
-        F = Get_Newton(1,0,0); //8.3k ohm    
+//        F = Get_Newton(1,0,0); //8.3k ohm    
 
+        
     }
         
     return;
 }
+
+/**
+ * 
+ * @param channel_sensor
+ * @return 
+ */
+float Get_Better_Newton_Value(char channel_sensor) {
+    
+    float F1,F2,F3;
+    
+    F1 = Get_Newton(0,0,channel_sensor); //52k ohm       
+    F2 = Get_Newton(0,1,channel_sensor); //2.8k ohm      
+    F3 = Get_Newton(1,0,channel_sensor); //8.3k ohm   
+    
+    #if defined (_DEBUG)
+    PORT_putchar('\r');
+    puts_Newton(F1);     
+    PORT_putchar(' ');
+    puts_Newton(F2);     
+    PORT_putchar(' ');
+    puts_Newton(F3);    
+    PORT_putchar('\n');
+    #endif
+    
+    if ((F1 > F2) && (F1 > F3))
+        return F1;
+    else if ((F2 > F3) && (F2 > F1))
+        return F2;
+    else if ((F3 > F2) && (F3 > F1))
+        return F3;
+}
+
 
 /**
  * 
@@ -234,18 +274,18 @@ float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
     F = conversion_newton(Rc);
     
     #if defined (_DEBUG)
-    Affichage_brut(sensor_value);
-    PORT_putString(" valeur Newton ");
-    PORT_putchar(' ');
-//     puts_float(Rc);
-//    puts_float(Vs);
-    puts_Newton(F);
-    PORT_putString(" N ");
-//    
-    Affichage_brut(INTER0);
-    PORT_putchar(' ');
-    Affichage_brut(INTER1);
-    PORT_putString("\n");
+//    Affichage_brut(sensor_value);
+//    PORT_putString(" valeur Newton ");
+//    PORT_putchar(' ');
+////     puts_float(Rc);
+////    puts_float(Vs);
+//    puts_Newton(F);
+//    PORT_putString(" N ");
+////    
+//    Affichage_brut(INTER0);
+//    PORT_putchar(' ');
+//    Affichage_brut(INTER1);
+//    PORT_putString("\n");
     #endif
 
     return F;
