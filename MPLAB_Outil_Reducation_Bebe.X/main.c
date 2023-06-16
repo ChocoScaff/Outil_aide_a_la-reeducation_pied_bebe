@@ -20,7 +20,8 @@ float Voltage_Value(unsigned char sensor);
 float Resistance_Value(float Voltage, unsigned int R);
 float conversion_newton (float Rc);
 float Get_Newton(char INTER0, char INTER1, char sensor_Channel);
-
+void puts_Newton(float Valeur);
+float Get_Better_Newton_Value(char channel_sensor);
 
 void main(void) {
     
@@ -67,13 +68,13 @@ float Get_Better_Newton_Value(char channel_sensor) {
     F3 = Get_Newton(1,0,channel_sensor); //8.3k ohm   
     
     #if defined (_DEBUG)
-    PORT_putchar('\r');
-    puts_Newton(F1);     
-    PORT_putchar(' ');
-    puts_Newton(F2);     
-    PORT_putchar(' ');
-    puts_Newton(F3);    
-    PORT_putchar('\n');
+//    PORT_putchar('\r');
+//    puts_Newton(F1);
+//    PORT_putchar(' ');
+//    puts_Newton(F2);
+//    PORT_putchar(' ');
+//    puts_Newton(F3);
+//    PORT_putchar('\n');
     #endif
     
     if ((F1 > F2) && (F1 > F3))
@@ -145,24 +146,12 @@ void puts_float(float Valeur) {
  */
 void puts_Newton(float Valeur) {
     
-    unsigned int affiche;
-    ValueMetrics valueMetrics;
+    unsigned char affiche;
+    
+    affiche = (unsigned char) Valeur;
+    
+    PORT_putchar(affiche);
 
-    Valeur = Valeur * 100;
-    affiche = (int) Valeur ;
-    affiche = affiche % 10000 ;
-    valueMetrics.diz = ((char)(affiche/1000))+0x30;
-    PORT_putchar(valueMetrics.diz);
-    affiche = affiche % 1000 ;
-    valueMetrics.unit = ((char)(affiche/100))+0x30;
-    PORT_putchar(valueMetrics.unit);
-    PORT_putchar('.');
-    affiche = affiche % 100 ;
-    valueMetrics.dizi = ((char)(affiche/10))+0x30;
-    PORT_putchar(valueMetrics.dizi);
-    affiche = affiche % 10 ;
-    valueMetrics.centi = ((char)(affiche))+0x30;
-    PORT_putchar(valueMetrics.centi);
 }
 
 /**
@@ -247,10 +236,10 @@ float conversion_newton (float Rc) {
      F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
 //calcul de la force F
      
-//     if (F > 70)
-//        F = 70;
-//     else if (F < 0.12)
-//        F=0.12;
+     if (F > 70)
+        F = 70;
+     else if (F < 0.12)
+        F=0.12;
 
 
      return F;
