@@ -44,9 +44,6 @@ void main(void) {
         PORT_putchar('\n');
         #endif
         //see PCB R20 R20B R20C
-//        F = Get_Newton(0,0,0); //52k ohm       
-//        F = Get_Newton(0,1,0); //2.8k ohm      
-//        F = Get_Newton(1,0,0); //8.3k ohm    
 
         
     }
@@ -66,6 +63,13 @@ float Get_Better_Newton_Value(char channel_sensor) {
     F1 = Get_Newton(0,0,channel_sensor); //52k ohm       
     F2 = Get_Newton(0,1,channel_sensor); //2.8k ohm      
     F3 = Get_Newton(1,0,channel_sensor); //8.3k ohm   
+    
+    if (F1 == 70.0)
+        F1=0;
+    if (F2 == 70.0)
+        F2=0;
+    if (F3 == 70.0)
+        F3=0;
     
     #if defined (_DEBUG)
 //    PORT_putchar('\r');
