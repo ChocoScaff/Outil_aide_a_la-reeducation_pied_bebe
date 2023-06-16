@@ -97,14 +97,20 @@ Integer lectureOK;
                 if (buffer [0] == '\r') {
                     for (i = 0; i < bytes; i++) {
 
+
                         if (buffer[i] == 10)
                             break;
 
                         Log.i("BTT", "Received  " + buffer[i]);
                     }
+
                     //Log.i("BTT", "Message End  " + buffer[i]);
                     String readMessage = new String(buffer, 0, bytes);
                     Log.i("BTT", "Received message: " + readMessage);
+                    //int intvalue = (buffer[1] & 0xFF << 24) | (buffer[2] & 0xFF << 16) | (buffer[4] & 0xFF << 8) | (buffer[5] & 0xFF);
+                    //float capteur1 = Float.intBitsToFloat(intvalue);
+                    int capteur1 = buffer[1];
+                    Log.i("BTT", "capteur1 = : " + capteur1);
                     // Handle the received message as needed
                 }
 
@@ -258,7 +264,7 @@ Integer lectureOK;
                             //    ActivityCompat#requestPermissions
                             // here to request the missing permissions, and then overriding
                             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
+                            //          bluetoothAdapter                                int[] grantResults)
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
                         }
