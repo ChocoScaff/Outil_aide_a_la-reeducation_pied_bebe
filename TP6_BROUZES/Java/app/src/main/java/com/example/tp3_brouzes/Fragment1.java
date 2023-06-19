@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
@@ -54,8 +56,6 @@ public class Fragment1 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private int Active_BTr;
     private View vue;
     private Button Active_BT;
     private Button Connect_BT;
@@ -64,8 +64,6 @@ public class Fragment1 extends Fragment {
 
     private Integer debut=0;
     private ListView liste_appareils;
-
-Integer lectureOK;
 
     TextView affichagePage1;
 
@@ -92,6 +90,7 @@ Integer lectureOK;
         @Override
         public boolean handleMessage(Message msg) {
             int i;
+
             if (msg.what == 1) {
 
                 if (buffer [0] == '\r') {
@@ -100,12 +99,14 @@ Integer lectureOK;
                         if (buffer[i] == 10)
                             break;
 
-                        Log.i("BTT", "Received  " + buffer[i]);
+                        //Log.i("BTT", "Received  " + buffer[i]);
                     }
                     //Log.i("BTT", "Message End  " + buffer[i]);
                     String readMessage = new String(buffer, 0, bytes);
-                    Log.i("BTT", "Received message: " + readMessage);
+                    //Log.i("BTT", "Received message: " + readMessage);
                     // Handle the received message as needed
+                    capteur1 = buffer[1];
+                    Log.i("BTT", "capteur1 = : " + capteur1 + "N");
                 }
 
             }
@@ -118,6 +119,8 @@ Integer lectureOK;
 
     String selectedItem;
     ArrayList pairedlist = new ArrayList();
+
+    Fragment2 fragment2;
 
     public Fragment1() {
         // Required empty public constructor
@@ -232,6 +235,8 @@ Integer lectureOK;
             Toast.makeText(getActivity(), "interface BT existe",
                     Toast.LENGTH_SHORT).show();
         }
+
+        fragment2 = new Fragment2();
 
 
         appareils.setOnClickListener(new View.OnClickListener() {
@@ -386,13 +391,16 @@ Integer lectureOK;
                     Thread readThread = new Thread(new Runnable() {
                         public void run() {
                             buffer = new byte[1024];
+                            fragment2.buffer = buffer;
+
                             while(connected) {
                                 SystemClock.sleep(500);
                                 try {
 
                                     bytes = inputStream.read(buffer);
-
+                                    fragment2.affichage();
                                     handler.sendEmptyMessage(1);
+
 
                                 } catch (IOException e) {
                                     Log.i("BTT", "Error reading from input");

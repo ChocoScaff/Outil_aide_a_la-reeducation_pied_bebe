@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,10 @@ public class Fragment2 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private int connected=0;
+
+    protected byte[] buffer;
 
     public Fragment2() {
         // Required empty public constructor
@@ -61,6 +66,20 @@ public class Fragment2 extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        /*
+        Thread readThread = new Thread(new Runnable() {
+            public void run() {
+
+                connected = 1;
+                while(connected==1) {
+
+                        // Use the sensorValue as needed
+                        Log.d("BTT", "Received sensor value in Fragment2: " + buffer[1]);
+                    }
+                }
+        });
+        readThread.start();
+         */
     }
 
     @Override
@@ -68,6 +87,10 @@ public class Fragment2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_2, container, false);
+    }
+
+    protected void affichage(){
+        Log.d("BTT", "Received sensor value in Fragment2: " + buffer[1]);
     }
 
 
