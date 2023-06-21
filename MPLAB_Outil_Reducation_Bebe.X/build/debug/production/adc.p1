@@ -28,17 +28,34 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;adc.c: 21:     sensor_value = PORT_Get_Value_Adc();
 [e = _sensor_value ( _PORT_Get_Value_Adc ..  ]
 "22
-[; ;adc.c: 22:     if (sensor_value > 127)
+[; ;adc.c: 22:     if (sensor_value > 127) {
 [e $ ! > -> _sensor_value `i -> 127 `i 2  ]
+{
 "23
 [; ;adc.c: 23:         sensor_value = 127;
 [e = _sensor_value -> -> 127 `i `uc ]
-[e :U 2 ]
 "24
-[; ;adc.c: 24:     return sensor_value;
+[; ;adc.c: 24:     }
+}
+[e $U 3  ]
+"25
+[; ;adc.c: 25:     else if (sensor_value <= 0) {
+[e :U 2 ]
+[e $ ! <= -> _sensor_value `i -> 0 `i 4  ]
+{
+"26
+[; ;adc.c: 26:         sensor_value = 0;
+[e = _sensor_value -> -> 0 `i `uc ]
+"27
+[; ;adc.c: 27:     }
+}
+[e :U 4 ]
+[e :U 3 ]
+"28
+[; ;adc.c: 28:     return sensor_value;
 [e ) _sensor_value ]
 [e $UE 1  ]
-"25
-[; ;adc.c: 25: }
+"29
+[; ;adc.c: 29: }
 [e :UE 1 ]
 }

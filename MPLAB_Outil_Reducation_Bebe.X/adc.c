@@ -19,7 +19,11 @@ unsigned char ADC_GetValue(char channel) {
     PORT_Choose_Mux(channel);
     PORT_Start_ADC();
     sensor_value = PORT_Get_Value_Adc();
-    if (sensor_value > 127)
+    if (sensor_value > 127) {
         sensor_value = 127;
+    }
+    else if (sensor_value <= 0) {
+        sensor_value = 0;
+    }
     return sensor_value;
 } 

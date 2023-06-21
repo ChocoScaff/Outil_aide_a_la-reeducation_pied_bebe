@@ -38,11 +38,11 @@ void main(void) {
         
         F = Get_Better_Newton_Value(0);
         
-        #if defined (_DEBUG)
-//        PORT_putchar('\r');
-//        puts_Newton(F); 
-//        PORT_putchar('\n');
-        #endif
+        
+        PORT_putchar('\r');
+        puts_Newton(F); 
+        PORT_putchar('\n');
+                
         //see PCB R20 R20B R20C
 
         
@@ -58,38 +58,51 @@ void main(void) {
  */
 float Get_Better_Newton_Value(char channel_sensor) {
     
-    float F1,F2,F3;
+//    float F1,F2,F3;
+    float r1, r2, r3;
+    float coeffR1=1,coeffR2=1,coeffR3=1;
+    float resultat,F;
     
-    F1 = Get_Newton(0,0,channel_sensor); //52k ohm       
-    F2 = Get_Newton(0,1,channel_sensor); //2.8k ohm      
-    F3 = Get_Newton(1,0,channel_sensor); //8.3k ohm   
+    r1 = Get_Newton(0,0,channel_sensor); //52k ohm       
+    r2 = Get_Newton(0,1,channel_sensor); //2.8k ohm      
+    r3 = Get_Newton(1,0,channel_sensor); //8.3k ohm   
     
-    if (F1 == 70.0)
-        F1=0;
-    if (F2 == 70.0)
-        F2=0;
-    if (F3 == 70.0)
-        F3=0;
+    if (r1 > 650000) //saturation
+    {
+        coeffR1=650000/r1;
+    }
+    else if(r1 < 68000) {
+        coeffR1= r1/68000;
+    }
+    if (r2 > 35000)
+    {
+        coeffR2= 35000/r2;
+    }
+    else if(r2 < 3900)
+    {
+        coeffR2= r2/3900;
+    }
+    if (r3 > 103750)
+    {
+        coeffR3= 103750/r3;
+    }
+    else if (r3 < 11530)
+    {
+        coeffR3= r3/11530;
+    }
+        
+    resultat = ((r1*coeffR1)+(r2*coeffR2)+(r3*coeffR3))/(coeffR1+coeffR2+coeffR3);
     
+    F = conversion_newton(resultat);
+        
     #if defined (_DEBUG)
-//    PORT_putchar('\r');
-////    puts_Newton(F1);
-//    puts_float(F1);
-//    PORT_putchar(' ');
-//    puts_float(F2);
-////    puts_Newton(F2);
-//    PORT_putchar(' ');
-//    puts_float(F3);
-////    puts_Newton(F3);
+//    Affichage_brut(F);
 //    PORT_putchar('\n');
-    #endif
+    #endif    
+    return F;
     
-    if ((F1 > F2) && (F1 > F3))
-        return F1;
-    else if ((F2 > F3) && (F2 > F1))
-        return F2;
-    else if ((F3 > F2) && (F3 > F1))
-        return F3;
+    
+    
 }
 
 
@@ -306,32 +319,34 @@ float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
 
     R = PORT_Change_Gain(INTER0,INTER1);
     #if defined (_DEBUG)
-    Affichage_brut(R);
-    PORT_putString(" R ");
+//    Affichage_brut(R);
+//    PORT_putString(" R ");
     #endif
 
     sensor_value = ADC_GetValue(sensor_Channel);
     #if defined (_DEBUG)
-    Affichage_brut(sensor_value);
-    PORT_putString(" Numerique ");
+//    Affichage_brut(sensor_value);
+//    PORT_putString(" Numerique ");
     #endif
     Vs = Voltage_Value(sensor_value);
     #if defined (_DEBUG)
-    puts_float(Vs);
-    PORT_putString(" V ");
+//    puts_float(Vs);
+//    PORT_putString(" V ");
     #endif
     Rc = Resistance_Value(Vs, R);
     #if defined (_DEBUG)
-    puts_float(Rc);
-    PORT_putString(" Rc ");
-    #endif
-//    Rc = 2650;
-    F = conversion_newton(Rc);
-    
-    #if defined (_DEBUG)
-    Affichage_brut(F);
-    PORT_putString(" N \n");  
+//    puts_float(Rc);
+//    PORT_putString(" Rc ");
     #endif
 
-    return F;
+//    F = conversion_newton(Rc);
+//    
+//    #if defined (_DEBUG)
+//    PORT_putchar('\r');
+//    Affichage_brut(F);
+//    PORT_putString(" N \n");  
+//    #endif
+//
+//    return F;
+    return Rc;
 }

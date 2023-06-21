@@ -5,10 +5,9 @@
         <group>
             <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/main.c</file>
             <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/port.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.20/pic/sources/c90/common/flge.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.20/pic/sources/c90/common/xxtofl.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.20/pic/sources/c90/common/sprcadd.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.20/pic/sources/c90/common/sprcmul.c</file>
+            <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/defs.h</file>
+            <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/nbproject/Makefile-impl.mk</file>
+            <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/nbproject/Makefile-debug.mk</file>
             <file>file:/C:/Users/TEMP.GEII2.003/Documents/Outil_aide_a_la-reeducation_pied_bebe/MPLAB_Outil_Reducation_Bebe.X/adc.c</file>
         </group>
     </open-files>

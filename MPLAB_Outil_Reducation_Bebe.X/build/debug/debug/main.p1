@@ -18,6 +18,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "22
 [; ;main.c: 22: float Get_Newton(char INTER0, char INTER1, char sensor_Channel);
 [v _Get_Newton `(f ~T0 @X0 0 ef3`uc`uc`uc ]
+"21
+[; ;main.c: 21: float conversion_newton (float Rc);
+[v _conversion_newton `(f ~T0 @X0 0 ef1`f ]
 "9 ./struct.h
 [; ;./struct.h: 9: typedef struct {
 [s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
@@ -28,9 +31,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "20
 [; ;./port.h: 20: unsigned int PORT_Change_Gain(char INTER0, char INTER1);
 [v _PORT_Change_Gain `(ui ~T0 @X0 0 ef2`uc`uc ]
-"13
-[; ;./port.h: 13: void PORT_putString(char chaine[]);
-[v _PORT_putString `(v ~T0 @X0 0 ef1`*uc ]
 "8 ./adc.h
 [; ;./adc.h: 8: unsigned char ADC_GetValue(char channel);
 [v _ADC_GetValue `(uc ~T0 @X0 0 ef1`uc ]
@@ -366,288 +366,300 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _Get_Better_Newton_Value ]
 [v _channel_sensor `uc ~T0 @X0 1 r1 ]
 [f ]
-"61
-[; ;main.c: 61:     float F1,F2,F3;
-[v _F1 `f ~T0 @X0 1 a ]
-[v _F2 `f ~T0 @X0 1 a ]
-[v _F3 `f ~T0 @X0 1 a ]
+"62
+[; ;main.c: 62:     float r1, r2, r3;
+[v _r1 `f ~T0 @X0 1 a ]
+[v _r2 `f ~T0 @X0 1 a ]
+[v _r3 `f ~T0 @X0 1 a ]
 "63
-[; ;main.c: 63:     F1 = Get_Newton(0,0,channel_sensor);
-[e = _F1 ( _Get_Newton (3 , , -> -> 0 `i `uc -> -> 0 `i `uc _channel_sensor ]
+[; ;main.c: 63:     float coeffR1=1,coeffR2=1,coeffR3=1;
+[v _coeffR1 `f ~T0 @X0 1 a ]
+[e = _coeffR1 -> -> 1 `i `f ]
+[v _coeffR2 `f ~T0 @X0 1 a ]
+[e = _coeffR2 -> -> 1 `i `f ]
+[v _coeffR3 `f ~T0 @X0 1 a ]
+[e = _coeffR3 -> -> 1 `i `f ]
 "64
-[; ;main.c: 64:     F2 = Get_Newton(0,1,channel_sensor);
-[e = _F2 ( _Get_Newton (3 , , -> -> 0 `i `uc -> -> 1 `i `uc _channel_sensor ]
-"65
-[; ;main.c: 65:     F3 = Get_Newton(1,0,channel_sensor);
-[e = _F3 ( _Get_Newton (3 , , -> -> 1 `i `uc -> -> 0 `i `uc _channel_sensor ]
+[; ;main.c: 64:     float resultat,F;
+[v _resultat `f ~T0 @X0 1 a ]
+[v _F `f ~T0 @X0 1 a ]
+"66
+[; ;main.c: 66:     r1 = Get_Newton(0,0,channel_sensor);
+[e = _r1 ( _Get_Newton (3 , , -> -> 0 `i `uc -> -> 0 `i `uc _channel_sensor ]
 "67
-[; ;main.c: 67:     if (F1 == 70.0)
-[e $ ! == -> _F1 `d .70.0 167  ]
+[; ;main.c: 67:     r2 = Get_Newton(0,1,channel_sensor);
+[e = _r2 ( _Get_Newton (3 , , -> -> 0 `i `uc -> -> 1 `i `uc _channel_sensor ]
 "68
-[; ;main.c: 68:         F1=0;
-[e = _F1 -> -> 0 `i `f ]
-[e :U 167 ]
-"69
-[; ;main.c: 69:     if (F2 == 70.0)
-[e $ ! == -> _F2 `d .70.0 168  ]
+[; ;main.c: 68:     r3 = Get_Newton(1,0,channel_sensor);
+[e = _r3 ( _Get_Newton (3 , , -> -> 1 `i `uc -> -> 0 `i `uc _channel_sensor ]
 "70
-[; ;main.c: 70:         F2=0;
-[e = _F2 -> -> 0 `i `f ]
-[e :U 168 ]
+[; ;main.c: 70:     if (r1 > 650000)
+[e $ ! > _r1 -> -> 650000 `l `f 167  ]
 "71
-[; ;main.c: 71:     if (F3 == 70.0)
-[e $ ! == -> _F3 `d .70.0 169  ]
+[; ;main.c: 71:     {
+{
 "72
-[; ;main.c: 72:         F3=0;
-[e = _F3 -> -> 0 `i `f ]
-[e :U 169 ]
+[; ;main.c: 72:         coeffR1=650000/r1;
+[e = _coeffR1 / -> -> 650000 `l `f _r1 ]
+"73
+[; ;main.c: 73:     }
+}
+[e :U 167 ]
+"77
+[; ;main.c: 77:     if (r2 > 35000)
+[e $ ! > _r2 -> -> 35000 `l `f 168  ]
+"78
+[; ;main.c: 78:     {
+{
+"79
+[; ;main.c: 79:         coeffR2= 35000/r2;
+[e = _coeffR2 / -> -> 35000 `l `f _r2 ]
+"80
+[; ;main.c: 80:     }
+}
+[e :U 168 ]
+"85
+[; ;main.c: 85:     if (r3 > 103750)
+[e $ ! > _r3 -> -> 103750 `l `f 169  ]
+"86
+[; ;main.c: 86:     {
+{
 "87
-[; ;main.c: 87:     if ((F1 > F2) && (F1 > F3))
-[e $ ! && > _F1 _F2 > _F1 _F3 170  ]
+[; ;main.c: 87:         coeffR3= 103750/r3;
+[e = _coeffR3 / -> -> 103750 `l `f _r3 ]
 "88
-[; ;main.c: 88:         return F1;
-[e ) _F1 ]
+[; ;main.c: 88:     }
+}
+[e :U 169 ]
+"94
+[; ;main.c: 94:     resultat = ((r1*coeffR1)+(r2*coeffR2)+(r3*coeffR3))/(coeffR1+coeffR2+coeffR3);
+[e = _resultat / + + * _r1 _coeffR1 * _r2 _coeffR2 * _r3 _coeffR3 + + _coeffR1 _coeffR2 _coeffR3 ]
+"96
+[; ;main.c: 96:     F = conversion_newton(resultat);
+[e = _F ( _conversion_newton (1 _resultat ]
+"102
+[; ;main.c: 102:     return F;
+[e ) _F ]
 [e $UE 166  ]
-[e $U 171  ]
-"89
-[; ;main.c: 89:     else if ((F2 > F3) && (F2 > F1))
-[e :U 170 ]
-[e $ ! && > _F2 _F3 > _F2 _F1 172  ]
-"90
-[; ;main.c: 90:         return F2;
-[e ) _F2 ]
-[e $UE 166  ]
-[e $U 173  ]
-"91
-[; ;main.c: 91:     else if ((F3 > F2) && (F3 > F1))
-[e :U 172 ]
-[e $ ! && > _F3 _F2 > _F3 _F1 174  ]
-"92
-[; ;main.c: 92:         return F3;
-[e ) _F3 ]
-[e $UE 166  ]
-[e :U 174 ]
-[e :U 173 ]
-[e :U 171 ]
-"93
-[; ;main.c: 93: }
+"106
+[; ;main.c: 106: }
 [e :UE 166 ]
 }
-"100
-[; ;main.c: 100: void Affichage_brut(int valeur_a_afficher)
+"113
+[; ;main.c: 113: void Affichage_brut(int valeur_a_afficher)
 [v _Affichage_brut `(v ~T0 @X0 1 ef1`i ]
-"101
-[; ;main.c: 101: {
+"114
+[; ;main.c: 114: {
 {
 [e :U _Affichage_brut ]
-"100
-[; ;main.c: 100: void Affichage_brut(int valeur_a_afficher)
-[v _valeur_a_afficher `i ~T0 @X0 1 r1 ]
-"101
-[; ;main.c: 101: {
-[f ]
-"102
-[; ;main.c: 102:     unsigned char affiche;
-[v _affiche `uc ~T0 @X0 1 a ]
-"104
-[; ;main.c: 104:     ValueMetrics valueMetrics;
-[v _valueMetrics `S1 ~T0 @X0 1 a ]
-"106
-[; ;main.c: 106:     affiche = valeur_a_afficher ;
-[e = _affiche -> _valeur_a_afficher `uc ]
-"107
-[; ;main.c: 107:     valueMetrics.cent = ((char)(affiche/100))+0x30;
-[e = . _valueMetrics 1 -> + -> -> / -> _affiche `i -> 100 `i `uc `i -> 48 `i `uc ]
-"108
-[; ;main.c: 108:     PORT_putchar(valueMetrics.cent);
-[e ( _PORT_putchar (1 . _valueMetrics 1 ]
-"109
-[; ;main.c: 109:     affiche = affiche % 100 ;
-[e = _affiche -> % -> _affiche `i -> 100 `i `uc ]
-"110
-[; ;main.c: 110:     valueMetrics.diz = ((char)(affiche/10))+0x30;
-[e = . _valueMetrics 2 -> + -> -> / -> _affiche `i -> 10 `i `uc `i -> 48 `i `uc ]
-"111
-[; ;main.c: 111:     PORT_putchar(valueMetrics.diz);
-[e ( _PORT_putchar (1 . _valueMetrics 2 ]
-"112
-[; ;main.c: 112:     affiche = affiche % 10 ;
-[e = _affiche -> % -> _affiche `i -> 10 `i `uc ]
 "113
-[; ;main.c: 113:     valueMetrics.unit = ((char)(affiche))+0x30;
-[e = . _valueMetrics 3 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+[; ;main.c: 113: void Affichage_brut(int valeur_a_afficher)
+[v _valeur_a_afficher `i ~T0 @X0 1 r1 ]
 "114
-[; ;main.c: 114:     PORT_putchar(valueMetrics.unit);
-[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+[; ;main.c: 114: {
+[f ]
 "115
-[; ;main.c: 115: }
-[e :UE 175 ]
-}
+[; ;main.c: 115:     unsigned char affiche;
+[v _affiche `uc ~T0 @X0 1 a ]
+"117
+[; ;main.c: 117:     ValueMetrics valueMetrics;
+[v _valueMetrics `S1 ~T0 @X0 1 a ]
+"119
+[; ;main.c: 119:     affiche = valeur_a_afficher ;
+[e = _affiche -> _valeur_a_afficher `uc ]
+"120
+[; ;main.c: 120:     valueMetrics.cent = ((char)(affiche/100))+0x30;
+[e = . _valueMetrics 1 -> + -> -> / -> _affiche `i -> 100 `i `uc `i -> 48 `i `uc ]
 "121
-[; ;main.c: 121: void puts_float(float Valeur) {
+[; ;main.c: 121:     PORT_putchar(valueMetrics.cent);
+[e ( _PORT_putchar (1 . _valueMetrics 1 ]
+"122
+[; ;main.c: 122:     affiche = affiche % 100 ;
+[e = _affiche -> % -> _affiche `i -> 100 `i `uc ]
+"123
+[; ;main.c: 123:     valueMetrics.diz = ((char)(affiche/10))+0x30;
+[e = . _valueMetrics 2 -> + -> -> / -> _affiche `i -> 10 `i `uc `i -> 48 `i `uc ]
+"124
+[; ;main.c: 124:     PORT_putchar(valueMetrics.diz);
+[e ( _PORT_putchar (1 . _valueMetrics 2 ]
+"125
+[; ;main.c: 125:     affiche = affiche % 10 ;
+[e = _affiche -> % -> _affiche `i -> 10 `i `uc ]
+"126
+[; ;main.c: 126:     valueMetrics.unit = ((char)(affiche))+0x30;
+[e = . _valueMetrics 3 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+"127
+[; ;main.c: 127:     PORT_putchar(valueMetrics.unit);
+[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+"128
+[; ;main.c: 128: }
+[e :UE 170 ]
+}
+"134
+[; ;main.c: 134: void puts_float(float Valeur) {
 [v _puts_float `(v ~T0 @X0 1 ef1`f ]
 {
 [e :U _puts_float ]
 [v _Valeur `f ~T0 @X0 1 r1 ]
 [f ]
-"123
-[; ;main.c: 123:     unsigned int affiche;
-[v _affiche `ui ~T0 @X0 1 a ]
-"124
-[; ;main.c: 124:     ValueMetrics valueMetrics;
-[v _valueMetrics `S1 ~T0 @X0 1 a ]
-"126
-[; ;main.c: 126:     Valeur = Valeur * 100;
-[e = _Valeur * _Valeur -> -> 100 `i `f ]
-"127
-[; ;main.c: 127:     affiche = (int) Valeur ;
-[e = _affiche -> -> _Valeur `i `ui ]
-"129
-[; ;main.c: 129:     valueMetrics.mil = ((char)(affiche/100000))+0x30;
-[e = . _valueMetrics 0 -> + -> -> / -> _affiche `l -> 100000 `l `uc `i -> 48 `i `uc ]
-"130
-[; ;main.c: 130:     PORT_putchar(valueMetrics.mil);
-[e ( _PORT_putchar (1 . _valueMetrics 0 ]
-"131
-[; ;main.c: 131:     affiche = affiche % 100000 ;
-[e = _affiche -> % -> _affiche `l -> 100000 `l `ui ]
-"132
-[; ;main.c: 132:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
-[e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
-"133
-[; ;main.c: 133:     PORT_putchar(valueMetrics.cent);
-[e ( _PORT_putchar (1 . _valueMetrics 1 ]
-"134
-[; ;main.c: 134:     affiche = affiche % 10000 ;
-[e = _affiche % _affiche -> -> 10000 `i `ui ]
-"135
-[; ;main.c: 135:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
-[e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
 "136
-[; ;main.c: 136:     PORT_putchar(valueMetrics.diz);
-[e ( _PORT_putchar (1 . _valueMetrics 2 ]
+[; ;main.c: 136:     unsigned int affiche;
+[v _affiche `ui ~T0 @X0 1 a ]
 "137
-[; ;main.c: 137:     affiche = affiche % 1000 ;
-[e = _affiche % _affiche -> -> 1000 `i `ui ]
-"138
-[; ;main.c: 138:     valueMetrics.unit = ((char)(affiche/100))+0x30;
-[e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
+[; ;main.c: 137:     ValueMetrics valueMetrics;
+[v _valueMetrics `S1 ~T0 @X0 1 a ]
+"139
+[; ;main.c: 139:     Valeur = Valeur * 100;
+[e = _Valeur * _Valeur -> -> 100 `i `f ]
 "140
-[; ;main.c: 140:     PORT_putchar(valueMetrics.unit);
-[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+[; ;main.c: 140:     affiche = (int) Valeur ;
+[e = _affiche -> -> _Valeur `i `ui ]
 "142
-[; ;main.c: 142:     affiche = affiche % 100 ;
-[e = _affiche % _affiche -> -> 100 `i `ui ]
+[; ;main.c: 142:     valueMetrics.mil = ((char)(affiche/100000))+0x30;
+[e = . _valueMetrics 0 -> + -> -> / -> _affiche `l -> 100000 `l `uc `i -> 48 `i `uc ]
 "143
-[; ;main.c: 143:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
-[e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
+[; ;main.c: 143:     PORT_putchar(valueMetrics.mil);
+[e ( _PORT_putchar (1 . _valueMetrics 0 ]
 "144
-[; ;main.c: 144:     PORT_putchar(valueMetrics.dizi);
-[e ( _PORT_putchar (1 . _valueMetrics 4 ]
+[; ;main.c: 144:     affiche = affiche % 100000 ;
+[e = _affiche -> % -> _affiche `l -> 100000 `l `ui ]
 "145
-[; ;main.c: 145:     affiche = affiche % 10 ;
-[e = _affiche % _affiche -> -> 10 `i `ui ]
+[; ;main.c: 145:     valueMetrics.cent = ((char)(affiche/10000))+0x30;
+[e = . _valueMetrics 1 -> + -> -> / _affiche -> -> 10000 `i `ui `uc `i -> 48 `i `uc ]
 "146
-[; ;main.c: 146:     valueMetrics.centi = ((char)(affiche))+0x30;
-[e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+[; ;main.c: 146:     PORT_putchar(valueMetrics.cent);
+[e ( _PORT_putchar (1 . _valueMetrics 1 ]
 "147
-[; ;main.c: 147:     PORT_putchar(valueMetrics.centi);
-[e ( _PORT_putchar (1 . _valueMetrics 5 ]
+[; ;main.c: 147:     affiche = affiche % 10000 ;
+[e = _affiche % _affiche -> -> 10000 `i `ui ]
 "148
-[; ;main.c: 148: }
-[e :UE 176 ]
+[; ;main.c: 148:     valueMetrics.diz = ((char)(affiche/1000))+0x30;
+[e = . _valueMetrics 2 -> + -> -> / _affiche -> -> 1000 `i `ui `uc `i -> 48 `i `uc ]
+"149
+[; ;main.c: 149:     PORT_putchar(valueMetrics.diz);
+[e ( _PORT_putchar (1 . _valueMetrics 2 ]
+"150
+[; ;main.c: 150:     affiche = affiche % 1000 ;
+[e = _affiche % _affiche -> -> 1000 `i `ui ]
+"151
+[; ;main.c: 151:     valueMetrics.unit = ((char)(affiche/100))+0x30;
+[e = . _valueMetrics 3 -> + -> -> / _affiche -> -> 100 `i `ui `uc `i -> 48 `i `uc ]
+"153
+[; ;main.c: 153:     PORT_putchar(valueMetrics.unit);
+[e ( _PORT_putchar (1 . _valueMetrics 3 ]
+"155
+[; ;main.c: 155:     affiche = affiche % 100 ;
+[e = _affiche % _affiche -> -> 100 `i `ui ]
+"156
+[; ;main.c: 156:     valueMetrics.dizi = ((char)(affiche/10))+0x30;
+[e = . _valueMetrics 4 -> + -> -> / _affiche -> -> 10 `i `ui `uc `i -> 48 `i `uc ]
+"157
+[; ;main.c: 157:     PORT_putchar(valueMetrics.dizi);
+[e ( _PORT_putchar (1 . _valueMetrics 4 ]
+"158
+[; ;main.c: 158:     affiche = affiche % 10 ;
+[e = _affiche % _affiche -> -> 10 `i `ui ]
+"159
+[; ;main.c: 159:     valueMetrics.centi = ((char)(affiche))+0x30;
+[e = . _valueMetrics 5 -> + -> -> _affiche `uc `i -> 48 `i `uc ]
+"160
+[; ;main.c: 160:     PORT_putchar(valueMetrics.centi);
+[e ( _PORT_putchar (1 . _valueMetrics 5 ]
+"161
+[; ;main.c: 161: }
+[e :UE 171 ]
 }
-"154
-[; ;main.c: 154: void puts_Newton(float Valeur) {
+"167
+[; ;main.c: 167: void puts_Newton(float Valeur) {
 [v _puts_Newton `(v ~T0 @X0 1 ef1`f ]
 {
 [e :U _puts_Newton ]
 [v _Valeur `f ~T0 @X0 1 r1 ]
 [f ]
-"156
-[; ;main.c: 156:     unsigned char affiche;
-[v _affiche `uc ~T0 @X0 1 a ]
-"158
-[; ;main.c: 158:     affiche = (unsigned char) Valeur;
-[e = _affiche -> _Valeur `uc ]
-"160
-[; ;main.c: 160:     PORT_putchar(affiche);
-[e ( _PORT_putchar (1 -> _affiche `uc ]
-"162
-[; ;main.c: 162: }
-[e :UE 177 ]
-}
 "169
-[; ;main.c: 169: float Voltage_Value(unsigned char sensor) {
+[; ;main.c: 169:     unsigned char affiche;
+[v _affiche `uc ~T0 @X0 1 a ]
+"171
+[; ;main.c: 171:     affiche = (unsigned char) Valeur;
+[e = _affiche -> _Valeur `uc ]
+"173
+[; ;main.c: 173:     PORT_putchar(affiche);
+[e ( _PORT_putchar (1 -> _affiche `uc ]
+"175
+[; ;main.c: 175: }
+[e :UE 172 ]
+}
+"182
+[; ;main.c: 182: float Voltage_Value(unsigned char sensor) {
 [v _Voltage_Value `(f ~T0 @X0 1 ef1`uc ]
 {
 [e :U _Voltage_Value ]
 [v _sensor `uc ~T0 @X0 1 r1 ]
 [f ]
-"171
-[; ;main.c: 171:     float voltage_result;
-[v _voltage_result `f ~T0 @X0 1 a ]
-"172
-[; ;main.c: 172:     voltage_result = (float) sensor * 5.0/256;
-[e = _voltage_result -> / * -> -> _sensor `f `d .5.0 -> -> 256 `i `d `f ]
-"173
-[; ;main.c: 173:     if (voltage_result <= 0)
-[e $ ! <= _voltage_result -> -> 0 `i `f 179  ]
-"174
-[; ;main.c: 174:         voltage_result = 0.01;
-[e = _voltage_result -> .0.01 `f ]
-[e :U 179 ]
-"175
-[; ;main.c: 175:     return voltage_result;
-[e ) _voltage_result ]
-[e $UE 178  ]
-"177
-[; ;main.c: 177: }
-[e :UE 178 ]
-}
 "184
-[; ;main.c: 184: float Resistance_Value(float Voltage, unsigned int R) {
+[; ;main.c: 184:     float voltage_result;
+[v _voltage_result `f ~T0 @X0 1 a ]
+"185
+[; ;main.c: 185:     voltage_result = (float) sensor * 5.0/256;
+[e = _voltage_result -> / * -> -> _sensor `f `d .5.0 -> -> 256 `i `d `f ]
+"186
+[; ;main.c: 186:     if (voltage_result <= 0)
+[e $ ! <= _voltage_result -> -> 0 `i `f 174  ]
+"187
+[; ;main.c: 187:         voltage_result = 0.01;
+[e = _voltage_result -> .0.01 `f ]
+[e :U 174 ]
+"188
+[; ;main.c: 188:     return voltage_result;
+[e ) _voltage_result ]
+[e $UE 173  ]
+"190
+[; ;main.c: 190: }
+[e :UE 173 ]
+}
+"197
+[; ;main.c: 197: float Resistance_Value(float Voltage, unsigned int R) {
 [v _Resistance_Value `(f ~T0 @X0 1 ef2`f`ui ]
 {
 [e :U _Resistance_Value ]
 [v _Voltage `f ~T0 @X0 1 r1 ]
 [v _R `ui ~T0 @X0 1 r2 ]
 [f ]
-"185
-[; ;main.c: 185:     float resultat;
+"198
+[; ;main.c: 198:     float resultat;
 [v _resultat `f ~T0 @X0 1 a ]
-"186
-[; ;main.c: 186:     float fR = (float) R;
+"199
+[; ;main.c: 199:     float fR = (float) R;
 [v _fR `f ~T0 @X0 1 a ]
 [e = _fR -> _R `f ]
-"187
-[; ;main.c: 187:     resultat = (float) (fR * 5.0)/(5.0 -(2*Voltage));
+"200
+[; ;main.c: 200:     resultat = (float) (fR * 5.0)/(5.0 -(2*Voltage));
 [e = _resultat -> / -> -> * -> _fR `d .5.0 `f `d - .5.0 -> * -> -> 2 `i `f _Voltage `d `f ]
-"188
-[; ;main.c: 188:     return resultat;
+"201
+[; ;main.c: 201:     return resultat;
 [e ) _resultat ]
-[e $UE 180  ]
-"189
-[; ;main.c: 189: }
-[e :UE 180 ]
+[e $UE 175  ]
+"202
+[; ;main.c: 202: }
+[e :UE 175 ]
 }
-"196
-[; ;main.c: 196: float conversion_newton (float Rc) {
+"209
+[; ;main.c: 209: float conversion_newton (float Rc) {
 [v _conversion_newton `(f ~T0 @X0 1 ef1`f ]
 {
 [e :U _conversion_newton ]
 [v _Rc `f ~T0 @X0 1 r1 ]
 [f ]
-"197
-[; ;main.c: 197:      float F;
+"210
+[; ;main.c: 210:      float F;
 [v _F `f ~T0 @X0 1 a ]
-"198
-[; ;main.c: 198:      int n;
+"211
+[; ;main.c: 211:      int n;
 [v _n `i ~T0 @X0 1 a ]
-"199
-[; ;main.c: 199:      const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
-[v F1457 `Cf ~T0 @X0 -> 20 `i s F_tab ]
-[i F1457
+"212
+[; ;main.c: 212:      const float F_tab[20]={70,35,30,28,25,20,19,18,15,13,10,7, 5.4, 4, 3, 2.2, 1.5, 0.9, 0.45, 0.12};
+[v F1462 `Cf ~T0 @X0 -> 20 `i s F_tab ]
+[i F1462
 :U ..
 -> -> 70 `i `f
 -> -> 35 `i `f
@@ -671,10 +683,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> .0.12 `f
 ..
 ]
-"200
-[; ;main.c: 200:      const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
-[v F1458 `Cf ~T0 @X0 -> 20 `i s R_tab ]
-[i F1458
+"213
+[; ;main.c: 213:      const float R_tab[20]={2000,2500,2600,2700,2900,3200,3400,3500,3900,4300,4800,5500,6800,8500,11000,16000,27000,45000,65000,95000};
+[v F1463 `Cf ~T0 @X0 -> 20 `i s R_tab ]
+[i F1463
 :U ..
 -> -> 2000 `i `f
 -> -> 2500 `i `f
@@ -698,329 +710,329 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 95000 `l `f
 ..
 ]
-"203
-[; ;main.c: 203:      if (Rc <= R_tab[1])
-[e $ ! <= _Rc *U + &U F1458 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1458 `ui `ux 182  ]
-"204
-[; ;main.c: 204:          {
-{
-"205
-[; ;main.c: 205:          n = 0;
-[e = _n -> 0 `i ]
-"206
-[; ;main.c: 206:          }
-}
-[e :U 182 ]
-"207
-[; ;main.c: 207:      if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1458 `ui `ux 183  ]
-"208
-[; ;main.c: 208:          {
-{
-"209
-[; ;main.c: 209:          n = 1;
-[e = _n -> 1 `i ]
-"210
-[; ;main.c: 210:          }
-}
-[e $U 184  ]
-"211
-[; ;main.c: 211:      else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
-[e :U 183 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1458 `ui `ux 185  ]
-"212
-[; ;main.c: 212:          {
-{
-"213
-[; ;main.c: 213:          n = 2;
-[e = _n -> 2 `i ]
-"214
-[; ;main.c: 214:          }
-}
-[e $U 186  ]
-"215
-[; ;main.c: 215:      else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
-[e :U 185 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 4 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1458 `ui `ux 187  ]
 "216
-[; ;main.c: 216:          {
-{
+[; ;main.c: 216:      if (Rc <= R_tab[1])
+[e $ ! <= _Rc *U + &U F1463 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1463 `ui `ux 177  ]
 "217
-[; ;main.c: 217:          n = 3;
-[e = _n -> 3 `i ]
+[; ;main.c: 217:          {
+{
 "218
-[; ;main.c: 218:          }
-}
-[e $U 188  ]
+[; ;main.c: 218:          n = 0;
+[e = _n -> 0 `i ]
 "219
-[; ;main.c: 219:      else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
-[e :U 187 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 5 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 4 `i `ui `ux -> -> # *U &U F1458 `ui `ux 189  ]
+[; ;main.c: 219:          }
+}
+[e :U 177 ]
 "220
-[; ;main.c: 220:          {
-{
+[; ;main.c: 220:      if ((Rc <= R_tab[2]) && (Rc > R_tab[1]))
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1463 `ui `ux 178  ]
 "221
-[; ;main.c: 221:          n = 4;
-[e = _n -> 4 `i ]
+[; ;main.c: 221:          {
+{
 "222
-[; ;main.c: 222:          }
-}
-[e $U 190  ]
+[; ;main.c: 222:          n = 1;
+[e = _n -> 1 `i ]
 "223
-[; ;main.c: 223:      else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
-[e :U 189 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 6 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 5 `i `ui `ux -> -> # *U &U F1458 `ui `ux 191  ]
+[; ;main.c: 223:          }
+}
+[e $U 179  ]
 "224
-[; ;main.c: 224:          {
-{
+[; ;main.c: 224:      else if ((Rc <= R_tab[3]) && (Rc > R_tab[2]))
+[e :U 178 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1463 `ui `ux 180  ]
 "225
-[; ;main.c: 225:          n = 5;
-[e = _n -> 5 `i ]
+[; ;main.c: 225:          {
+{
 "226
-[; ;main.c: 226:          }
-}
-[e $U 192  ]
+[; ;main.c: 226:          n = 2;
+[e = _n -> 2 `i ]
 "227
-[; ;main.c: 227:      else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
-[e :U 191 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 7 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 6 `i `ui `ux -> -> # *U &U F1458 `ui `ux 193  ]
+[; ;main.c: 227:          }
+}
+[e $U 181  ]
 "228
-[; ;main.c: 228:          {
-{
+[; ;main.c: 228:      else if ((Rc <= R_tab[4]) && (Rc > R_tab[3]))
+[e :U 180 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 4 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1463 `ui `ux 182  ]
 "229
-[; ;main.c: 229:          n = 6;
-[e = _n -> 6 `i ]
+[; ;main.c: 229:          {
+{
 "230
-[; ;main.c: 230:          }
-}
-[e $U 194  ]
+[; ;main.c: 230:          n = 3;
+[e = _n -> 3 `i ]
 "231
-[; ;main.c: 231:      else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
-[e :U 193 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 8 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 7 `i `ui `ux -> -> # *U &U F1458 `ui `ux 195  ]
+[; ;main.c: 231:          }
+}
+[e $U 183  ]
 "232
-[; ;main.c: 232:          {
-{
+[; ;main.c: 232:      else if ((Rc <= R_tab[5]) && (Rc > R_tab[4]))
+[e :U 182 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 5 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 4 `i `ui `ux -> -> # *U &U F1463 `ui `ux 184  ]
 "233
-[; ;main.c: 233:          n = 7;
-[e = _n -> 7 `i ]
+[; ;main.c: 233:          {
+{
 "234
-[; ;main.c: 234:          }
-}
-[e $U 196  ]
+[; ;main.c: 234:          n = 4;
+[e = _n -> 4 `i ]
 "235
-[; ;main.c: 235:      else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
-[e :U 195 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 9 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 8 `i `ui `ux -> -> # *U &U F1458 `ui `ux 197  ]
+[; ;main.c: 235:          }
+}
+[e $U 185  ]
 "236
-[; ;main.c: 236:          {
-{
+[; ;main.c: 236:      else if ((Rc <= R_tab[6]) && (Rc > R_tab[5]))
+[e :U 184 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 6 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 5 `i `ui `ux -> -> # *U &U F1463 `ui `ux 186  ]
 "237
-[; ;main.c: 237:          n = 8;
-[e = _n -> 8 `i ]
+[; ;main.c: 237:          {
+{
 "238
-[; ;main.c: 238:          }
-}
-[e $U 198  ]
+[; ;main.c: 238:          n = 5;
+[e = _n -> 5 `i ]
 "239
-[; ;main.c: 239:      else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
-[e :U 197 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 10 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 9 `i `ui `ux -> -> # *U &U F1458 `ui `ux 199  ]
+[; ;main.c: 239:          }
+}
+[e $U 187  ]
 "240
-[; ;main.c: 240:          {
-{
+[; ;main.c: 240:      else if ((Rc <= R_tab[7]) && (Rc > R_tab[6]))
+[e :U 186 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 7 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 6 `i `ui `ux -> -> # *U &U F1463 `ui `ux 188  ]
 "241
-[; ;main.c: 241:          n = 9;
-[e = _n -> 9 `i ]
+[; ;main.c: 241:          {
+{
 "242
-[; ;main.c: 242:          }
-}
-[e $U 200  ]
+[; ;main.c: 242:          n = 6;
+[e = _n -> 6 `i ]
 "243
-[; ;main.c: 243:      else if ((Rc <= R_tab[11]) && (Rc > R_tab[10]))
-[e :U 199 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 11 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 10 `i `ui `ux -> -> # *U &U F1458 `ui `ux 201  ]
+[; ;main.c: 243:          }
+}
+[e $U 189  ]
 "244
-[; ;main.c: 244:          {
-{
+[; ;main.c: 244:      else if ((Rc <= R_tab[8]) && (Rc > R_tab[7]))
+[e :U 188 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 8 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 7 `i `ui `ux -> -> # *U &U F1463 `ui `ux 190  ]
 "245
-[; ;main.c: 245:          n = 10;
-[e = _n -> 10 `i ]
-"246
-[; ;main.c: 246:          }
-}
-[e $U 202  ]
-"247
-[; ;main.c: 247:      else if ((Rc <= R_tab[12]) && (Rc > R_tab[11]))
-[e :U 201 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 12 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 11 `i `ui `ux -> -> # *U &U F1458 `ui `ux 203  ]
-"248
-[; ;main.c: 248:      {
+[; ;main.c: 245:          {
 {
-"249
-[; ;main.c: 249:          n = 11;
-[e = _n -> 11 `i ]
-"250
-[; ;main.c: 250:      }
+"246
+[; ;main.c: 246:          n = 7;
+[e = _n -> 7 `i ]
+"247
+[; ;main.c: 247:          }
 }
-[e $U 204  ]
+[e $U 191  ]
+"248
+[; ;main.c: 248:      else if ((Rc <= R_tab[9]) && (Rc > R_tab[8]))
+[e :U 190 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 9 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 8 `i `ui `ux -> -> # *U &U F1463 `ui `ux 192  ]
+"249
+[; ;main.c: 249:          {
+{
+"250
+[; ;main.c: 250:          n = 8;
+[e = _n -> 8 `i ]
+"251
+[; ;main.c: 251:          }
+}
+[e $U 193  ]
 "252
-[; ;main.c: 252:      else if ((Rc <= R_tab[13]) && (Rc > R_tab[12]))
-[e :U 203 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 13 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 12 `i `ui `ux -> -> # *U &U F1458 `ui `ux 205  ]
+[; ;main.c: 252:      else if ((Rc <= R_tab[10]) && (Rc > R_tab[9]))
+[e :U 192 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 10 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 9 `i `ui `ux -> -> # *U &U F1463 `ui `ux 194  ]
 "253
-[; ;main.c: 253:      {
+[; ;main.c: 253:          {
 {
 "254
-[; ;main.c: 254:          n = 12;
-[e = _n -> 12 `i ]
+[; ;main.c: 254:          n = 9;
+[e = _n -> 9 `i ]
 "255
-[; ;main.c: 255:      }
+[; ;main.c: 255:          }
 }
-[e $U 206  ]
+[e $U 195  ]
 "256
-[; ;main.c: 256:      else if ((Rc <= R_tab[14]) && (Rc > R_tab[13]))
-[e :U 205 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 14 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 13 `i `ui `ux -> -> # *U &U F1458 `ui `ux 207  ]
+[; ;main.c: 256:      else if ((Rc <= R_tab[11]) && (Rc > R_tab[10]))
+[e :U 194 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 11 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 10 `i `ui `ux -> -> # *U &U F1463 `ui `ux 196  ]
 "257
-[; ;main.c: 257:      {
+[; ;main.c: 257:          {
 {
 "258
-[; ;main.c: 258:          n= 13;
-[e = _n -> 13 `i ]
+[; ;main.c: 258:          n = 10;
+[e = _n -> 10 `i ]
 "259
-[; ;main.c: 259:      }
+[; ;main.c: 259:          }
 }
-[e $U 208  ]
+[e $U 197  ]
 "260
-[; ;main.c: 260:      else if ((Rc <= R_tab[15]) && (Rc > R_tab[14]))
-[e :U 207 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 15 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 14 `i `ui `ux -> -> # *U &U F1458 `ui `ux 209  ]
+[; ;main.c: 260:      else if ((Rc <= R_tab[12]) && (Rc > R_tab[11]))
+[e :U 196 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 12 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 11 `i `ui `ux -> -> # *U &U F1463 `ui `ux 198  ]
 "261
 [; ;main.c: 261:      {
 {
 "262
-[; ;main.c: 262:          n= 14;
-[e = _n -> 14 `i ]
+[; ;main.c: 262:          n = 11;
+[e = _n -> 11 `i ]
 "263
 [; ;main.c: 263:      }
 }
-[e $U 210  ]
-"264
-[; ;main.c: 264:      else if ((Rc <= R_tab[16]) && (Rc > R_tab[15]))
-[e :U 209 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 16 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 15 `i `ui `ux -> -> # *U &U F1458 `ui `ux 211  ]
+[e $U 199  ]
 "265
-[; ;main.c: 265:      {
-{
-"266
-[; ;main.c: 266:          n= 15;
-[e = _n -> 15 `i ]
-"267
-[; ;main.c: 267:      }
-}
-[e $U 212  ]
-"268
-[; ;main.c: 268:      else if ((Rc <= R_tab[17]) && (Rc > R_tab[16]))
-[e :U 211 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 17 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 16 `i `ui `ux -> -> # *U &U F1458 `ui `ux 213  ]
-"269
-[; ;main.c: 269:      {
-{
-"270
-[; ;main.c: 270:          n= 16;
-[e = _n -> 16 `i ]
-"271
-[; ;main.c: 271:      }
-}
-[e $U 214  ]
-"272
-[; ;main.c: 272:      else if ((Rc <= R_tab[18]) && (Rc > R_tab[17]))
-[e :U 213 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 18 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 17 `i `ui `ux -> -> # *U &U F1458 `ui `ux 215  ]
-"273
-[; ;main.c: 273:      {
-{
-"274
-[; ;main.c: 274:          n= 17;
-[e = _n -> 17 `i ]
-"275
-[; ;main.c: 275:      }
-}
-[e $U 216  ]
-"276
-[; ;main.c: 276:       else if ((Rc <= R_tab[19]) && (Rc > R_tab[18]))
-[e :U 215 ]
-[e $ ! && <= _Rc *U + &U F1458 * -> -> -> 19 `i `ui `ux -> -> # *U &U F1458 `ui `ux > _Rc *U + &U F1458 * -> -> -> 18 `i `ui `ux -> -> # *U &U F1458 `ui `ux 217  ]
-"277
-[; ;main.c: 277:      {
-{
-"278
-[; ;main.c: 278:          n= 18;
-[e = _n -> 18 `i ]
-"279
-[; ;main.c: 279:      }
-}
-[e $U 218  ]
-"280
-[; ;main.c: 280:       else
-[e :U 217 ]
-"281
-[; ;main.c: 281:      {
-{
-"282
-[; ;main.c: 282:          n= 19;
-[e = _n -> 19 `i ]
-"283
-[; ;main.c: 283:      }
-}
-[e :U 218 ]
-[e :U 216 ]
-[e :U 214 ]
-[e :U 212 ]
-[e :U 210 ]
-[e :U 208 ]
-[e :U 206 ]
-[e :U 204 ]
-[e :U 202 ]
-[e :U 200 ]
+[; ;main.c: 265:      else if ((Rc <= R_tab[13]) && (Rc > R_tab[12]))
 [e :U 198 ]
-[e :U 196 ]
-[e :U 194 ]
-[e :U 192 ]
-[e :U 190 ]
-[e :U 188 ]
-[e :U 186 ]
-[e :U 184 ]
-"286
-[; ;main.c: 286:      F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
-[e = _F + * / - *U + &U F1457 * -> -> _n `ui `ux -> -> # *U &U F1457 `ui `ux *U + &U F1457 * -> -> + _n -> 1 `i `ui `ux -> -> # *U &U F1457 `ui `ux - *U + &U F1458 * -> -> + _n -> 1 `i `ui `ux -> -> # *U &U F1458 `ui `ux *U + &U F1458 * -> -> _n `ui `ux -> -> # *U &U F1458 `ui `ux - _Rc *U + &U F1458 * -> -> _n `ui `ux -> -> # *U &U F1458 `ui `ux *U + &U F1457 * -> -> _n `ui `ux -> -> # *U &U F1457 `ui `ux ]
-"289
-[; ;main.c: 289:      if (F > 70)
-[e $ ! > _F -> -> 70 `i `f 219  ]
-"290
-[; ;main.c: 290:         F = 70;
-[e = _F -> -> 70 `i `f ]
-[e $U 220  ]
-"291
-[; ;main.c: 291:      else if (F < 0.12)
-[e :U 219 ]
-[e $ ! < -> _F `d .0.12 221  ]
-"292
-[; ;main.c: 292:         F=0.12;
-[e = _F -> .0.12 `f ]
-[e :U 221 ]
-[e :U 220 ]
-"295
-[; ;main.c: 295:      return F;
-[e ) _F ]
-[e $UE 181  ]
-"296
-[; ;main.c: 296: }
-[e :UE 181 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 13 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 12 `i `ui `ux -> -> # *U &U F1463 `ui `ux 200  ]
+"266
+[; ;main.c: 266:      {
+{
+"267
+[; ;main.c: 267:          n = 12;
+[e = _n -> 12 `i ]
+"268
+[; ;main.c: 268:      }
 }
-"301
-[; ;main.c: 301: float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
+[e $U 201  ]
+"269
+[; ;main.c: 269:      else if ((Rc <= R_tab[14]) && (Rc > R_tab[13]))
+[e :U 200 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 14 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 13 `i `ui `ux -> -> # *U &U F1463 `ui `ux 202  ]
+"270
+[; ;main.c: 270:      {
+{
+"271
+[; ;main.c: 271:          n= 13;
+[e = _n -> 13 `i ]
+"272
+[; ;main.c: 272:      }
+}
+[e $U 203  ]
+"273
+[; ;main.c: 273:      else if ((Rc <= R_tab[15]) && (Rc > R_tab[14]))
+[e :U 202 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 15 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 14 `i `ui `ux -> -> # *U &U F1463 `ui `ux 204  ]
+"274
+[; ;main.c: 274:      {
+{
+"275
+[; ;main.c: 275:          n= 14;
+[e = _n -> 14 `i ]
+"276
+[; ;main.c: 276:      }
+}
+[e $U 205  ]
+"277
+[; ;main.c: 277:      else if ((Rc <= R_tab[16]) && (Rc > R_tab[15]))
+[e :U 204 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 16 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 15 `i `ui `ux -> -> # *U &U F1463 `ui `ux 206  ]
+"278
+[; ;main.c: 278:      {
+{
+"279
+[; ;main.c: 279:          n= 15;
+[e = _n -> 15 `i ]
+"280
+[; ;main.c: 280:      }
+}
+[e $U 207  ]
+"281
+[; ;main.c: 281:      else if ((Rc <= R_tab[17]) && (Rc > R_tab[16]))
+[e :U 206 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 17 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 16 `i `ui `ux -> -> # *U &U F1463 `ui `ux 208  ]
+"282
+[; ;main.c: 282:      {
+{
+"283
+[; ;main.c: 283:          n= 16;
+[e = _n -> 16 `i ]
+"284
+[; ;main.c: 284:      }
+}
+[e $U 209  ]
+"285
+[; ;main.c: 285:      else if ((Rc <= R_tab[18]) && (Rc > R_tab[17]))
+[e :U 208 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 18 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 17 `i `ui `ux -> -> # *U &U F1463 `ui `ux 210  ]
+"286
+[; ;main.c: 286:      {
+{
+"287
+[; ;main.c: 287:          n= 17;
+[e = _n -> 17 `i ]
+"288
+[; ;main.c: 288:      }
+}
+[e $U 211  ]
+"289
+[; ;main.c: 289:       else if ((Rc <= R_tab[19]) && (Rc > R_tab[18]))
+[e :U 210 ]
+[e $ ! && <= _Rc *U + &U F1463 * -> -> -> 19 `i `ui `ux -> -> # *U &U F1463 `ui `ux > _Rc *U + &U F1463 * -> -> -> 18 `i `ui `ux -> -> # *U &U F1463 `ui `ux 212  ]
+"290
+[; ;main.c: 290:      {
+{
+"291
+[; ;main.c: 291:          n= 18;
+[e = _n -> 18 `i ]
+"292
+[; ;main.c: 292:      }
+}
+[e $U 213  ]
+"293
+[; ;main.c: 293:       else
+[e :U 212 ]
+"294
+[; ;main.c: 294:      {
+{
+"295
+[; ;main.c: 295:          n= 19;
+[e = _n -> 19 `i ]
+"296
+[; ;main.c: 296:      }
+}
+[e :U 213 ]
+[e :U 211 ]
+[e :U 209 ]
+[e :U 207 ]
+[e :U 205 ]
+[e :U 203 ]
+[e :U 201 ]
+[e :U 199 ]
+[e :U 197 ]
+[e :U 195 ]
+[e :U 193 ]
+[e :U 191 ]
+[e :U 189 ]
+[e :U 187 ]
+[e :U 185 ]
+[e :U 183 ]
+[e :U 181 ]
+[e :U 179 ]
+"299
+[; ;main.c: 299:      F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
+[e = _F + * / - *U + &U F1462 * -> -> _n `ui `ux -> -> # *U &U F1462 `ui `ux *U + &U F1462 * -> -> + _n -> 1 `i `ui `ux -> -> # *U &U F1462 `ui `ux - *U + &U F1463 * -> -> + _n -> 1 `i `ui `ux -> -> # *U &U F1463 `ui `ux *U + &U F1463 * -> -> _n `ui `ux -> -> # *U &U F1463 `ui `ux - _Rc *U + &U F1463 * -> -> _n `ui `ux -> -> # *U &U F1463 `ui `ux *U + &U F1462 * -> -> _n `ui `ux -> -> # *U &U F1462 `ui `ux ]
+"302
+[; ;main.c: 302:      if (F > 70)
+[e $ ! > _F -> -> 70 `i `f 214  ]
+"303
+[; ;main.c: 303:         F = 70;
+[e = _F -> -> 70 `i `f ]
+[e $U 215  ]
+"304
+[; ;main.c: 304:      else if (F < 0.12)
+[e :U 214 ]
+[e $ ! < -> _F `d .0.12 216  ]
+"305
+[; ;main.c: 305:         F=0.12;
+[e = _F -> .0.12 `f ]
+[e :U 216 ]
+[e :U 215 ]
+"308
+[; ;main.c: 308:      return F;
+[e ) _F ]
+[e $UE 176  ]
+"309
+[; ;main.c: 309: }
+[e :UE 176 ]
+}
+"314
+[; ;main.c: 314: float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
 [v _Get_Newton `(f ~T0 @X0 1 ef3`uc`uc`uc ]
 {
 [e :U _Get_Newton ]
@@ -1028,72 +1040,34 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _INTER1 `uc ~T0 @X0 1 r2 ]
 [v _sensor_Channel `uc ~T0 @X0 1 r3 ]
 [f ]
-"303
-[; ;main.c: 303:     unsigned char sensor_value;
+"316
+[; ;main.c: 316:     unsigned char sensor_value;
 [v _sensor_value `uc ~T0 @X0 1 a ]
-"304
-[; ;main.c: 304:     unsigned int R;
+"317
+[; ;main.c: 317:     unsigned int R;
 [v _R `ui ~T0 @X0 1 a ]
-"305
-[; ;main.c: 305:     float Vs,F,Rc;
+"318
+[; ;main.c: 318:     float Vs,F,Rc;
 [v _Vs `f ~T0 @X0 1 a ]
 [v _F `f ~T0 @X0 1 a ]
 [v _Rc `f ~T0 @X0 1 a ]
-"307
-[; ;main.c: 307:     R = PORT_Change_Gain(INTER0,INTER1);
-[e = _R ( _PORT_Change_Gain (2 , _INTER0 _INTER1 ]
-"309
-[; ;main.c: 309:     Affichage_brut(R);
-[e ( _Affichage_brut (1 -> _R `i ]
-"310
-[; ;main.c: 310:     PORT_putString(" R ");
-[e ( _PORT_putString (1 :s 1C ]
-"313
-[; ;main.c: 313:     sensor_value = ADC_GetValue(sensor_Channel);
-[e = _sensor_value ( _ADC_GetValue (1 _sensor_Channel ]
-"315
-[; ;main.c: 315:     Affichage_brut(sensor_value);
-[e ( _Affichage_brut (1 -> _sensor_value `i ]
-"316
-[; ;main.c: 316:     PORT_putString(" Numerique ");
-[e ( _PORT_putString (1 :s 2C ]
-"318
-[; ;main.c: 318:     Vs = Voltage_Value(sensor_value);
-[e = _Vs ( _Voltage_Value (1 _sensor_value ]
 "320
-[; ;main.c: 320:     puts_float(Vs);
-[e ( _puts_float (1 _Vs ]
-"321
-[; ;main.c: 321:     PORT_putString(" V ");
-[e ( _PORT_putString (1 :s 3C ]
-"323
-[; ;main.c: 323:     Rc = Resistance_Value(Vs, R);
-[e = _Rc ( _Resistance_Value (2 , _Vs _R ]
-"325
-[; ;main.c: 325:     puts_float(Rc);
-[e ( _puts_float (1 _Rc ]
+[; ;main.c: 320:     R = PORT_Change_Gain(INTER0,INTER1);
+[e = _R ( _PORT_Change_Gain (2 , _INTER0 _INTER1 ]
 "326
-[; ;main.c: 326:     PORT_putString(" Rc ");
-[e ( _PORT_putString (1 :s 4C ]
-"329
-[; ;main.c: 329:     F = conversion_newton(Rc);
-[e = _F ( _conversion_newton (1 _Rc ]
-"332
-[; ;main.c: 332:     Affichage_brut(F);
-[e ( _Affichage_brut (1 -> _F `i ]
-"333
-[; ;main.c: 333:     PORT_putString(" N \n");
-[e ( _PORT_putString (1 :s 5C ]
+[; ;main.c: 326:     sensor_value = ADC_GetValue(sensor_Channel);
+[e = _sensor_value ( _ADC_GetValue (1 _sensor_Channel ]
+"331
+[; ;main.c: 331:     Vs = Voltage_Value(sensor_value);
+[e = _Vs ( _Voltage_Value (1 _sensor_value ]
 "336
-[; ;main.c: 336:     return F;
-[e ) _F ]
-[e $UE 222  ]
-"337
-[; ;main.c: 337: }
-[e :UE 222 ]
+[; ;main.c: 336:     Rc = Resistance_Value(Vs, R);
+[e = _Rc ( _Resistance_Value (2 , _Vs _R ]
+"351
+[; ;main.c: 351:     return Rc;
+[e ) _Rc ]
+[e $UE 217  ]
+"352
+[; ;main.c: 352: }
+[e :UE 217 ]
 }
-[a 2C 32 78 117 109 101 114 105 113 117 101 32 0 ]
-[a 4C 32 82 99 32 0 ]
-[a 3C 32 86 32 0 ]
-[a 1C 32 82 32 0 ]
-[a 5C 32 78 32 10 0 ]
