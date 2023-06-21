@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,9 +107,9 @@ public class Fragment1 extends Fragment {
                     //Log.i("BTT", "Received message: " + readMessage);
                     // Handle the received message as needed
                     capteur1 = buffer[1];
-                    Log.i("BTT", "capteur1 = : " + capteur1 + "N");
+                    //Log.i("BTT", "capteur1 = : " + capteur1 + "N");
+                    fragment2.affichage();
                 }
-
             }
             return true;
         }
@@ -238,7 +239,6 @@ public class Fragment1 extends Fragment {
 
         fragment2 = new Fragment2();
 
-
         appareils.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -275,16 +275,6 @@ public class Fragment1 extends Fragment {
 
                         liste_appareils.setAdapter(myArrayAadapter);    // lv_devlist est l'identificateur java de la ListView
 
-
-
-                        //deviceName = device.getName();
-                        //deviceHardwareAddress = device.getAddress(); // MAC address
-                        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                        //        android.R.layout.simple_list_item_1, new list<String>());
-                        //Log.i("BTT", device.getAddress());
-                        //Log.i("BTT", device.getName());
-                        //mmthisDevice = device;
-                        //liste_appareils.
 
                     }
                 }
@@ -398,9 +388,7 @@ public class Fragment1 extends Fragment {
                                 try {
 
                                     bytes = inputStream.read(buffer);
-                                    fragment2.affichage();
                                     handler.sendEmptyMessage(1);
-
 
                                 } catch (IOException e) {
                                     Log.i("BTT", "Error reading from input");
