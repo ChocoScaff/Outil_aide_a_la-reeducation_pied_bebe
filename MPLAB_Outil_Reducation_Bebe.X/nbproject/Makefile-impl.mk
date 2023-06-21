@@ -27,7 +27,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=MPLAB_Outil_Reducation_Bebe.X
 
 # Active Configuration
-DEFAULTCONF=debug_gain
+DEFAULTCONF=debug
 CONF=${DEFAULTCONF}
 
 # All Configurations

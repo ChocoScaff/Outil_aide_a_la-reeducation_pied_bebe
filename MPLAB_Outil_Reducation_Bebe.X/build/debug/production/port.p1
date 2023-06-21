@@ -698,10 +698,18 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;port.c: 181:         return 8300;
 [e ) -> -> 8300 `i `ui ]
 [e $UE 185  ]
+[e $U 191  ]
+"182
+[; ;port.c: 182:     else
 [e :U 190 ]
+"183
+[; ;port.c: 183:         return 3000;
+[e ) -> -> 3000 `i `ui ]
+[e $UE 185  ]
+[e :U 191 ]
 [e :U 189 ]
 [e :U 187 ]
-"182
-[; ;port.c: 182: }
+"184
+[; ;port.c: 184: }
 [e :UE 185 ]
 }

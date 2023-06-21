@@ -28,7 +28,7 @@ void main(void) {
     PORT_Init();
     TIMER_init_timer1();
     
-    PORT_Select_Mux1(); 
+    PORT_Select_Mux0(); 
     float F;
     while(1) {
         
@@ -39,9 +39,9 @@ void main(void) {
         F = Get_Better_Newton_Value(0);
         
         #if defined (_DEBUG)
-        PORT_putchar('\r');
-        puts_Newton(F);     
-        PORT_putchar('\n');
+//        PORT_putchar('\r');
+//        puts_Newton(F); 
+//        PORT_putchar('\n');
         #endif
         //see PCB R20 R20B R20C
 
@@ -73,11 +73,14 @@ float Get_Better_Newton_Value(char channel_sensor) {
     
     #if defined (_DEBUG)
 //    PORT_putchar('\r');
-//    puts_Newton(F1);
+////    puts_Newton(F1);
+//    puts_float(F1);
 //    PORT_putchar(' ');
-//    puts_Newton(F2);
+//    puts_float(F2);
+////    puts_Newton(F2);
 //    PORT_putchar(' ');
-//    puts_Newton(F3);
+//    puts_float(F3);
+////    puts_Newton(F3);
 //    PORT_putchar('\n');
     #endif
     
@@ -133,7 +136,7 @@ void puts_float(float Valeur) {
     PORT_putchar(valueMetrics.diz);
     affiche = affiche % 1000 ;
     valueMetrics.unit = ((char)(affiche/100))+0x30;
-    PORT_putchar('.');
+//    PORT_putchar('.');
     PORT_putchar(valueMetrics.unit);
 
     affiche = affiche % 100 ;
@@ -164,8 +167,12 @@ void puts_Newton(float Valeur) {
  * @return 
  */
 float Voltage_Value(unsigned char sensor) {
-      
-    return (float) sensor * QUANTUM;
+    
+    float voltage_result;
+    voltage_result = (float) sensor * QUANTUM;
+    if (voltage_result <= 0)
+        voltage_result = 0.01;
+    return voltage_result;
 
 } 
 
@@ -233,10 +240,49 @@ float conversion_newton (float Rc) {
          {
          n = 9;
          }
-     else if (Rc > R_tab[10])
+     else if ((Rc <= R_tab[11]) && (Rc > R_tab[10]))
          {
          n = 10;
          }
+     else if ((Rc <= R_tab[12]) && (Rc > R_tab[11]))
+     {
+         n = 11; 
+     }
+         
+     else if ((Rc <= R_tab[13]) && (Rc > R_tab[12])) 
+     {
+         n = 12;
+     }     
+     else if ((Rc <= R_tab[14]) && (Rc > R_tab[13]))
+     {
+         n= 13;
+     }
+     else if ((Rc <= R_tab[15]) && (Rc > R_tab[14]))
+     {
+         n= 14;
+     }
+     else if ((Rc <= R_tab[16]) && (Rc > R_tab[15]))
+     {
+         n= 15;
+     }
+     else if ((Rc <= R_tab[17]) && (Rc > R_tab[16]))
+     {
+         n= 16;
+     }
+     else if ((Rc <= R_tab[18]) && (Rc > R_tab[17]))
+     {
+         n= 17;
+     }
+      else if ((Rc <= R_tab[19]) && (Rc > R_tab[18]))
+     {
+         n= 18;
+     }
+      else 
+     {
+         n= 19;
+     }
+      
+             
      F = (((F_tab[n]-F_tab[n+1])/(R_tab[n+1]-R_tab[n]))*(Rc-R_tab[n]))+F_tab[n];
 //calcul de la force F
      
@@ -259,26 +305,32 @@ float Get_Newton(char INTER0, char INTER1, char sensor_Channel) {
     float Vs,F,Rc;
 
     R = PORT_Change_Gain(INTER0,INTER1);
-    
+    #if defined (_DEBUG)
+    Affichage_brut(R);
+    PORT_putString(" R ");
+    #endif
+
     sensor_value = ADC_GetValue(sensor_Channel);
+    #if defined (_DEBUG)
+    Affichage_brut(sensor_value);
+    PORT_putString(" Numerique ");
+    #endif
     Vs = Voltage_Value(sensor_value);
+    #if defined (_DEBUG)
+    puts_float(Vs);
+    PORT_putString(" V ");
+    #endif
     Rc = Resistance_Value(Vs, R);
+    #if defined (_DEBUG)
+    puts_float(Rc);
+    PORT_putString(" Rc ");
+    #endif
 //    Rc = 2650;
     F = conversion_newton(Rc);
     
     #if defined (_DEBUG)
-//    Affichage_brut(sensor_value);
-//    PORT_putString(" valeur Newton ");
-//    PORT_putchar(' ');
-////     puts_float(Rc);
-////    puts_float(Vs);
-//    puts_Newton(F);
-//    PORT_putString(" N ");
-////    
-//    Affichage_brut(INTER0);
-//    PORT_putchar(' ');
-//    Affichage_brut(INTER1);
-//    PORT_putString("\n");
+    Affichage_brut(F);
+    PORT_putString(" N \n");  
     #endif
 
     return F;
