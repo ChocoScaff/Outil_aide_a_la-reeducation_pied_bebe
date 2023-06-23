@@ -1,6 +1,7 @@
 package com.example.tp3_brouzes;
 
 import android.bluetooth.BluetoothSocket;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -39,14 +40,16 @@ public class Fragment2 extends Fragment {
 
     private int connected=0;
 
-    private ProgressBar progressBar;
+    public ProgressBar progressBar;
     protected byte[] buffer;
 
     private View vue;
 
     private Button start;
 
-    private TextView textViewForce;
+    public TextView textViewForce;
+
+    public MediaPlayer mediaPlayer;
 
     public Fragment2() {
         // Required empty public constructor
@@ -86,10 +89,11 @@ public class Fragment2 extends Fragment {
         // Inflate the layout for this fragment
         vue = inflater.inflate(R.layout.fragment_2, container, false);
 
-        progressBar = (ProgressBar) vue.findViewById(R.id.progressBar);
-        textViewForce = (TextView) vue.findViewById(R.id.indicateurforce);
+        //progressBar = (ProgressBar) vue.findViewById(R.id.progressBar);
+        //textViewForce = (TextView) vue.findViewById(R.id.indicateurforce);
         start = (Button) vue.findViewById(R.id.button1);
         Log.d("BTT", "On create View Fragment 2");
+        Log.d("BTT", "ProgressBar =" + progressBar);
 
 
         start.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +103,6 @@ public class Fragment2 extends Fragment {
                 if (progressBar != null && buffer.length > 1) {
                     progressBar.setProgress(buffer[1]);
                 }
-                //affichage();
             }});
 
         return vue;
@@ -108,10 +111,12 @@ public class Fragment2 extends Fragment {
     protected void affichage() {
         String tab;
         Log.d("BTT", "Received sensor value in Fragment2: " + buffer[1]);
+        //Log.d("BTT", "ProgressBar =" + progressBar);
         tab = "force " + buffer[1] + " N";
-
-
-
+        if (buffer[1] > 65 && mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            Log.d("BTT", "Play sound");
+            mediaPlayer.start();
+        }
         if (textViewForce != null) {
             textViewForce.setText(tab);
         }

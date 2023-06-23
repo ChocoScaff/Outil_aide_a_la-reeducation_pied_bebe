@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,10 +81,16 @@ public class Fragment1 extends Fragment {
     private InputStream inputStream;
     private BluetoothSocket mmSocket = null;
 
+    private MediaPlayer mediaPlayer;
+
+    public TextView textViewForce;
+
     private byte[] buffer;
     private int bytes;
 
     private boolean connected = false;
+
+    private ProgressBar progressBar;
 
     float capteur1,capteur2,capteur3,capteur4;
 
@@ -99,15 +106,10 @@ public class Fragment1 extends Fragment {
 
                         if (buffer[i] == 10)
                             break;
-
-                        //Log.i("BTT", "Received  " + buffer[i]);
                     }
-                    //Log.i("BTT", "Message End  " + buffer[i]);
                     String readMessage = new String(buffer, 0, bytes);
-                    //Log.i("BTT", "Received message: " + readMessage);
                     // Handle the received message as needed
                     capteur1 = buffer[1];
-                    //Log.i("BTT", "capteur1 = : " + capteur1 + "N");
                     fragment2.affichage();
                 }
             }
@@ -218,6 +220,9 @@ public class Fragment1 extends Fragment {
         affichagePage1 = (TextView) vue.findViewById((R.id.Id_text_page1));
         liste_appareils = (ListView) vue.findViewById(R.id.ID_list_view);
         efface_Liste = (Button) vue.findViewById(R.id.Id_Effacer_la_liste);
+        mediaPlayer = MediaPlayer.create(getContext(),R.raw.bebequipleure);
+        progressBar = (ProgressBar) vue.findViewById(R.id.progressBar);
+        textViewForce = (TextView) vue.findViewById(R.id.indicateurforce);
 
         mBluetoothManager = (BluetoothManager)
                 getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
@@ -382,9 +387,12 @@ public class Fragment1 extends Fragment {
                         public void run() {
                             buffer = new byte[1024];
                             fragment2.buffer = buffer;
+                            fragment2.mediaPlayer = mediaPlayer;
+                            fragment2.progressBar = progressBar;
+                            fragment2.textViewForce = textViewForce;
 
                             while(connected) {
-                                SystemClock.sleep(500);
+                                SystemClock.sleep(10);
                                 try {
 
                                     bytes = inputStream.read(buffer);
