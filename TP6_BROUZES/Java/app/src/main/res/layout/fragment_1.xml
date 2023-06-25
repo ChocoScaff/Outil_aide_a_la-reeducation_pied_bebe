@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204" />
+        app:layout_constraintVertical_bias="0.157" />
 
     <Button
         android:id="@+id/Id_Lance_BT"
@@ -84,8 +84,8 @@
         android:id="@+id/ID_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="400dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginTop="370dp"
+        android:layout_marginBottom="192dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

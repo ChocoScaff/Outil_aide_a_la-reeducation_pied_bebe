@@ -4,17 +4,24 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,14 +29,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.Buffer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment1#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class Fragment1 extends Fragment {
@@ -42,14 +58,14 @@ public class Fragment1 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private int Active_BTr;
     private View vue;
     private Button Active_BT;
     private Button Connect_BT;
     private Button appareils;
-    private ListView liste_appareils;
+    private Button efface_Liste;
 
+    private Integer debut=0;
+    private ListView liste_appareils;
 
     TextView affichagePage1;
 
@@ -60,8 +76,54 @@ public class Fragment1 extends Fragment {
     private Integer interfaceOK = 0;
     private Integer appareilConnecte = 0;
     private Integer autorisationConnexion = 1;
+    private BluetoothSocket mmServerSocket;
+    private BluetoothDevice mmthisDevice;
+    private InputStream inputStream;
+    private BluetoothSocket mmSocket = null;
 
-    private BluetoothAdapter bluetoothAdapter;
+    private MediaPlayer mediaPlayer;
+
+    public TextView textViewForce;
+
+    private byte[] buffer;
+    private int bytes;
+
+    private boolean connected = false;
+
+    private ProgressBar progressBar;
+
+    float capteur1,capteur2,capteur3,capteur4;
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            int i;
+
+            if (msg.what == 1) {
+
+                if (buffer [0] == '\r') {
+                    for (i = 0; i < bytes; i++) {
+
+                        if (buffer[i] == 10)
+                            break;
+                    }
+                    String readMessage = new String(buffer, 0, bytes);
+                    // Handle the received message as needed
+                    capteur1 = buffer[1];
+                    fragment2.affichage();
+                }
+            }
+            return true;
+        }
+    });
+
+    String deviceName;
+    String deviceHardwareAddress;
+
+    String selectedItem;
+    ArrayList pairedlist = new ArrayList();
+
+    Fragment2 fragment2;
 
     public Fragment1() {
         // Required empty public constructor
@@ -83,6 +145,19 @@ public class Fragment1 extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mmSocket != null)
+            try {
+                connected = false;
+                inputStream.close();
+                mmSocket.close();
+                Log.i("BTT", "Close Bluetooth");
+            } catch (IOException e) {
+                Log.i("BTT", "Error closing Bluetooth socket: " + e.getMessage());
+            }
     }
 
     @Override
@@ -110,8 +185,8 @@ public class Fragment1 extends Fragment {
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
                 }
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
+                deviceName = device.getName();
+                deviceHardwareAddress = device.getAddress(); // MAC address
             }
         }
     };
@@ -127,6 +202,7 @@ public class Fragment1 extends Fragment {
 
         vue = inflater.inflate(R.layout.fragment_1, container, false);
         vue.findViewById(R.id.Id_text_page1);
+        Log.i("BTT", "toto");
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -143,11 +219,17 @@ public class Fragment1 extends Fragment {
         appareils = (Button) vue.findViewById(R.id.ID_liste_des_appareils);
         affichagePage1 = (TextView) vue.findViewById((R.id.Id_text_page1));
         liste_appareils = (ListView) vue.findViewById(R.id.ID_list_view);
+        efface_Liste = (Button) vue.findViewById(R.id.Id_Effacer_la_liste);
+        mediaPlayer = MediaPlayer.create(getContext(),R.raw.bebequipleure);
+        progressBar = (ProgressBar) vue.findViewById(R.id.progressBar);
+        textViewForce = (TextView) vue.findViewById(R.id.indicateurforce);
 
         mBluetoothManager = (BluetoothManager)
                 getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.getBondedDevices();
+
 
         if (mBluetoothAdapter == null) {
             // Device doesn't support Bluetooth
@@ -160,10 +242,13 @@ public class Fragment1 extends Fragment {
                     Toast.LENGTH_SHORT).show();
         }
 
+        fragment2 = new Fragment2();
+
         appareils.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Log.i("BTT", "Liste des appareils");
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -187,15 +272,44 @@ public class Fragment1 extends Fragment {
                             // to handle the case where the user grants the permission. See the documentation
                             // for ActivityCompat#requestPermissions for more details.
                         }
-                        String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
-                        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                        //        android.R.layout.simple_list_item_1, new list<String>());
+
+                        //pairedlist.add(device.getName() + "\n" + device.getAddress());
+                        pairedlist.add(0,device.getName() + "\n" + device.getAddress());
+
+                        ArrayAdapter myArrayAadapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, pairedlist);
+
+                        liste_appareils.setAdapter(myArrayAadapter);    // lv_devlist est l'identificateur java de la ListView
+
 
                     }
                 }
             }
         });
+        efface_Liste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                liste_appareils.setAdapter(null);
+
+            }
+        });
+
+
+        liste_appareils.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object listItem = liste_appareils.getItemAtPosition(position);
+                selectedItem = liste_appareils.getItemAtPosition(position).toString();
+
+                String[] lines = selectedItem.split("\n");
+
+                deviceName = lines[0];
+                deviceHardwareAddress = lines[1];
+
+                Log.i("BTT", deviceHardwareAddress);
+            }
+        });
+
 
         Active_BT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,36 +340,76 @@ public class Fragment1 extends Fragment {
                     }
                 }
             }
+
+
         });
+
         Connect_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Log.i("BTT", "Connect BT");
-                final BroadcastReceiver receiver = new BroadcastReceiver() {
-                    public void onReceive(Context context, Intent intent) {
-                        String action = intent.getAction();
-                        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                            // Discovery has found a device. Get the BluetoothDevice
-                            // object and its info from the Intent.
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                                // TODO: Consider calling
-                                //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions, and then overriding
-                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                //                                          int[] grantResults)
-                                // to handle the case where the user grants the permission. See the documentation
-                                // for ActivityCompat#requestPermissions for more details.
-                            }
-                            String deviceName = device.getName();
-                            String deviceHardwareAddress = device.getAddress(); // MAC address
-                            Log.i("BTT", "device");
-                            Log.i("BTT", device.getName());
-                        }
-                    }
-                };
+                BluetoothSocket tmp = null;
+                if (deviceHardwareAddress == null) {
+                    Toast.makeText(getActivity(), "Selectionner un appareil",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mmthisDevice = mBluetoothAdapter.getRemoteDevice(deviceHardwareAddress);
+                try {
+                    // MY_UUID is the app's UUID string, also used by the client code.
 
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        //return;
+                    }
+                    UUID uuid =  UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+                    Log.i("BTT", "Server socket");
+                    tmp = mmthisDevice.createRfcommSocketToServiceRecord(uuid);
+                    tmp.connect();
+                    connected = true;
+                    Log.i("BTT", "bluetoothAdapter");
+                    mmSocket = tmp;
+                    inputStream = mmSocket.getInputStream();
+
+                    Toast.makeText(getActivity(), "Connecte",
+                            Toast.LENGTH_SHORT).show();
+
+
+                    Thread readThread = new Thread(new Runnable() {
+                        public void run() {
+                            buffer = new byte[1024];
+                            fragment2.buffer = buffer;
+                            fragment2.mediaPlayer = mediaPlayer;
+                            fragment2.progressBar = progressBar;
+                            fragment2.textViewForce = textViewForce;
+
+                            while(connected) {
+                                SystemClock.sleep(10);
+                                try {
+
+                                    bytes = inputStream.read(buffer);
+                                    handler.sendEmptyMessage(1);
+
+                                } catch (IOException e) {
+                                    Log.i("BTT", "Error reading from input");
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    readThread.start();
+
+                } catch (IOException e) {
+                    Log.e("BTT", "Socket's listen() method failed", e);
+                }
 
             }
 
@@ -263,4 +417,6 @@ public class Fragment1 extends Fragment {
         return vue;
     }
 
+
 }
+
